@@ -18,7 +18,7 @@ class LogcatService(Service):
         boot_time (float): timestamp of the device's last boot.
         output_res_folder (float): folder where the logs will be stored after each profiling session.
     """
-    def __init__(self, boot_time=0, output_res_folder="hunter"):
+    def __init__(self, boot_time=0, output_res_folder="method_traces"):
         Service.__init__(self, output_res_folder)
         self.trace = {}
         self.boot_time = boot_time
@@ -52,7 +52,7 @@ class LogcatService(Service):
         """
         if run_id is None:
             run_id = execute_shell_command("date +%s")[1].strip()
-        return os.path.join(self.results_dir, "hunter-%s-%s.log" % (run_id, str(self.boot_time)))
+        return os.path.join(self.results_dir, "method_traces-%s-%s.log" % (run_id, str(self.boot_time)))
 
     def stop(self, run_id=None):
         """stops the profiling session.

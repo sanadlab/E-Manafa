@@ -3,9 +3,9 @@ import os
 import time
 
 from manafa.emanafa import EManafa, MANAFA_RESOURCES_DIR
-from manafa.parsing.hunter.AMParser import AMParser
+from manafa.parsing.method_traces.AMParser import AMParser
 from manafa.services.AmProfilerService import AmProfilerService
-from manafa.parsing.hunter.AppConsumptionStats import AppConsumptionStats
+from manafa.parsing.method_traces.AppConsumptionStats import AppConsumptionStats
 from manafa.utils.Logger import log, LogSeverity
 from manafa.utils.Utils import execute_shell_command
 
@@ -105,12 +105,16 @@ class AMEManafa(EManafa):
     def parse_results(self, bts_file=None, pf_file=None, htr_file=None):
         """Given the output files from a previous session, it parses and generates results from that session."""
         super().parse_results(bts_file, pf_file)
-        #pf_file = pf_file if pf_file is not None else self.pft_out_file
-        #run_id = self.perfetto.get_run_id_from_perfetto_file(pf_file)
+        self.trace_out_file = self.trace_out_file if htr_file is None else htr_file
         a, b = None, None
         if len(self.bat_events.events) > 0:
-            self.trace_out_file = self.trace_out_file if htr_file is None else htr_file
             a, b = self.calculate_function_consumption()
+        elif self.trace_out_file is not None:
+            # Energy/memory modes often run with the device plugged in, so batterystats
+            # has no samples and per-method consumption can't be computed. Still parse
+            # the AM trace so callers can report which methods were invoked.
+            self.am_log_parser.parse_file(self.trace_out_file)
+            self.app_consumptions.app_traces = self.am_log_parser.trace
         return a, b
 
     def gen_final_report(self, start_time=None, end_time=None):

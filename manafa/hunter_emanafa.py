@@ -1,9 +1,9 @@
 import json
 import os
 from manafa.emanafa import EManafa, MANAFA_RESOURCES_DIR
-from manafa.parsing.hunter.HunterParser import HunterParser
+from manafa.parsing.method_traces.HunterParser import HunterParser
 from manafa.services.LogcatService import LogcatService
-from manafa.parsing.hunter.AppConsumptionStats import AppConsumptionStats
+from manafa.parsing.method_traces.AppConsumptionStats import AppConsumptionStats
 from manafa.utils.Logger import log, LogSeverity
 from manafa.utils.Utils import execute_shell_command
 
@@ -79,7 +79,7 @@ class HunterEManafa(EManafa):
         total_consumption = 0
         total_cpu_consumption = 0
         if len(self.hunter_log_parser.trace) == 0:
-            log(f"No hunter traces found in {self.hunter_out_file}", log_sev=LogSeverity.ERROR)
+            log(f"No method_traces traces found in {self.hunter_out_file}", log_sev=LogSeverity.ERROR)
             return self.hunter_out_file, self.app_consumptions_log
         for i, function in enumerate(hunter_trace):
             func_consumption = 0

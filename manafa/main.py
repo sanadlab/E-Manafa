@@ -143,6 +143,15 @@ def display_new_profiler_results(emanafa, profile_mode, battery_drain_info=None)
         print(calculator.format_battery_drain_report(battery_drain_info))
 
 
+def _resolve_profiler_mode(args):
+    """Pick the profiler_mode that matches the CLI flags."""
+    if getattr(args, 'force_legacy', False):
+        return 'legacy'
+    if hasattr(args, 'profile_mode') and args.profile_mode:
+        return args.profile_mode
+    return None
+
+
 def create_manafa(args):
     #check if we should use EManafa instead of AMEManafa
     #use EManafa when: force_legacy is set, OR using new profiling modes (energy/memory/both)
@@ -151,45 +160,34 @@ def create_manafa(args):
         (hasattr(args, 'profile_mode') and args.profile_mode and args.profile_mode != 'legacy')
     )
 
-    #hunter mode takes priority
+    profiler_mode = _resolve_profiler_mode(args)
+
+    #method_traces mode takes priority
     if args.hunter or args.hunterfile is not None:
-        return HunterEManafa(power_profile=args.profile, timezone=args.timezone, resources_dir=MANAFA_RESOURCES_DIR)
+        manafa = HunterEManafa(power_profile=args.profile, timezone=args.timezone, resources_dir=MANAFA_RESOURCES_DIR)
+        #propagate the requested mode so init() picks the right perfetto service
+        #(without this, --force-legacy was silently overridden by power-rails auto-detect)
+        if profiler_mode:
+            manafa.profiler_mode = profiler_mode
+        return manafa
 
-    #if app package is specified
+    #if app package is specified, use AMEManafa so method-level traces are captured
+    #regardless of profile_mode. AMEManafa extends EManafa and runs the AM profiler
+    #alongside the energy/memory perfetto pipeline.
     elif args.app_package is not None:
-        if should_use_emanafa:
-            #use EManafa for legacy mode or new energy/memory modes
-            if getattr(args, 'force_legacy', False):
-                log("Using EManafa with legacy profiler (app package specified)", log_sev=LogSeverity.INFO)
-            else:
-                log("Using EManafa with app package (AM profiling disabled for new energy/memory modes)", log_sev=LogSeverity.INFO)
-
-            manafa = EManafa(power_profile=args.profile, timezone=args.timezone, resources_dir=MANAFA_RESOURCES_DIR)
-            manafa.app = args.app_package
-
-            #set profiler mode
-            if getattr(args, 'force_legacy', False):
-                manafa.profiler_mode = 'legacy'
-            elif hasattr(args, 'profile_mode') and args.profile_mode:
-                manafa.profiler_mode = args.profile_mode
-
-            return manafa
-        else:
-            #use AMEManafa for app-specific profiling (default behavior)
-            manafa = AMEManafa(app_package_name=args.app_package, power_profile=args.profile, timezone=args.timezone,
-                               resources_dir=MANAFA_RESOURCES_DIR)
-            if hasattr(args, 'profile_mode') and args.profile_mode:
-                manafa.profiler_mode = args.profile_mode
-            return manafa
+        log("Using AMEManafa with app package %s (mode=%s)" % (
+            args.app_package, profiler_mode or 'energy'), log_sev=LogSeverity.INFO)
+        manafa = AMEManafa(app_package_name=args.app_package, power_profile=args.profile,
+                           timezone=args.timezone, resources_dir=MANAFA_RESOURCES_DIR)
+        if profiler_mode:
+            manafa.profiler_mode = profiler_mode
+        return manafa
 
     #system-wide profiling (no app package)
     else:
         manafa = EManafa(power_profile=args.profile, timezone=args.timezone, resources_dir=MANAFA_RESOURCES_DIR)
-        #set profiler mode
-        if getattr(args, 'force_legacy', False):
-            manafa.profiler_mode = 'legacy'
-        elif hasattr(args, 'profile_mode') and args.profile_mode:
-            manafa.profiler_mode = args.profile_mode
+        if profiler_mode:
+            manafa.profiler_mode = profiler_mode
         return manafa
 
 
@@ -206,7 +204,7 @@ def parse_results(args, manafa):
             is_converted = matching_pft_files[0].endswith('.systrace')
             if not is_converted:
                 matching_pft_files[0] = convert_to_systrace(matching_pft_files[0])
-            matching_ht_files = [x for x in mega_find(args.directory, pattern="hunter-*") if b_file_id in x]
+            matching_ht_files = [x for x in mega_find(args.directory, pattern="method_traces-*") if b_file_id in x]
             if len(matching_ht_files) > 0:
                 _, fc = manafa.parse_results(bts_file=b_file, pf_file=matching_pft_files[0], htr_file=matching_ht_files[0])
                 if fc is not None:
@@ -261,12 +259,12 @@ Examples:
     )
     
     # Existing arguments
-    parser.add_argument("-ht", "--hunter", help="parse hunter logs", action='store_true', default=False)
+    parser.add_argument("-ht", "--hunter", help="parse method_traces logs", action='store_true', default=False)
     parser.add_argument("-p", "--profile", help="power profile file", default=None, type=str)
     parser.add_argument("-t", "--timezone", help="device timezone", default=None, type=str)
     parser.add_argument("-pft", "--perfettofile", help="perfetto file", default=None, type=str)
     parser.add_argument("-bts", "--batstatsfile", help="batterystats file", default=None, type=str)
-    parser.add_argument("-htf", "--hunterfile", help="hunter file", default=None, type=str)
+    parser.add_argument("-htf", "--hunterfile", help="method_traces file", default=None, type=str)
     parser.add_argument("-d", "--directory", help="results file directory", default=None, type=str)
     parser.add_argument("-o", "--output_file", help="output file", default=None, type=str)
     parser.add_argument("-s", "--time_in_secs", help="time to profile", default=0, type=int)
@@ -386,17 +384,46 @@ Examples:
             if args.profile_mode in ['memory', 'both'] and hasattr(manafa, 'memory_stats'):
                 results['memory'] = manafa.memory_stats
 
+            #include AM-profiler method invocations when an app package was supplied
+            app_consumptions = getattr(manafa, 'app_consumptions', None)
+            if app_consumptions is not None and getattr(app_consumptions, 'app_traces', None):
+                #only emit per-method consumption when batterystats produced samples;
+                #otherwise emit an invocation count per method (still useful for the user)
+                has_consumption = any(
+                    'per_component_consumption' in inv
+                    for invs in app_consumptions.app_traces.values()
+                    for inv in invs.values()
+                )
+                methods = (app_consumptions.get_elaborate_stats()
+                           if has_consumption
+                           else {m: len(invs) for m, invs in app_consumptions.app_traces.items()})
+                results['method_invocations'] = {
+                    'total': app_consumptions.get_total_methods(),
+                    'distinct': app_consumptions.get_diff_methods(),
+                    'trace_file': getattr(manafa, 'trace_out_file', None),
+                    'methods': methods,
+                }
+                print(f"\n  Method invocations: {results['method_invocations']['total']} "
+                      f"calls across {results['method_invocations']['distinct']} distinct methods")
+                if results['method_invocations']['trace_file']:
+                    print(f"  AM trace file: {results['method_invocations']['trace_file']}")
+            elif args.app_package:
+                log("No method invocations captured. Verify the app declares "
+                    "`<profileable android:shell=\"true\"/>` or `android:debuggable=\"true\"` "
+                    "and is launchable.", log_sev=LogSeverity.WARNING)
+
             #add battery drain info to results
             if battery_drain_info:
                 results['battery_drain'] = battery_drain_info
 
             #auto-generate filename if not specified
-            if not args.output_file and ('energy' in results or 'memory' in results):
+            has_payload = any(k in results for k in ('energy', 'memory', 'method_invocations'))
+            if not args.output_file and has_payload:
                 timestamp = int(time.time())
                 args.output_file = f"emanafa_{args.profile_mode}_{timestamp}.{args.output_format}"
 
             #export
-            if args.output_file and ('energy' in results or 'memory' in results):
+            if args.output_file and has_payload:
                 if args.output_format == 'json':
                     export_to_json(results, args.output_file)
                 else:

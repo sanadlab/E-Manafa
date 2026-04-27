@@ -2,8 +2,8 @@ import json
 import os
 from unittest import TestCase
 
-from manafa.parsing.hunter.AMParser import AMParser
-from manafa.parsing.hunter.HunterParser import HunterParser
+from manafa.parsing.method_traces.AMParser import AMParser
+from manafa.parsing.method_traces.HunterParser import HunterParser
 from manafa.utils.Utils import get_test_resources_dir
 
 

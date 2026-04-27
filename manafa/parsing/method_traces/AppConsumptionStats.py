@@ -12,7 +12,7 @@ RESULTS_DIR = get_results_dir()
 
 
 class AppConsumptionStats(object):
-    """Class that stores method traces of apps registered with hunter.
+    """Class that stores method traces of apps registered with method_traces.
 
         This class parses and batterystats history events from files parsed using parseFile function. It starts by load
         information contained in the device power profile file and also the current state values known by the profiler,

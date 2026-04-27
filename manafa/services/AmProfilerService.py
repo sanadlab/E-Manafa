@@ -70,9 +70,16 @@ class AmProfilerService(Service):
             f"find {self.results_dir} -type f -name \"*.csv\"  | xargs rm ")
         startup_output_filename = self.get_results_filename(run_id)
         log("Am Profiler run id:  %s" % run_id)
-        res = execute_shell_command(" adb shell cmd package resolve-activity --brief %s | grep %s" % (self.package_name, self.package_name))
-        activity_package = res[1].strip()
-        cmd = " adb shell am start -S -n %s -P %s" % (activity_package, startup_output_filename )
+        activity_package = self._resolve_main_activity()
+        if activity_package is None:
+            log("Could not resolve a launchable activity for %s" % self.package_name)
+            return False
+        # `--sampling` is required for apps using <profileable android:shell="true"/>:
+        # without it, `am start -P` falls back to method tracing, which the framework
+        # rejects on profileable apps (even when android:debuggable="true" is also set),
+        # so no methods get recorded.
+        cmd = " adb shell am start -S --start-profiler %s --sampling %d -n %s" % (
+            startup_output_filename, PROFILING_SAMPLE_RATE, activity_package)
         res = execute_shell_command(cmd)
         print(res)
         log("Profiling startup with Am Profiler: " + cmd)
@@ -86,6 +93,22 @@ class AmProfilerService(Service):
         res = execute_shell_command(cmd)
         print(res)
         return res[0] == 0
+
+    def _resolve_main_activity(self):
+        """Return the launcher activity (`pkg/.Activity`) or None if it can't be found.
+
+        `cmd package resolve-activity --brief` prints a header line followed by the
+        activity. Greping for the package name can also catch the header on devices
+        whose preferred-activity entry includes the package, so pick the first line
+        that matches the `pkg/component` shape.
+        """
+        res = execute_shell_command(
+            "adb shell cmd package resolve-activity --brief %s" % self.package_name)
+        for line in (res[1] or "").splitlines():
+            line = line.strip()
+            if line.startswith("%s/" % self.package_name):
+                return line
+        return None
 
     def get_results_filename(self, run_id):
         """returns the name of the output file.
