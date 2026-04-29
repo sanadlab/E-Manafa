@@ -72,6 +72,10 @@ class EManafa(Service):
         #initialize profiler_mode before creating service
         self.profiler_mode = None
 
+        #perfetto sampling overrides (consumed in init()); None = service defaults
+        self.meminfo_period_ms = None
+        self.battery_poll_ms = None
+
         #don't create perfetto service yet, wait for init() so profiler_mode can be set first
         self.perfetto = None
 
@@ -112,40 +116,33 @@ class EManafa(Service):
         self.boot_time = get_last_boot_time()
         self.batterystats.init(boot_time=self.boot_time)
 
+        sampling = {}
+        if self.meminfo_period_ms is not None:
+            sampling['meminfo_period_ms'] = self.meminfo_period_ms
+        if self.battery_poll_ms is not None:
+            sampling['battery_poll_ms'] = self.battery_poll_ms
+
         #create perfetto service based on profiler_mode
         if self.profiler_mode == 'legacy':
             self.perfetto = create_perfetto_service(
-                boot_time=self.boot_time,
-                output_res_folder="perfetto",
-                force_legacy=True
-            )
+                boot_time=self.boot_time, output_res_folder="perfetto",
+                force_legacy=True, **sampling)
         elif self.profiler_mode == 'energy':
             self.perfetto = create_perfetto_service(
-                boot_time=self.boot_time,
-                output_res_folder="perfetto",
-                enable_energy=True,
-                enable_memory=False
-            )
+                boot_time=self.boot_time, output_res_folder="perfetto",
+                enable_energy=True, enable_memory=False, **sampling)
         elif self.profiler_mode == 'memory':
             self.perfetto = create_perfetto_service(
-                boot_time=self.boot_time,
-                output_res_folder="perfetto",
-                enable_energy=False,
-                enable_memory=True
-            )
+                boot_time=self.boot_time, output_res_folder="perfetto",
+                enable_energy=False, enable_memory=True, **sampling)
         elif self.profiler_mode == 'both':
             self.perfetto = create_perfetto_service(
-                boot_time=self.boot_time,
-                output_res_folder="perfetto",
-                enable_energy=True,
-                enable_memory=True
-            )
+                boot_time=self.boot_time, output_res_folder="perfetto",
+                enable_energy=True, enable_memory=True, **sampling)
         else:
             #default: auto-detect (will use enhanced if supported, otherwise legacy)
             self.perfetto = create_perfetto_service(
-                boot_time=self.boot_time,
-                output_res_folder="perfetto"
-            )
+                boot_time=self.boot_time, output_res_folder="perfetto", **sampling)
 
         self.perfetto.init(boot_time=self.boot_time)
         self.validate_start()

@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 
 import re
+import tempfile
 from .perfettoService import PerfettoService, device_has_perfetto
 import os
 import time
@@ -12,6 +13,8 @@ RESOURCES_DIR = get_resources_dir()
 
 DEFAULT_OUT_DIR = "/data/misc/perfetto-traces"
 CONFIG_FILE_ENHANCED = "perfetto_config_power_rails.pbtxt"
+DEFAULT_MEMINFO_PERIOD_MS = 50
+DEFAULT_BATTERY_POLL_MS = 250
 
 
 def device_supports_power_rails():
@@ -72,18 +75,22 @@ class PerfettoServiceEnhanced(PerfettoService):
     #     log(f"Initialized PerfettoServiceEnhanced with config: {self.cfg_file}", 
     #         log_sev=LogSeverity.INFO)
 
-    def __init__(self, boot_time=0, output_res_folder="perfetto", 
-            enable_energy=True, enable_memory=False):
+    def __init__(self, boot_time=0, output_res_folder="perfetto",
+            enable_energy=True, enable_memory=False,
+            meminfo_period_ms=DEFAULT_MEMINFO_PERIOD_MS,
+            battery_poll_ms=DEFAULT_BATTERY_POLL_MS):
         """Initialize enhanced Perfetto service.
-        
+
         Args:
             boot_time: Boot time offset
             output_res_folder: Output folder for traces
             enable_energy: Enable energy profiling (power rails)
             enable_memory: Enable memory profiling (system memory only)
+            meminfo_period_ms: /proc/meminfo polling period in ms (default 50)
+            battery_poll_ms: battery + power rails polling period in ms (default 250)
         """
         super().__init__(boot_time, output_res_folder)
-        
+
         #select appropriate config file based on mode
         if enable_energy and enable_memory:
             self.cfg_file = "perfetto_config_both.pbtxt"
@@ -93,19 +100,42 @@ class PerfettoServiceEnhanced(PerfettoService):
             self.cfg_file = "perfetto_config_memory_only.pbtxt"
         else:
             raise ValueError("Must enable either energy or memory profiling")
-        
+
         self.enable_energy = enable_energy
         self.enable_memory = enable_memory
-    
+        self.meminfo_period_ms = meminfo_period_ms
+        self.battery_poll_ms = battery_poll_ms
+        self._rendered_config_path = None
+
+    def _render_config(self, source_path):
+        """Substitute polling periods into the pbtxt and return a temp file path.
+
+        Keeps the on-disk resources untouched so users can still consume them
+        directly. The temp file is cleaned up in stop().
+        """
+        with open(source_path, 'r') as f:
+            cfg = f.read()
+        cfg = re.sub(r'meminfo_period_ms:\s*\d+',
+                     f'meminfo_period_ms: {self.meminfo_period_ms}', cfg)
+        cfg = re.sub(r'battery_poll_ms:\s*\d+',
+                     f'battery_poll_ms: {self.battery_poll_ms}', cfg)
+        fd, rendered = tempfile.mkstemp(prefix='emanafa_pf_', suffix='.pbtxt')
+        with os.fdopen(fd, 'w') as f:
+            f.write(cfg)
+        return rendered
+
     def start(self):
         """Start profiling session with enhanced config.
-        
+
         Uses text-based protobuf config (.pbtxt) with --txt flag for power rails.
         """
         config_path = os.path.join(RESOURCES_DIR, self.cfg_file)
-        
-        #use --txt flag for .pbtxt configs, otherwise use -c flag
         if self.cfg_file.endswith('.pbtxt'):
+            self._rendered_config_path = self._render_config(config_path)
+            config_path = self._rendered_config_path
+            log(f"Rendered Perfetto config (meminfo_period_ms={self.meminfo_period_ms}, "
+                f"battery_poll_ms={self.battery_poll_ms}): {config_path}",
+                log_sev=LogSeverity.INFO)
             cmd = f"cat {config_path} | adb shell perfetto " \
                   f"{self.get_switch('background', '-b')} --txt " \
                   f"-o {self.output_filename} -c -"
@@ -114,7 +144,7 @@ class PerfettoServiceEnhanced(PerfettoService):
             cmd = f"cat {config_path} | adb shell perfetto " \
                   f"{self.get_switch('background', '-b')} " \
                   f"-o {self.output_filename} {self.get_switch('config', '-c')} -"
-        
+
         log(f"Starting enhanced perfetto: {cmd}", log_sev=LogSeverity.INFO)
         res, o, e = execute_shell_command(cmd=cmd)
         
@@ -152,4 +182,12 @@ class PerfettoServiceEnhanced(PerfettoService):
             raise Exception(f"unable to pull trace file. Attempted to copy {self.output_filename} to {filename}")
         
         log(f"Saved Perfetto trace (binary format): {filename}", log_sev=LogSeverity.INFO)
+
+        if self._rendered_config_path and os.path.exists(self._rendered_config_path):
+            try:
+                os.remove(self._rendered_config_path)
+            except OSError:
+                pass
+            self._rendered_config_path = None
+
         return filename

@@ -152,43 +152,42 @@ def _resolve_profiler_mode(args):
     return None
 
 
+def _apply_sampling(manafa, args):
+    """Propagate Perfetto sampling flags onto the manafa instance."""
+    if hasattr(args, 'meminfo_period_ms') and args.meminfo_period_ms is not None:
+        manafa.meminfo_period_ms = args.meminfo_period_ms
+    if hasattr(args, 'battery_poll_ms') and args.battery_poll_ms is not None:
+        manafa.battery_poll_ms = args.battery_poll_ms
+
+
 def create_manafa(args):
-    #check if we should use EManafa instead of AMEManafa
-    #use EManafa when: force_legacy is set, OR using new profiling modes (energy/memory/both)
-    should_use_emanafa = (
-        getattr(args, 'force_legacy', False) or
-        (hasattr(args, 'profile_mode') and args.profile_mode and args.profile_mode != 'legacy')
-    )
-
     profiler_mode = _resolve_profiler_mode(args)
+    trace_methods = getattr(args, 'trace_methods', 'none') or 'none'
 
-    #method_traces mode takes priority
-    if args.hunter or args.hunterfile is not None:
-        manafa = HunterEManafa(power_profile=args.profile, timezone=args.timezone, resources_dir=MANAFA_RESOURCES_DIR)
-        #propagate the requested mode so init() picks the right perfetto service
-        #(without this, --force-legacy was silently overridden by power-rails auto-detect)
-        if profiler_mode:
-            manafa.profiler_mode = profiler_mode
-        return manafa
+    #parsing-mode shortcut: -htf <file> implies hunter post-processing
+    if args.hunterfile is not None and trace_methods == 'none':
+        trace_methods = 'hunter'
 
-    #if app package is specified, use AMEManafa so method-level traces are captured
-    #regardless of profile_mode. AMEManafa extends EManafa and runs the AM profiler
-    #alongside the energy/memory perfetto pipeline.
-    elif args.app_package is not None:
+    if trace_methods == 'hunter':
+        log("Using HunterEManafa (logcat-based method tracing)", log_sev=LogSeverity.INFO)
+        manafa = HunterEManafa(power_profile=args.profile, timezone=args.timezone,
+                               resources_dir=MANAFA_RESOURCES_DIR)
+    elif trace_methods == 'am':
         log("Using AMEManafa with app package %s (mode=%s)" % (
             args.app_package, profiler_mode or 'energy'), log_sev=LogSeverity.INFO)
         manafa = AMEManafa(app_package_name=args.app_package, power_profile=args.profile,
                            timezone=args.timezone, resources_dir=MANAFA_RESOURCES_DIR)
-        if profiler_mode:
-            manafa.profiler_mode = profiler_mode
-        return manafa
-
-    #system-wide profiling (no app package)
     else:
-        manafa = EManafa(power_profile=args.profile, timezone=args.timezone, resources_dir=MANAFA_RESOURCES_DIR)
-        if profiler_mode:
-            manafa.profiler_mode = profiler_mode
-        return manafa
+        #plain energy/memory profiling, no method tracing
+        manafa = EManafa(power_profile=args.profile, timezone=args.timezone,
+                         resources_dir=MANAFA_RESOURCES_DIR)
+        if args.app_package is not None:
+            manafa.app = args.app_package
+
+    if profiler_mode:
+        manafa.profiler_mode = profiler_mode
+    _apply_sampling(manafa, args)
+    return manafa
 
 
 def parse_results(args, manafa):
@@ -284,7 +283,32 @@ Examples:
 
     parser.add_argument("--force-legacy", action='store_true',
                        help='Force use of legacy profiler even if device supports new features')
+
+    parser.add_argument("--meminfo-period-ms", type=int, default=50,
+                       help='Polling period for /proc/meminfo via linux.sys_stats (default: 50)')
+    parser.add_argument("--battery-poll-ms", type=int, default=250,
+                       help='Polling period for android.power battery + power rails counters '
+                            '(default: 250). Power rails are cumulative, so this only affects '
+                            'temporal granularity, not total-energy accuracy.')
+
+    parser.add_argument("--trace-methods", choices=['none', 'am', 'hunter'], default=None,
+                       help="Capture method invocations. 'am' uses ActivityManager profiling "
+                            "(requires -a <package>); 'hunter' parses logcat via the Hunter "
+                            "instrumentation. Defaults: 'am' if -a is given, 'hunter' if -ht "
+                            "is given, otherwise 'none'.")
     args = parser.parse_args()
+
+    #resolve --trace-methods default based on the other flags
+    if args.trace_methods is None:
+        if args.hunter:
+            args.trace_methods = 'hunter'
+        elif args.app_package is not None:
+            args.trace_methods = 'am'
+        else:
+            args.trace_methods = 'none'
+
+    if args.trace_methods == 'am' and args.app_package is None:
+        parser.error("--trace-methods=am requires -a/--app_package")
     
     #warnings for new modes
     if args.profile_mode == 'both' and not args.force_legacy:
