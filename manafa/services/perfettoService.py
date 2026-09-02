@@ -14,6 +14,29 @@ RESOURCES_DIR = get_resources_dir()
 
 DEFAULT_OUT_DIR = "/data/misc/perfetto-traces"
 CONFIG_FILE = "perfetto.config.bin"
+KILL_TIMEOUT_S = 10
+
+
+def wait_for_our_perfetto_to_exit(timeout=KILL_TIMEOUT_S):
+    """Waits until no shell-owned perfetto process is left.
+
+    killall's exit code cannot be trusted here: system processes (e.g. statsd) run
+    their own long-lived perfetto instance that shell is not allowed to kill, so
+    killall reports failure even when ours was signalled fine. perfetto also flushes
+    and finalizes the trace on SIGTERM, so it stays alive for a moment after the
+    signal.
+
+    Args:
+        timeout: max seconds to wait.
+    Returns:
+        bool: True if a shell-owned perfetto is still running after timeout.
+    """
+    for _ in range(timeout):
+        _, out, _ = execute_shell_command("adb shell ps -A -o USER,PID,NAME | grep perfetto")
+        if not any(l.split()[0] == 'shell' for l in out.splitlines() if l.strip()):
+            return False
+        time.sleep(1)
+    return True
 
 
 def device_has_perfetto():
@@ -112,14 +135,12 @@ class PerfettoService(Service):
         """
         if file_id is None:
             file_id = execute_shell_command("date +%s")[1].strip()
-        res, o, e = execute_shell_command("adb shell killall perfetto")
-        if res != 0:
-            x = execute_shell_command("adb shell setprop persist.traced.enable 0")
-            print(x)
+        execute_shell_command("adb shell killall perfetto")
+        if wait_for_our_perfetto_to_exit():
+            # force the tracing daemon down and give perfetto another chance to exit
+            execute_shell_command("adb shell setprop persist.traced.enable 0")
             time.sleep(2)
-            x = execute_shell_command("adb shell ps | grep perfetto")
-            is_running = x[0] == 0 and 'perfetto' in x[1]
-            if is_running:
+            if wait_for_our_perfetto_to_exit():
                 raise Exception("unable to kill Perfetto service")
         time.sleep(1)
         execute_shell_command("adb shell setprop persist.traced.enable 1")

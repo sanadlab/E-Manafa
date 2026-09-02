@@ -519,8 +519,18 @@ class EManafa(Service):
         self.unplugged = False
 
     def gen_final_report(self, start_time=None, end_time=None):
-        begin = self.perf_events.events[0].time if start_time is None else start_time
-        end = self.perf_events.events[-1].time if end_time is None else end_time
+        if start_time is not None:
+            begin = start_time
+        elif len(self.perf_events.events) > 0:
+            begin = self.perf_events.events[0].time
+        else:
+            begin = self.bat_events.events[0].time
+        if end_time is not None:
+            end = end_time
+        elif len(self.perf_events.events) > 0:
+            end = self.perf_events.events[-1].time
+        else:
+            end = self.bat_events.events[-1].time
         total, per_c, timeline = self.get_consumption_in_between(begin, end)
         res = {
             'total_energy:': total,

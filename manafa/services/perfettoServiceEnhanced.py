@@ -2,7 +2,7 @@ from __future__ import absolute_import
 
 import re
 import tempfile
-from .perfettoService import PerfettoService, device_has_perfetto
+from .perfettoService import PerfettoService, device_has_perfetto, wait_for_our_perfetto_to_exit
 import os
 import time
 
@@ -163,13 +163,11 @@ class PerfettoServiceEnhanced(PerfettoService):
             file_id = execute_shell_command("adb shell date +%s")[1].strip()
         
         #try to kill perfetto
-        res, o, e = execute_shell_command("adb shell killall perfetto")
+        execute_shell_command("adb shell killall perfetto")
         
-        #check if perfetto is still running
-        is_running_res, is_running_out, _ = execute_shell_command("adb shell ps | grep perfetto")
-        
-        #only raise exception if killall failed AND perfetto is still running
-        if res != 0 and is_running_res == 0 and 'perfetto' in is_running_out:
+        #killall's exit code cannot be trusted here, and perfetto needs a moment
+        #to finalize the trace. see wait_for_our_perfetto_to_exit.
+        if wait_for_our_perfetto_to_exit():
             raise Exception("unable to kill Perfetto service")
         
         time.sleep(1)
