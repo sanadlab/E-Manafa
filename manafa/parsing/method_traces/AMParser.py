@@ -39,10 +39,15 @@ class AMParser(object):
             end_time: upper timestamp bound.
             col_sep: column separator used in the log file.
         """
+        explicit_end = end_time != sys.maxsize
         try:
-            end_time = float(end_time) if end_time != sys.maxsize else float((lines_list[-1].split(',')[1]) if len(lines_list) > 0 else sys.maxsize)
+            end_time = float(end_time) if explicit_end else float((lines_list[-1].split(',')[1]) if len(lines_list) > 0 else sys.maxsize)
         except:
             end_time = float((lines_list[-2].split(',')[1]) if len(lines_list) > 1 else sys.maxsize)
+        if not explicit_end and end_time != sys.maxsize:
+            # taken from the timestamp column, which is in nanoseconds, so it needs
+            # the same conversion that begin_time gets below
+            end_time = self.boot_time + (end_time * pow(10, -9))
         for i, line in enumerate(lines_list):
             #print(line)
             if len(line) < 3:
@@ -64,7 +69,7 @@ class AMParser(object):
                     'depth': int(depth),
                     'method_def': method_def,
                 }
-                if method_name not in self.trace:
+                if function_id not in self.trace:
                     self.trace[function_id] = {}
                     self.trace[function_id][0] = time_obj
                 else:

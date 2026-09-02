@@ -237,6 +237,44 @@ def print_profiled_stats(el_time, total_consumption, per_comp_consumption, event
         print(calculator.format_battery_drain_report(battery_drain_info))
 
 
+def preserve_trace_file(results, output_file):
+    """Keeps the method trace next to the results file and repoints it there.
+
+    manafa/results is wiped when the next session starts, so a results file
+    left pointing into it stops being usable as soon as you profile again.
+    """
+    invocations = results.get('method_invocations')
+    if not isinstance(invocations, dict):
+        return
+    trace_file = invocations.get('trace_file')
+    if not trace_file or not os.path.exists(trace_file):
+        return
+    kept = f"{os.path.splitext(output_file)[0]}_calls{os.path.splitext(trace_file)[1]}"
+    try:
+        shutil.copyfile(trace_file, kept)
+    except OSError as e:
+        log(f"Could not keep a copy of {trace_file}: {e}", log_sev=LogSeverity.WARNING)
+        return
+    invocations['trace_file'] = os.path.abspath(kept)
+    log(f"Call trace kept alongside results: {kept}", log_sev=LogSeverity.INFO)
+
+
+def generate_sunburst(args, results):
+    """Writes the call-graph sunburst for a finished session, if it can."""
+    out = args.sunburst
+    if out == 'auto':
+        out = f"emanafa_sunburst_{int(time.time())}.html"
+    try:
+        from manafa.sunburst import build_sunburst
+        build_sunburst(results, out)
+        print(f"Call graph sunburst saved to: {out}\n")
+    except ImportError:
+        log("--sunburst needs plotly. Install it with `pip install plotly`.",
+            log_sev=LogSeverity.ERROR)
+    except ValueError as e:
+        log(f"Cannot build sunburst: {e}", log_sev=LogSeverity.ERROR)
+
+
 def main():
     parser = argparse.ArgumentParser(
         description='E-MANAFA: Energy and Memory profiler for Android applications',
@@ -290,6 +328,12 @@ Examples:
                        help='Polling period for android.power battery + power rails counters '
                             '(default: 250). Power rails are cumulative, so this only affects '
                             'temporal granularity, not total-energy accuracy.')
+
+    parser.add_argument("--sunburst", nargs='?', const='auto', default=None,
+                       metavar='FILE',
+                       help='Write an animated call-graph sunburst (html) coloured by '
+                            'energy. Needs method tracing (-a <package>) and plotly. '
+                            'Pass a filename or leave empty to auto-name it.')
 
     parser.add_argument("--trace-methods", choices=['none', 'am', 'hunter'], default=None,
                        help="Capture method invocations. 'am' uses ActivityManager profiling "
@@ -448,12 +492,16 @@ Examples:
 
             #export
             if args.output_file and has_payload:
+                preserve_trace_file(results, args.output_file)
                 if args.output_format == 'json':
                     export_to_json(results, args.output_file)
                 else:
                     export_to_csv(results, args.output_file)
 
                 print(f"\nDetailed results saved to: {args.output_file}\n")
+
+            if args.sunburst:
+                generate_sunburst(args, results)
     else:
         #file parsing mode (existing functionality)
         parse_results(args, manafa)
