@@ -22,6 +22,18 @@ Power rails and memory
 .. automodule:: manafa.parsing.perfettoEnergyCalculator
    :members:
 
+.. automodule:: manafa.parsing.cpuAttribution
+   :members:
+
+On-device mode and MCP server
+-----------------------------
+
+.. automodule:: manafa.ondevice
+   :members:
+
+.. automodule:: manafa.mcp_server
+   :members:
+
 Sunburst diagram
 ----------------
 

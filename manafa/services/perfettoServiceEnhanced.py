@@ -55,6 +55,45 @@ def device_supports_power_rails():
         log_sev=LogSeverity.WARNING)
     return False
 
+CALLSTACK_SAMPLING = """
+# call-stack samples of one app (linux.perf)
+data_sources: {
+    config {
+        name: "linux.perf"
+        perf_event_config {
+            timebase {
+                frequency: %d
+            }
+            callstack_sampling {
+                scope {
+                    target_cmdline: "%s"
+                }
+                kernel_frames: false
+            }
+        }
+    }
+}
+"""
+DEFAULT_CALLSTACK_HZ = 100
+
+
+def render_config(cfg_file, meminfo_period_ms=DEFAULT_MEMINFO_PERIOD_MS, battery_poll_ms=DEFAULT_BATTERY_POLL_MS,
+                  callstack_package=None):
+    """Text of a Perfetto config of the resources directory, with the polling periods.
+
+    Args:
+        cfg_file: name of a .pbtxt file in the resources directory.
+        callstack_package: package of an app. If given, the config also samples its call stacks.
+    """
+    with open(os.path.join(RESOURCES_DIR, cfg_file), 'r') as f:
+        cfg = f.read()
+    cfg = re.sub(r'meminfo_period_ms:\s*\d+', f'meminfo_period_ms: {meminfo_period_ms}', cfg)
+    cfg = re.sub(r'battery_poll_ms:\s*\d+', f'battery_poll_ms: {battery_poll_ms}', cfg)
+    if callstack_package:
+        cfg += CALLSTACK_SAMPLING % (DEFAULT_CALLSTACK_HZ, callstack_package)
+    return cfg
+
+
 class PerfettoServiceEnhanced(PerfettoService):
     """Enhanced Perfetto service that uses power.rails.* data sources.
     
@@ -95,7 +134,7 @@ class PerfettoServiceEnhanced(PerfettoService):
     def __init__(self, boot_time=0, output_res_folder="perfetto",
             enable_energy=True, enable_memory=False,
             meminfo_period_ms=DEFAULT_MEMINFO_PERIOD_MS,
-            battery_poll_ms=DEFAULT_BATTERY_POLL_MS):
+            battery_poll_ms=DEFAULT_BATTERY_POLL_MS, callstack_package=None):
         """Initialize enhanced Perfetto service.
 
         Args:
@@ -122,6 +161,7 @@ class PerfettoServiceEnhanced(PerfettoService):
         self.enable_memory = enable_memory
         self.meminfo_period_ms = meminfo_period_ms
         self.battery_poll_ms = battery_poll_ms
+        self.callstack_package = callstack_package
         self._rendered_config_path = None
 
     def _render_config(self, source_path):
@@ -130,12 +170,8 @@ class PerfettoServiceEnhanced(PerfettoService):
         Keeps the on-disk resources untouched so users can still consume them
         directly. The temp file is cleaned up in stop().
         """
-        with open(source_path, 'r') as f:
-            cfg = f.read()
-        cfg = re.sub(r'meminfo_period_ms:\s*\d+',
-                     f'meminfo_period_ms: {self.meminfo_period_ms}', cfg)
-        cfg = re.sub(r'battery_poll_ms:\s*\d+',
-                     f'battery_poll_ms: {self.battery_poll_ms}', cfg)
+        cfg = render_config(os.path.basename(source_path), self.meminfo_period_ms, self.battery_poll_ms,
+                            self.callstack_package)
         fd, rendered = tempfile.mkstemp(prefix='emanafa_pf_', suffix='.pbtxt')
         with os.fdopen(fd, 'w') as f:
             f.write(cfg)

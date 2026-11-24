@@ -12,7 +12,7 @@ def create_perfetto_service(boot_time=0, output_res_folder="perfetto",
                             enable_energy=True, enable_memory=False,
                             force_enhanced=False, force_legacy=False,
                             meminfo_period_ms=DEFAULT_MEMINFO_PERIOD_MS,
-                            battery_poll_ms=DEFAULT_BATTERY_POLL_MS):
+                            battery_poll_ms=DEFAULT_BATTERY_POLL_MS, callstack_package=None):
     """Factory function to create appropriate Perfetto service.
     
     Automatically detects device capabilities and returns either:
@@ -52,6 +52,7 @@ def create_perfetto_service(boot_time=0, output_res_folder="perfetto",
         'output_res_folder': output_res_folder,
         'meminfo_period_ms': meminfo_period_ms,
         'battery_poll_ms': battery_poll_ms,
+        'callstack_package': callstack_package,
     }
 
     if force_enhanced:

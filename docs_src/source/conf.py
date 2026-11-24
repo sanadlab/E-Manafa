@@ -29,3 +29,4 @@ html_static_path = ['_static']
 html_title = 'E-MANAFA %s' % release
 html_theme_options = {'navigation_depth': 3, 'collapse_navigation': False}
 html_css_files = ['custom.css']
+html_baseurl = 'https://sanadlab.github.io/E-MANAFA/'

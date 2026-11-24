@@ -23,7 +23,7 @@ setup(
     'more-itertools>=8.0.0',
     'perfetto>=0.58.2',
 ],
-    extras_require={'sunburst': ['plotly>=5.0.0']},
+    extras_require={'sunburst': ['plotly>=5.0.0'], 'mcp': ['mcp>=1.2.0']},
     setup_requires=['incremental'],
     include_package_data=True,
     scripts=['bin/emanafa'],

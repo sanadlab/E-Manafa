@@ -51,6 +51,7 @@ class AMEManafa(EManafa):
         super(AMEManafa, self).__init__(power_profile=power_profile, timezone=timezone, resources_dir=resources_dir, **kwargs)
         self.app_consumptions = AppConsumptionStats()
         self.app_consumptions_log = ""
+        self.app = app_package_name
         self.log_service = AmProfilerService(app_package_name)
         self.am_log_parser = AMParser()
         self.trace_out_file = None
@@ -139,7 +140,8 @@ class AMEManafa(EManafa):
         if self.power_rails is not None:
             self.am_log_parser.boot_time = self.power_rails.monotonic_to_epoch_s
         else:
-            self.am_log_parser.boot_time = get_monotonic_to_epoch_s()
+            # a session that the device recorded has the offset in its session file
+            self.am_log_parser.boot_time = getattr(self, 'recorded_clock_offset', None) or get_monotonic_to_epoch_s()
             if self.am_log_parser.boot_time is None:
                 log("Unable to read the clock offset from the device. Using the boot time: the method "
                     "times are wrong if the device was suspended after boot", log_sev=LogSeverity.WARNING)

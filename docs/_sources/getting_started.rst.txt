@@ -33,7 +33,7 @@ From the sources:
 
 .. code-block:: console
 
-   $ git clone https://github.com/greensoftwarelab/E-MANAFA.git
+   $ git clone https://github.com/sanadlab/E-Manafa.git
    $ cd E-MANAFA
    $ python -m venv env && source env/bin/activate
    $ pip install -r requirements.txt

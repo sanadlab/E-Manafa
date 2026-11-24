@@ -6,6 +6,8 @@ pytz>=2024.1
 termcolor>=1.1.0
 # sunburst diagram (optional)
 plotly>=5.0.0
+# MCP server (optional)
+mcp>=1.2.0
 # tests, release and documentation
 build>=1.2.0
 incremental>=24.7.0

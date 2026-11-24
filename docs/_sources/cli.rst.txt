@@ -35,7 +35,7 @@ Methods and diagram
    * - Option
      - Description
    * - ``--trace-methods``
-     - ``am``, ``hunter`` or ``none``.
+     - ``am``, ``hunter``, ``perf`` or ``none``.
    * - ``-ht, --hunter``
      - Same as ``--trace-methods hunter``.
    * - ``--sunburst [FILE]``

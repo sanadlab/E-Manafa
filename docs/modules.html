@@ -6,15 +6,16 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>API reference &mdash; E-MANAFA 0.4.14</title>
+  <title>API reference &mdash; E-MANAFA 1.0.0</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/custom.css?v=c1264a3d" />
 
   
+    <link rel="canonical" href="https://sanadlab.github.io/E-MANAFA/modules.html" />
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=1f5508e5"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/js/theme.js"></script>
@@ -84,6 +85,8 @@
 <li class="toctree-l2"><a class="reference internal" href="method_energy.html#how-the-trace-is-recorded">How the trace is recorded</a></li>
 <li class="toctree-l2"><a class="reference internal" href="method_energy.html#what-a-method-gets">What a method gets</a></li>
 <li class="toctree-l2"><a class="reference internal" href="method_energy.html#result-files">Result files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="method_energy.html#energy-of-each-process-and-thread">Energy of each process and thread</a></li>
+<li class="toctree-l2"><a class="reference internal" href="method_energy.html#call-stack-samples-trace-methods-perf">Call-stack samples (<code class="docutils literal notranslate"><span class="pre">--trace-methods</span> <span class="pre">perf</span></code>)</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="sunburst.html">Sunburst diagram</a><ul>
@@ -97,6 +100,18 @@
 <li class="toctree-l2"><a class="reference internal" href="sunburst.html#controls">Controls</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sunburst.html#what-the-values-are">What the values are</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sunburst.html#make-the-diagram-from-a-result-file">Make the diagram from a result file</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ondevice.html">On-device mode</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ondevice.html#commands">Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ondevice.html#start-and-stop-on-the-device">Start and stop on the device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ondevice.html#recorded-files">Recorded files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ondevice.html#agreement-with-the-normal-mode">Agreement with the normal mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ondevice.html#limits">Limits</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mcp.html">MCP server</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mcp.html#tools">Tools</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="output.html">Output files</a><ul>
@@ -157,6 +172,39 @@
 <li class="toctree-l3"><a class="reference internal" href="#manafa.parsing.perfettoEnergyCalculator.count_power_rails"><code class="docutils literal notranslate"><span class="pre">count_power_rails()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#manafa.parsing.perfettoEnergyCalculator.PowerRailsTrace"><code class="docutils literal notranslate"><span class="pre">PowerRailsTrace</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#manafa.parsing.perfettoEnergyCalculator.calculate_memory_stats"><code class="docutils literal notranslate"><span class="pre">calculate_memory_stats()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manafa.parsing.cpuAttribution.cluster_rails"><code class="docutils literal notranslate"><span class="pre">cluster_rails()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manafa.parsing.cpuAttribution.CpuAttribution"><code class="docutils literal notranslate"><span class="pre">CpuAttribution</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manafa.parsing.cpuAttribution.sampled_functions"><code class="docutils literal notranslate"><span class="pre">sampled_functions()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-manafa.ondevice">On-device mode and MCP server</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#manafa.ondevice.device_files"><code class="docutils literal notranslate"><span class="pre">device_files()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manafa.ondevice.install"><code class="docutils literal notranslate"><span class="pre">install()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manafa.ondevice.recorder"><code class="docutils literal notranslate"><span class="pre">recorder()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manafa.ondevice.export"><code class="docutils literal notranslate"><span class="pre">export()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manafa.ondevice.read_sessions"><code class="docutils literal notranslate"><span class="pre">read_sessions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manafa.ondevice.session_file"><code class="docutils literal notranslate"><span class="pre">session_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manafa.ondevice.session_power_profile"><code class="docutils literal notranslate"><span class="pre">session_power_profile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manafa.ondevice.session_battery"><code class="docutils literal notranslate"><span class="pre">session_battery()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manafa.ondevice.analyze_session"><code class="docutils literal notranslate"><span class="pre">analyze_session()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manafa.ondevice.analyze"><code class="docutils literal notranslate"><span class="pre">analyze()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manafa.mcp_server.tool"><code class="docutils literal notranslate"><span class="pre">tool()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manafa.mcp_server.find_session"><code class="docutils literal notranslate"><span class="pre">find_session()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manafa.mcp_server.load_results"><code class="docutils literal notranslate"><span class="pre">load_results()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manafa.mcp_server.list_sessions"><code class="docutils literal notranslate"><span class="pre">list_sessions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manafa.mcp_server.get_session_summary"><code class="docutils literal notranslate"><span class="pre">get_session_summary()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manafa.mcp_server.get_power_rails"><code class="docutils literal notranslate"><span class="pre">get_power_rails()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manafa.mcp_server.get_process_energy"><code class="docutils literal notranslate"><span class="pre">get_process_energy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manafa.mcp_server.get_app_threads"><code class="docutils literal notranslate"><span class="pre">get_app_threads()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manafa.mcp_server.get_memory"><code class="docutils literal notranslate"><span class="pre">get_memory()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manafa.mcp_server.get_hot_methods"><code class="docutils literal notranslate"><span class="pre">get_hot_methods()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manafa.mcp_server.get_sampled_functions"><code class="docutils literal notranslate"><span class="pre">get_sampled_functions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manafa.mcp_server.compare_sessions"><code class="docutils literal notranslate"><span class="pre">compare_sessions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manafa.mcp_server.query_trace"><code class="docutils literal notranslate"><span class="pre">query_trace()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manafa.mcp_server.build_sunburst"><code class="docutils literal notranslate"><span class="pre">build_sunburst()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manafa.mcp_server.device_status"><code class="docutils literal notranslate"><span class="pre">device_status()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manafa.mcp_server.record_session"><code class="docutils literal notranslate"><span class="pre">record_session()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manafa.mcp_server.build_server"><code class="docutils literal notranslate"><span class="pre">build_server()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-manafa.sunburst">Sunburst diagram</a><ul>
@@ -189,6 +237,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#manafa.services.perfettoService.wait_for_our_perfetto_to_exit"><code class="docutils literal notranslate"><span class="pre">wait_for_our_perfetto_to_exit()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#manafa.services.perfettoService.PerfettoService"><code class="docutils literal notranslate"><span class="pre">PerfettoService</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#manafa.services.perfettoServiceEnhanced.device_supports_power_rails"><code class="docutils literal notranslate"><span class="pre">device_supports_power_rails()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manafa.services.perfettoServiceEnhanced.render_config"><code class="docutils literal notranslate"><span class="pre">render_config()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#manafa.services.perfettoServiceEnhanced.PerfettoServiceEnhanced"><code class="docutils literal notranslate"><span class="pre">PerfettoServiceEnhanced</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#manafa.services.batteryStatsService.BatteryStatsService"><code class="docutils literal notranslate"><span class="pre">BatteryStatsService</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#manafa.services.AmProfilerService.AmProfilerService"><code class="docutils literal notranslate"><span class="pre">AmProfilerService</span></code></a></li>
@@ -210,6 +259,8 @@
 <li class="toctree-l3"><a class="reference internal" href="#manafa.main.parse_rails_trace"><code class="docutils literal notranslate"><span class="pre">parse_rails_trace()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#manafa.main.preserve_trace_file"><code class="docutils literal notranslate"><span class="pre">preserve_trace_file()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#manafa.main.generate_sunburst"><code class="docutils literal notranslate"><span class="pre">generate_sunburst()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manafa.main.report_legacy_session"><code class="docutils literal notranslate"><span class="pre">report_legacy_session()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manafa.main.report_rails_session"><code class="docutils literal notranslate"><span class="pre">report_rails_session()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -372,8 +423,25 @@ pf_out_file(str): path to the resultant perfetto log file.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="manafa.emanafa.EManafa.uses_power_rails">
+<span class="sig-name descname"><span class="pre">uses_power_rails</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pf_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/emanafa.html#EManafa.uses_power_rails"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.emanafa.EManafa.uses_power_rails" title="Link to this definition"></a></dt>
+<dd><p>True if pf_file is a trace of the energy, memory or both mode.</p>
+<p>With no Perfetto service (recorded files are parsed again), the file extension
+and the profiler mode decide.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="manafa.emanafa.EManafa.attribute_cpu_energy">
+<span class="sig-name descname"><span class="pre">attribute_cpu_energy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pf_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_package</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/emanafa.html#EManafa.attribute_cpu_energy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.emanafa.EManafa.attribute_cpu_energy" title="Link to this definition"></a></dt>
+<dd><p>Divides the energy of the CPU rails between the processes, with the scheduler events
+of the trace. Adds the result to power_rails_energy.</p>
+<p>If the trace has the processes of app_package, the energy that methods get is the
+energy of these processes, not of all the CPU rails.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="manafa.emanafa.EManafa.get_consumption_in_between">
-<span class="sig-name descname"><span class="pre">get_consumption_in_between</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9223372036854775807</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/emanafa.html#EManafa.get_consumption_in_between"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.emanafa.EManafa.get_consumption_in_between" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_consumption_in_between</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9223372036854775807</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_metrics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/emanafa.html#EManafa.get_consumption_in_between"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.emanafa.EManafa.get_consumption_in_between" title="Link to this definition"></a></dt>
 <dd><p>retrieves energy consumption and device events between a timestamp interval.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -386,7 +454,8 @@ pf_out_file(str): path to the resultant perfetto log file.</p>
 <dd class="field-even"><p>system-level energy consumption.
 per_component(dict): per-component energy consumption.
 metrics(dict): batterystats info containing events occurred during the interval. for each type of event, it
-presents.</p>
+presents.
+with_metrics: False to get no device events ({}). The events of each interval are slow to collect.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>total(float)</p>
@@ -399,10 +468,12 @@ presents.</p>
 <span class="sig-name descname"><span class="pre">get_method_consumption</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_time</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/emanafa.html#EManafa.get_method_consumption"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.emanafa.EManafa.get_method_consumption" title="Link to this definition"></a></dt>
 <dd><p>retrieves the energy to attribute to a method that ran between two timestamps.</p>
 <p>With power rails, this is the measured energy of the CPU rails in the interval (see
-PowerRailsTrace.method_rails). The energy of all rails is given in per_component[‘all_rails’],
+PowerRailsTrace.method_rails). If the trace has the scheduler events of the app, it is
+only the part of that energy that the processes of the app consumed (see
+attribute_cpu_energy). The energy of all rails is given in per_component[‘all_rails’],
 but it is not attributed, because a method does not control the screen or the radios.
 Without power rails, this is the power-profile estimate of get_consumption_in_between.</p>
-<p>The interval contains the work of all threads and processes, not only of the method.</p>
+<p>The interval contains the work of all threads of the app, not only of the method.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -738,6 +809,426 @@ if the CPU rails can not be identified by name.</p>
 <span class="sig-prename descclassname"><span class="pre">manafa.parsing.perfettoEnergyCalculator.</span></span><span class="sig-name descname"><span class="pre">calculate_memory_stats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trace_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_package</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/parsing/perfettoEnergyCalculator.html#calculate_memory_stats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.parsing.perfettoEnergyCalculator.calculate_memory_stats" title="Link to this definition"></a></dt>
 <dd><p>Calculate system memory statistics from Perfetto trace.</p>
 <p>Returns min, max, and average for system memory counters.</p>
+</dd></dl>
+
+<p id="module-manafa.parsing.cpuAttribution">Attribution of the energy of the CPU power rails to threads and processes.</p>
+<p>The CPU rails give the energy of each CPU cluster, not of each process. The scheduler
+events of the same Perfetto trace give the time that each thread ran on each CPU. Between
+two rail samples, a thread gets the part of the energy of a cluster that is equal to its
+part of the run time on the CPUs of that cluster.</p>
+<p>The energy of an interval where no thread ran on a cluster is not attributed.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="manafa.parsing.cpuAttribution.cluster_rails">
+<span class="sig-prename descclassname"><span class="pre">manafa.parsing.cpuAttribution.</span></span><span class="sig-name descname"><span class="pre">cluster_rails</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cpu_rails</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cpu_clusters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/parsing/cpuAttribution.html#cluster_rails"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.parsing.cpuAttribution.cluster_rails" title="Link to this definition"></a></dt>
+<dd><p>Finds which CPUs each CPU rail supplies.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cpu_rails</strong> – names of the CPU rails.</p></li>
+<li><p><strong>cpu_clusters</strong> – dict cpu -&gt; (cluster id, capacity).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of (set of cpus, list of rail names). One group with all the CPUs and all
+the rails if the rails cannot be matched with the clusters by name.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="manafa.parsing.cpuAttribution.CpuAttribution">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">manafa.parsing.cpuAttribution.</span></span><span class="sig-name descname"><span class="pre">CpuAttribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">times</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threads</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thread_energy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thread_cpu_s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unattributed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boot_to_epoch_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/parsing/cpuAttribution.html#CpuAttribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.parsing.cpuAttribution.CpuAttribution" title="Link to this definition"></a></dt>
+<dd><p>Energy of the CPU rails for each thread, in the intervals between the rail samples.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="manafa.parsing.cpuAttribution.CpuAttribution.times">
+<span class="sig-name descname"><span class="pre">times</span></span><a class="headerlink" href="#manafa.parsing.cpuAttribution.CpuAttribution.times" title="Link to this definition"></a></dt>
+<dd><p>limits of the intervals (epoch seconds). Interval i is times[i] to times[i + 1].</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="manafa.parsing.cpuAttribution.CpuAttribution.threads">
+<span class="sig-name descname"><span class="pre">threads</span></span><a class="headerlink" href="#manafa.parsing.cpuAttribution.CpuAttribution.threads" title="Link to this definition"></a></dt>
+<dd><p>utid -&gt; {‘tid’, ‘name’, ‘pid’, ‘process’}.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="manafa.parsing.cpuAttribution.CpuAttribution.thread_energy">
+<span class="sig-name descname"><span class="pre">thread_energy</span></span><a class="headerlink" href="#manafa.parsing.cpuAttribution.CpuAttribution.thread_energy" title="Link to this definition"></a></dt>
+<dd><p>utid -&gt; {interval index: joules}.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="manafa.parsing.cpuAttribution.CpuAttribution.thread_cpu_s">
+<span class="sig-name descname"><span class="pre">thread_cpu_s</span></span><a class="headerlink" href="#manafa.parsing.cpuAttribution.CpuAttribution.thread_cpu_s" title="Link to this definition"></a></dt>
+<dd><p>utid -&gt; seconds on a CPU.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="manafa.parsing.cpuAttribution.CpuAttribution.unattributed">
+<span class="sig-name descname"><span class="pre">unattributed</span></span><a class="headerlink" href="#manafa.parsing.cpuAttribution.CpuAttribution.unattributed" title="Link to this definition"></a></dt>
+<dd><p>joules of the intervals where no thread ran on a cluster.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="manafa.parsing.cpuAttribution.CpuAttribution.boot_to_epoch_s">
+<span class="sig-name descname"><span class="pre">boot_to_epoch_s</span></span><a class="headerlink" href="#manafa.parsing.cpuAttribution.CpuAttribution.boot_to_epoch_s" title="Link to this definition"></a></dt>
+<dd><p>seconds to add to a trace timestamp to get epoch seconds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="manafa.parsing.cpuAttribution.CpuAttribution.from_slices">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_slices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rails</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groups</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threads</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boot_to_epoch_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/parsing/cpuAttribution.html#CpuAttribution.from_slices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.parsing.cpuAttribution.CpuAttribution.from_slices" title="Link to this definition"></a></dt>
+<dd><p>Builds the attribution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rails</strong> (<a class="reference internal" href="#manafa.parsing.perfettoEnergyCalculator.PowerRailsTrace" title="manafa.parsing.perfettoEnergyCalculator.PowerRailsTrace"><em>PowerRailsTrace</em></a>) – the power rails.</p></li>
+<li><p><strong>groups</strong> – result of cluster_rails.</p></li>
+<li><p><strong>slices</strong> – iterable of (start, end, cpu, utid), in epoch seconds.</p></li>
+<li><p><strong>threads</strong> – dict utid -&gt; {‘tid’, ‘name’, ‘pid’, ‘process’}.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="manafa.parsing.cpuAttribution.CpuAttribution.from_trace">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_trace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trace_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rails</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/parsing/cpuAttribution.html#CpuAttribution.from_trace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.parsing.cpuAttribution.CpuAttribution.from_trace" title="Link to this definition"></a></dt>
+<dd><p>Reads the scheduler events of trace_file. Returns None if the trace has none,
+or has no CPU rails.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="manafa.parsing.cpuAttribution.CpuAttribution.by_process">
+<span class="sig-name descname"><span class="pre">by_process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/parsing/cpuAttribution.html#CpuAttribution.by_process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.parsing.cpuAttribution.CpuAttribution.by_process" title="Link to this definition"></a></dt>
+<dd><p>Processes with their CPU energy, the highest energy first.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of {‘process’, ‘pid’, ‘cpu_seconds’, ‘energy_joules’}.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="manafa.parsing.cpuAttribution.CpuAttribution.utids_of_app">
+<span class="sig-name descname"><span class="pre">utids_of_app</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">package</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/parsing/cpuAttribution.html#CpuAttribution.utids_of_app"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.parsing.cpuAttribution.CpuAttribution.utids_of_app" title="Link to this definition"></a></dt>
+<dd><p>Threads of the processes of an app: the process name is the package, or package:name.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="manafa.parsing.cpuAttribution.CpuAttribution.by_thread">
+<span class="sig-name descname"><span class="pre">by_thread</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">utids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/parsing/cpuAttribution.html#CpuAttribution.by_thread"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.parsing.cpuAttribution.CpuAttribution.by_thread" title="Link to this definition"></a></dt>
+<dd><p>Threads with their CPU energy, the highest energy first.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="manafa.parsing.cpuAttribution.CpuAttribution.series">
+<span class="sig-name descname"><span class="pre">series</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">utids</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/parsing/cpuAttribution.html#CpuAttribution.series"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.parsing.cpuAttribution.CpuAttribution.series" title="Link to this definition"></a></dt>
+<dd><p>Cumulative energy of a set of threads.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>two lists of the same length. joules[i] is the energy until times[i].</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#manafa.parsing.cpuAttribution.CpuAttribution.times" title="manafa.parsing.cpuAttribution.CpuAttribution.times">times</a>, joules</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="manafa.parsing.cpuAttribution.sampled_functions">
+<span class="sig-prename descclassname"><span class="pre">manafa.parsing.cpuAttribution.</span></span><span class="sig-name descname"><span class="pre">sampled_functions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trace_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribution</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">utids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/parsing/cpuAttribution.html#sampled_functions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.parsing.cpuAttribution.sampled_functions" title="Link to this definition"></a></dt>
+<dd><p>Energy of the functions in the call-stack samples (linux.perf) of a set of threads.</p>
+<p>A sample gets the energy of its thread in the interval between two rail samples,
+divided by the number of samples of that thread in that interval.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of
+{‘function’, ‘self_samples’, ‘total_samples’, ‘self_joules’, ‘total_joules’}.
+‘self’ is for the function at the top of the stack, ‘total’ includes its callees.
+None if the trace has no samples.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict with ‘samples’, ‘samples_with_stack’ and ‘functions’</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-manafa.ondevice">
+<span id="on-device-mode-and-mcp-server"></span><h2>On-device mode and MCP server<a class="headerlink" href="#module-manafa.ondevice" title="Link to this heading"></a></h2>
+<p>On-device mode: the device records a session with no computer, and E-MANAFA analyses it later.</p>
+<blockquote>
+<div><p>emanafa ondevice install            put the recorder and the Perfetto configs on the device
+emanafa ondevice start [-pm MODE] [-a APP] [–trace-methods am|perf]
+emanafa ondevice stop
+emanafa ondevice export [DIR]       copy the recorded sessions to the computer
+emanafa ondevice analyze [DIR]      results of each recorded session, as in the normal mode
+emanafa ondevice run -s SECONDS     all the steps in sequence
+emanafa ondevice status | clean</p>
+</div></blockquote>
+<p>After <cite>install</cite>, <cite>start</cite> and <cite>stop</cite> can also be given in a shell on the device, with the
+USB cable disconnected:  sh /data/local/tmp/emanafa/manafa.sh start energy</p>
+<p>The recorder (resources/ondevice/manafa.sh) uses the same Perfetto configs and does the same
+steps as the E-MANAFA services, so the two modes give the same kind of results.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="manafa.ondevice.device_files">
+<span class="sig-prename descclassname"><span class="pre">manafa.ondevice.</span></span><span class="sig-name descname"><span class="pre">device_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">meminfo_period_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">battery_poll_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/ondevice.html#device_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.ondevice.device_files" title="Link to this definition"></a></dt>
+<dd><p>Files that <cite>install</cite> puts on the device.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>file name on the device -&gt; content (bytes).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="manafa.ondevice.install">
+<span class="sig-prename descclassname"><span class="pre">manafa.ondevice.</span></span><span class="sig-name descname"><span class="pre">install</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">meminfo_period_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">battery_poll_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/ondevice.html#install"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.ondevice.install" title="Link to this definition"></a></dt>
+<dd><p>Puts the recorder and the Perfetto configs on the connected device.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="manafa.ondevice.recorder">
+<span class="sig-prename descclassname"><span class="pre">manafa.ondevice.</span></span><span class="sig-name descname"><span class="pre">recorder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/ondevice.html#recorder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.ondevice.recorder" title="Link to this definition"></a></dt>
+<dd><p>Runs a command of the recorder on the connected device. Returns its output.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="manafa.ondevice.export">
+<span class="sig-prename descclassname"><span class="pre">manafa.ondevice.</span></span><span class="sig-name descname"><span class="pre">export</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'emanafa_ondevice'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/ondevice.html#export"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.ondevice.export" title="Link to this definition"></a></dt>
+<dd><p>Copies the recorded sessions from the device to directory.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="manafa.ondevice.read_sessions">
+<span class="sig-prename descclassname"><span class="pre">manafa.ondevice.</span></span><span class="sig-name descname"><span class="pre">read_sessions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/ondevice.html#read_sessions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.ondevice.read_sessions" title="Link to this definition"></a></dt>
+<dd><p>Sessions of a results directory, the oldest first.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the key=value lines of each session-&lt;run&gt;.txt, plus ‘directory’.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="manafa.ondevice.session_file">
+<span class="sig-prename descclassname"><span class="pre">manafa.ondevice.</span></span><span class="sig-name descname"><span class="pre">session_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/ondevice.html#session_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.ondevice.session_file" title="Link to this definition"></a></dt>
+<dd><p>Path of the file of a session that matches pattern ({run} is replaced), or None.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="manafa.ondevice.session_power_profile">
+<span class="sig-prename descclassname"><span class="pre">manafa.ondevice.</span></span><span class="sig-name descname"><span class="pre">session_power_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/ondevice.html#session_power_profile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.ondevice.session_power_profile" title="Link to this definition"></a></dt>
+<dd><p>Power profile xml of a session, made from the saved <cite>dumpsys batterystats –power-profile</cite>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="manafa.ondevice.session_battery">
+<span class="sig-prename descclassname"><span class="pre">manafa.ondevice.</span></span><span class="sig-name descname"><span class="pre">session_battery</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/ondevice.html#session_battery"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.ondevice.session_battery" title="Link to this definition"></a></dt>
+<dd><p>BatteryDrainCalculator with the battery properties that the session saved. It does not use adb.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="manafa.ondevice.analyze_session">
+<span class="sig-prename descclassname"><span class="pre">manafa.ondevice.</span></span><span class="sig-name descname"><span class="pre">analyze_session</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_profile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sunburst</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/ondevice.html#analyze_session"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.ondevice.analyze_session" title="Link to this definition"></a></dt>
+<dd><p>Computes, prints and saves the results of one recorded session.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the E-MANAFA object with the parsed session.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="manafa.ondevice.analyze">
+<span class="sig-prename descclassname"><span class="pre">manafa.ondevice.</span></span><span class="sig-name descname"><span class="pre">analyze</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'emanafa_ondevice'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_profile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sunburst</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/ondevice.html#analyze"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.ondevice.analyze" title="Link to this definition"></a></dt>
+<dd><p>Analyses the sessions of a results directory. Each session gets a results file in directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>runs</strong> – run ids of the sessions to analyse. Default: all the sessions.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p id="module-manafa.mcp_server">MCP server of E-MANAFA: an LLM client can record sessions and read their results.</p>
+<blockquote>
+<div><p>pip install “manafa[mcp]”
+python -m manafa.mcp_server [results directory]</p>
+</div></blockquote>
+<p>The results directory (default: emanafa_ondevice, or the EMANAFA_RESULTS_DIR variable) has the
+sessions that <cite>emanafa ondevice export</cite> copied from a device. The tool <cite>record_session</cite> adds
+new sessions to it.</p>
+<p>Each tool is a function of this module, so it can also be used with no MCP client.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="manafa.mcp_server.tool">
+<span class="sig-prename descclassname"><span class="pre">manafa.mcp_server.</span></span><span class="sig-name descname"><span class="pre">tool</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">function</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/mcp_server.html#tool"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.mcp_server.tool" title="Link to this definition"></a></dt>
+<dd><p>Marks a function as an MCP tool. E-MANAFA prints its log on stdout, which is the
+channel of the MCP protocol, so the log goes to stderr while the tool runs.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="manafa.mcp_server.find_session">
+<span class="sig-prename descclassname"><span class="pre">manafa.mcp_server.</span></span><span class="sig-name descname"><span class="pre">find_session</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/mcp_server.html#find_session"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.mcp_server.find_session" title="Link to this definition"></a></dt>
+<dd><p>Session with the run id <cite>session</cite>. The most recent session if <cite>session</cite> is empty.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="manafa.mcp_server.load_results">
+<span class="sig-prename descclassname"><span class="pre">manafa.mcp_server.</span></span><span class="sig-name descname"><span class="pre">load_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/mcp_server.html#load_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.mcp_server.load_results" title="Link to this definition"></a></dt>
+<dd><p>Results of a session. Analyses the session first if it has no results file.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="manafa.mcp_server.list_sessions">
+<span class="sig-prename descclassname"><span class="pre">manafa.mcp_server.</span></span><span class="sig-name descname"><span class="pre">list_sessions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="_modules/manafa/mcp_server.html#list_sessions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.mcp_server.list_sessions" title="Link to this definition"></a></dt>
+<dd><p>Lists the recorded sessions: run id, mode, app, duration and the device model.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="manafa.mcp_server.get_session_summary">
+<span class="sig-prename descclassname"><span class="pre">manafa.mcp_server.</span></span><span class="sig-name descname"><span class="pre">get_session_summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/manafa/mcp_server.html#get_session_summary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.mcp_server.get_session_summary" title="Link to this definition"></a></dt>
+<dd><p>Main results of a session: total energy (J), mean power (W), battery drain, and what
+other data the session has. Empty session = the most recent one.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="manafa.mcp_server.get_power_rails">
+<span class="sig-prename descclassname"><span class="pre">manafa.mcp_server.</span></span><span class="sig-name descname"><span class="pre">get_power_rails</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/manafa/mcp_server.html#get_power_rails"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.mcp_server.get_power_rails" title="Link to this definition"></a></dt>
+<dd><p>Energy (J) and mean power (mW) of each hardware power rail of a session, the highest
+first. With the legacy model: the estimate of each component.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="manafa.mcp_server.get_process_energy">
+<span class="sig-prename descclassname"><span class="pre">manafa.mcp_server.</span></span><span class="sig-name descname"><span class="pre">get_process_energy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">15</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/manafa/mcp_server.html#get_process_energy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.mcp_server.get_process_energy" title="Link to this definition"></a></dt>
+<dd><p>Energy of the CPU rails for each process of a session (J), from the scheduler events.
+Needs a session of the energy mode.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="manafa.mcp_server.get_app_threads">
+<span class="sig-prename descclassname"><span class="pre">manafa.mcp_server.</span></span><span class="sig-name descname"><span class="pre">get_app_threads</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/manafa/mcp_server.html#get_app_threads"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.mcp_server.get_app_threads" title="Link to this definition"></a></dt>
+<dd><p>Energy of the CPU rails for each thread of the profiled app (J). Needs a session of the
+energy mode that was recorded with an app.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="manafa.mcp_server.get_memory">
+<span class="sig-prename descclassname"><span class="pre">manafa.mcp_server.</span></span><span class="sig-name descname"><span class="pre">get_memory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/manafa/mcp_server.html#get_memory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.mcp_server.get_memory" title="Link to this definition"></a></dt>
+<dd><p>System memory counters of a session (minimum, mean, maximum, in MB). Needs the memory
+or both mode.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="manafa.mcp_server.get_hot_methods">
+<span class="sig-prename descclassname"><span class="pre">manafa.mcp_server.</span></span><span class="sig-name descname"><span class="pre">get_hot_methods</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_only</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/manafa/mcp_server.html#get_hot_methods"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.mcp_server.get_hot_methods" title="Link to this definition"></a></dt>
+<dd><p>Methods with the most energy in a session, the highest first. Needs method tracing
+(trace_methods am).</p>
+<p>With power rails: <cite>joules</cite> is the energy of the code of the method itself, not of the
+methods that it calls, and <cite>scope</cite> says if it is the energy of the app or of all the
+processes. With the legacy model: <cite>joules</cite> is the estimate for the time of the calls,
+and includes the callees.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>app_only</strong> – only the methods of the package of the app.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="manafa.mcp_server.get_sampled_functions">
+<span class="sig-prename descclassname"><span class="pre">manafa.mcp_server.</span></span><span class="sig-name descname"><span class="pre">get_sampled_functions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/manafa/mcp_server.html#get_sampled_functions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.mcp_server.get_sampled_functions" title="Link to this definition"></a></dt>
+<dd><p>Functions in the call-stack samples of the app (trace_methods perf), with the energy of
+their samples. Mostly native functions.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="manafa.mcp_server.compare_sessions">
+<span class="sig-prename descclassname"><span class="pre">manafa.mcp_server.</span></span><span class="sig-name descname"><span class="pre">compare_sessions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session_a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">session_b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/manafa/mcp_server.html#compare_sessions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.mcp_server.compare_sessions" title="Link to this definition"></a></dt>
+<dd><p>Compares the energy of two sessions: totals, mean power, and the rails with the largest
+difference of mean power (b - a).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="manafa.mcp_server.query_trace">
+<span class="sig-prename descclassname"><span class="pre">manafa.mcp_server.</span></span><span class="sig-name descname"><span class="pre">query_trace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sql</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="_modules/manafa/mcp_server.html#query_trace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.mcp_server.query_trace" title="Link to this definition"></a></dt>
+<dd><p>Runs a PerfettoSQL query on the Perfetto trace of a session, for questions that the
+other tools do not answer. Returns at most 100 rows.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="manafa.mcp_server.build_sunburst">
+<span class="sig-prename descclassname"><span class="pre">manafa.mcp_server.</span></span><span class="sig-name descname"><span class="pre">build_sunburst</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/manafa/mcp_server.html#build_sunburst"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.mcp_server.build_sunburst" title="Link to this definition"></a></dt>
+<dd><p>Writes the sunburst diagram (html) of the method energy of a session. Returns the path
+of the file. Needs a session of the energy mode with method tracing (trace_methods am).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="manafa.mcp_server.device_status">
+<span class="sig-prename descclassname"><span class="pre">manafa.mcp_server.</span></span><span class="sig-name descname"><span class="pre">device_status</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/manafa/mcp_server.html#device_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.mcp_server.device_status" title="Link to this definition"></a></dt>
+<dd><p>Connected Android devices, and the state of the E-MANAFA recorder on the device.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="manafa.mcp_server.record_session">
+<span class="sig-prename descclassname"><span class="pre">manafa.mcp_server.</span></span><span class="sig-name descname"><span class="pre">record_session</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seconds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'energy'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trace_methods</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/manafa/mcp_server.html#record_session"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.mcp_server.record_session" title="Link to this definition"></a></dt>
+<dd><p>Records a new session on the connected device and returns its summary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>seconds</strong> – time to record (1 to 600).</p></li>
+<li><p><strong>mode</strong> – energy (power rails), memory, both, or legacy (power profile estimate).</p></li>
+<li><p><strong>app</strong> – package of an app to profile. Empty: all the device.</p></li>
+<li><p><strong>trace_methods</strong> – am (method trace; the app starts again), perf (call-stack samples) or
+none. Default: am if app is given.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="manafa.mcp_server.build_server">
+<span class="sig-prename descclassname"><span class="pre">manafa.mcp_server.</span></span><span class="sig-name descname"><span class="pre">build_server</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/mcp_server.html#build_server"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.mcp_server.build_server" title="Link to this definition"></a></dt>
+<dd><p>MCP server with all the tools. Needs the <cite>mcp</cite> package.</p>
 </dd></dl>
 
 </section>
@@ -1922,9 +2413,23 @@ that it contains power rail counters.</p>
 </dl>
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="manafa.services.perfettoServiceEnhanced.render_config">
+<span class="sig-prename descclassname"><span class="pre">manafa.services.perfettoServiceEnhanced.</span></span><span class="sig-name descname"><span class="pre">render_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meminfo_period_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">battery_poll_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">250</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callstack_package</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/services/perfettoServiceEnhanced.html#render_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.services.perfettoServiceEnhanced.render_config" title="Link to this definition"></a></dt>
+<dd><p>Text of a Perfetto config of the resources directory, with the polling periods.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cfg_file</strong> – name of a .pbtxt file in the resources directory.</p></li>
+<li><p><strong>callstack_package</strong> – package of an app. If given, the config also samples its call stacks.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="manafa.services.perfettoServiceEnhanced.PerfettoServiceEnhanced">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">manafa.services.perfettoServiceEnhanced.</span></span><span class="sig-name descname"><span class="pre">PerfettoServiceEnhanced</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">boot_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_res_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'perfetto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_energy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_memory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meminfo_period_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">battery_poll_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">250</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/services/perfettoServiceEnhanced.html#PerfettoServiceEnhanced"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.services.perfettoServiceEnhanced.PerfettoServiceEnhanced" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">manafa.services.perfettoServiceEnhanced.</span></span><span class="sig-name descname"><span class="pre">PerfettoServiceEnhanced</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">boot_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_res_folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'perfetto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_energy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_memory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meminfo_period_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">battery_poll_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">250</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callstack_package</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/services/perfettoServiceEnhanced.html#PerfettoServiceEnhanced"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.services.perfettoServiceEnhanced.PerfettoServiceEnhanced" title="Link to this definition"></a></dt>
 <dd><p>Enhanced Perfetto service that uses power.rails.* data sources.</p>
 <p>This class extends PerfettoService to use the newer power.rails.* data sources
 available on modern Android devices (Android 10+, Pixel 4+, etc.).</p>
@@ -2199,6 +2704,23 @@ Calculates the percentage of battery drained based on energy consumption.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="manafa.utils.BatteryDrainCalculator.BatteryDrainCalculator.parse_battery_properties">
+<span class="sig-name descname"><span class="pre">parse_battery_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charge_full</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/utils/BatteryDrainCalculator.html#BatteryDrainCalculator.parse_battery_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.utils.BatteryDrainCalculator.BatteryDrainCalculator.parse_battery_properties" title="Link to this definition"></a></dt>
+<dd><p>Parses battery properties.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>output</strong> – text of <cite>dumpsys battery</cite>.</p></li>
+<li><p><strong>charge_full</strong> – content of /sys/class/power_supply/battery/charge_full, or “”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing battery properties or None if parsing fails.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="manafa.utils.BatteryDrainCalculator.BatteryDrainCalculator.calculate_battery_drain">
 <span class="sig-name descname"><span class="pre">calculate_battery_drain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">energy_joules</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/utils/BatteryDrainCalculator.html#BatteryDrainCalculator.calculate_battery_drain"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.utils.BatteryDrainCalculator.BatteryDrainCalculator.calculate_battery_drain" title="Link to this definition"></a></dt>
 <dd><p>Calculates battery drain percentage for a given energy consumption.</p>
@@ -2292,6 +2814,18 @@ left pointing into it stops being usable as soon as you profile again.</p>
 <dt class="sig sig-object py" id="manafa.main.generate_sunburst">
 <span class="sig-prename descclassname"><span class="pre">manafa.main.</span></span><span class="sig-name descname"><span class="pre">generate_sunburst</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">results</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/main.html#generate_sunburst"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.main.generate_sunburst" title="Link to this definition"></a></dt>
 <dd><p>Writes the call-graph sunburst for a finished session, if it can.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="manafa.main.report_legacy_session">
+<span class="sig-prename descclassname"><span class="pre">manafa.main.</span></span><span class="sig-name descname"><span class="pre">report_legacy_session</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">manafa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">battery_calculator</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/main.html#report_legacy_session"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.main.report_legacy_session" title="Link to this definition"></a></dt>
+<dd><p>Prints and saves the results of a session of the legacy model.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="manafa.main.report_rails_session">
+<span class="sig-prename descclassname"><span class="pre">manafa.main.</span></span><span class="sig-name descname"><span class="pre">report_rails_session</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">manafa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">battery_calculator</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/main.html#report_rails_session"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.main.report_rails_session" title="Link to this definition"></a></dt>
+<dd><p>Prints and saves the results of a session of the energy, memory or both mode.</p>
 </dd></dl>
 
 </section>

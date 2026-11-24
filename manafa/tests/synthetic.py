@@ -46,6 +46,16 @@ SCREEN_MA = 100.0         # screen on, brightness dark
 CPU_JOULES = VOLTAGE * (CPU_MA_FIRST_HALF + CPU_MA_SECOND_HALF) / 1000 * (SECONDS / 2)
 SCREEN_JOULES = VOLTAGE * SCREEN_MA / 1000 * SECONDS
 
+# scheduler events of the trace. the app runs alone in the first half. in the second half
+# another process runs all the time, and a second thread of the app runs for 1 s
+APP = "com.app"
+APP_PID = 100
+OTHER_PID = 200
+CPU_WATTS_FIRST_HALF = VOLTAGE * CPU_MA_FIRST_HALF / 1000
+CPU_WATTS_SECOND_HALF = VOLTAGE * CPU_MA_SECOND_HALF / 1000
+APP_CPU_JOULES = CPU_WATTS_FIRST_HALF * 2 + CPU_WATTS_SECOND_HALF * 1 / 2
+OTHER_CPU_JOULES = CPU_WATTS_SECOND_HALF * (1 / 2 + 1)
+
 
 def write_profile(directory):
     path = os.path.join(directory, "power_profile.xml")
@@ -131,6 +141,32 @@ def write_trace(directory):
         event.pid = 0
         event.cpu_idle.state = state
         event.cpu_idle.cpu_id = cpu
+
+    # processes and scheduler events. see APP_CPU_JOULES
+    tree = trace.packet.add()
+    tree.timestamp = ns(0)
+    for pid, name in ((APP_PID, APP), (OTHER_PID, "other")):
+        process = tree.process_tree.processes.add()
+        process.pid, process.ppid = pid, 1
+        process.cmdline.append(name)
+    thread = tree.process_tree.threads.add()
+    thread.tid, thread.tgid, thread.name = APP_PID + 1, APP_PID, "worker"
+    # (cpu, time, thread that stops, thread that starts). 0 = idle
+    switches = ((0, 0, 0, APP_PID), (0, 2, APP_PID, OTHER_PID), (0, SECONDS, OTHER_PID, 0),
+                (2, 2, 0, APP_PID + 1), (2, 3, APP_PID + 1, 0))
+    for cpu in (0, 2):
+        bundle = trace.packet.add().ftrace_events
+        bundle.cpu = cpu
+        for switch_cpu, t, previous, following in switches:
+            if switch_cpu != cpu:
+                continue
+            event = bundle.event.add()
+            event.timestamp = ns(t)
+            event.pid = previous
+            event.sched_switch.prev_pid, event.sched_switch.prev_comm = previous, "t%d" % previous
+            event.sched_switch.next_pid, event.sched_switch.next_comm = following, "t%d" % following
+            event.sched_switch.prev_state = 1 if previous else 0
+            event.sched_switch.prev_prio = event.sched_switch.next_prio = 120
 
     path = os.path.join(directory, "trace-1-%d.perfetto-trace" % (EPOCH - BOOT))
     with open(path, "wb") as f:

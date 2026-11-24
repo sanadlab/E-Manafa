@@ -31,6 +31,11 @@ def get_last_boot_time(bts_file=None):
     Returns:
       timestamp(float): secs.ms.
     """
+    # a recorded file has the boot time of its session in its name. the device can have a
+    # different boot time now, or be a different device
+    flds = os.path.basename(bts_file).split("-") if bts_file is not None else []
+    if len(flds) > 2 and is_float(flds[2].replace(".log", "")):
+        return float(flds[2].replace(".log", ""))
     res, out, err = execute_shell_command(
         "adb shell cat /proc/stat | grep btime | awk '{print $2}'")  # executeShCommand("adb shell cat /proc/stat | grep btime | awk '{print $2}'")
     if res != 0 or len(out) == 0:
@@ -78,6 +83,8 @@ class EManafa(Service):
         #perfetto sampling overrides (consumed in init()); None = service defaults
         self.meminfo_period_ms = None
         self.battery_poll_ms = None
+        #package of an app whose call stacks are sampled (linux.perf); None = no sampling
+        self.callstack_package = None
 
         #don't create perfetto service yet, wait for init() so profiler_mode can be set first
         self.perfetto = None
@@ -87,6 +94,9 @@ class EManafa(Service):
         self.unplugged = False
         self.bat_events = None
         self.power_rails = None
+        self.cpu_attribution = None
+        self.app_energy = None
+        self.sampled_functions = None
         self.pft_out_file = None
         self.bts_out_file = None
     # def _create_perfetto_service(self):
@@ -125,6 +135,8 @@ class EManafa(Service):
             sampling['meminfo_period_ms'] = self.meminfo_period_ms
         if self.battery_poll_ms is not None:
             sampling['battery_poll_ms'] = self.battery_poll_ms
+        if self.callstack_package is not None:
+            sampling['callstack_package'] = self.callstack_package
 
         #create perfetto service based on profiler_mode
         if self.profiler_mode == 'legacy':
@@ -201,17 +213,16 @@ class EManafa(Service):
         if bts_file is None or pf_file is None:
             log("Empty result files", log_sev=LogSeverity.FATAL)
         
-        #check if we used the enhanced profiler
-        from .services.perfettoServiceEnhanced import PerfettoServiceEnhanced
-        if isinstance(self.perfetto, PerfettoServiceEnhanced):
+        if self.uses_power_rails(pf_file):
             log("Using power rails energy calculation", log_sev=LogSeverity.INFO)
             #use new power rails-based energy calculation
             from .parsing.perfettoEnergyCalculator import PowerRailsTrace, calculate_memory_stats
             self.power_rails = PowerRailsTrace.from_trace(pf_file)
             self.power_rails_energy = self.power_rails.summary() if self.power_rails is not None else None
-            
+
             #get app package, handle both EManafa and AMEManafa
             app_package = getattr(self, 'app', None) or getattr(self, 'app_package_name', None)
+            self.attribute_cpu_energy(pf_file, app_package)
             self.memory_stats = calculate_memory_stats(pf_file, app_package=app_package)
         else:
             log("Using legacy batterystats energy calculation", log_sev=LogSeverity.INFO)
@@ -223,9 +234,57 @@ class EManafa(Service):
         self.bat_events.parse_file(bts_file)
 
         #only parse perfetto file with old parser if using legacy profiler
-        if not isinstance(self.perfetto, PerfettoServiceEnhanced):
+        if not self.uses_power_rails(pf_file):
             self.perf_events.start_time = self.boot_time
             self.perf_events.parse_file(pf_file)
+
+    def uses_power_rails(self, pf_file):
+        """True if pf_file is a trace of the energy, memory or both mode.
+
+        With no Perfetto service (recorded files are parsed again), the file extension
+        and the profiler mode decide."""
+        from .services.perfettoServiceEnhanced import PerfettoServiceEnhanced
+        if self.perfetto is not None:
+            return isinstance(self.perfetto, PerfettoServiceEnhanced)
+        return str(pf_file).endswith('.perfetto-trace') and self.profiler_mode != 'legacy'
+
+    def attribute_cpu_energy(self, pf_file, app_package=None):
+        """Divides the energy of the CPU rails between the processes, with the scheduler events
+        of the trace. Adds the result to power_rails_energy.
+
+        If the trace has the processes of app_package, the energy that methods get is the
+        energy of these processes, not of all the CPU rails.
+        """
+        self.cpu_attribution = self.app_energy = self.sampled_functions = None
+        if self.power_rails is None:
+            return
+        from .parsing.cpuAttribution import CpuAttribution, sampled_functions
+        try:
+            self.cpu_attribution = CpuAttribution.from_trace(pf_file, self.power_rails)
+        except Exception as e:
+            log(f"Unable to attribute the CPU energy to processes: {e}", log_sev=LogSeverity.WARNING)
+        energy = self.power_rails_energy
+        energy['method_energy_scope'] = 'all processes'
+        if self.cpu_attribution is None:
+            return
+        energy['by_process'] = self.cpu_attribution.by_process(top=20)
+        energy['unattributed_cpu_joules'] = self.cpu_attribution.unattributed
+        utids = self.cpu_attribution.utids_of_app(app_package) if app_package else []
+        if not any(utid in self.cpu_attribution.thread_cpu_s for utid in utids):
+            return
+        times, joules = self.cpu_attribution.series(utids)
+        self.app_energy = (times, joules)
+        energy['app_process'] = {
+            'process': app_package,
+            'cpu_seconds': sum(self.cpu_attribution.thread_cpu_s.get(utid, 0.0) for utid in utids),
+            'energy_joules': joules[-1],
+            'threads': self.cpu_attribution.by_thread(utids, top=15),
+        }
+        # the sunburst reads this series: now the energy of the app, on the clock of the method trace
+        energy['method_energy_scope'] = 'app process'
+        energy['method_energy_series'] = [[round((t - self.power_rails.monotonic_to_epoch_s) * 1e9), j]
+                                          for t, j in zip(times, joules)]
+        self.sampled_functions = sampled_functions(pf_file, self.cpu_attribution, utids)
 
     def get_consumption_in_between(self, start_time=0, end_time=sys.maxsize, with_metrics=True):
         """retrieves energy consumption and device events between a timestamp interval.
@@ -264,11 +323,13 @@ class EManafa(Service):
         """retrieves the energy to attribute to a method that ran between two timestamps.
 
         With power rails, this is the measured energy of the CPU rails in the interval (see
-        PowerRailsTrace.method_rails). The energy of all rails is given in per_component['all_rails'],
+        PowerRailsTrace.method_rails). If the trace has the scheduler events of the app, it is
+        only the part of that energy that the processes of the app consumed (see
+        attribute_cpu_energy). The energy of all rails is given in per_component['all_rails'],
         but it is not attributed, because a method does not control the screen or the radios.
         Without power rails, this is the power-profile estimate of get_consumption_in_between.
 
-        The interval contains the work of all threads and processes, not only of the method.
+        The interval contains the work of all threads of the app, not only of the method.
         """
         if getattr(self, 'power_rails', None) is None:
             if len(self.perf_events.events) > 0:
@@ -280,7 +341,12 @@ class EManafa(Service):
             # no device events for each call: a session has many thousands of calls, and the events
             # of the session are in the 'stats' of the report
             return self.get_consumption_in_between(start_time, end_time, with_metrics=False)
-        cpu = self.power_rails.energy_between(start_time, end_time, self.power_rails.method_rails())
+        if getattr(self, 'app_energy', None) is not None:
+            # energy of the CPU rails that the processes of the app consumed
+            times, joules = self.app_energy
+            cpu = self.power_rails._counter_at(times, joules, end_time) - self.power_rails._counter_at(times, joules, start_time)
+        else:
+            cpu = self.power_rails.energy_between(start_time, end_time, self.power_rails.method_rails())
         return cpu, {'cpu': cpu, 'all_rails': self.power_rails.energy_between(start_time, end_time)}, {}
 
     def calculate_glob_and_component_consumption(self, last_event, per_component_consumption, delta_time, total):

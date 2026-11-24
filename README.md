@@ -12,7 +12,10 @@ E-MANAFA measures the energy and the memory that an Android device consumes whil
 
 - the energy of the session, for each hardware component (CPU, display, radios, and others);
 - the system memory during the session;
+- the energy of each process, and of each thread of the app;
 - the energy of each method of the app, and a call-graph diagram (sunburst) of this energy.
+
+The device can also record a session with no computer connected (see [On-device mode](#on-device-mode)), and an LLM client can use E-MANAFA through an [MCP server](#mcp-server).
 
 ## How it works
 
@@ -46,7 +49,7 @@ E-MANAFA has two sources of energy data. It selects one automatically.
 
 If the device has no power rails, E-MANAFA uses the legacy model. The power profile comes from the device (`dumpsys batterystats --power-profile`), or from the file that you give with `-p`.
 
-Full documentation: <https://greensoftwarelab.github.io/E-MANAFA/>
+Full documentation: <https://sanadlab.github.io/E-MANAFA/>
 
 ## Setup
 
@@ -65,7 +68,7 @@ pip install manafa
 Or install from the sources:
 
 ```
-git clone https://github.com/greensoftwarelab/E-MANAFA.git
+git clone https://github.com/sanadlab/E-Manafa.git
 cd E-MANAFA
 python -m venv env && source env/bin/activate
 pip install -r requirements.txt
@@ -153,6 +156,7 @@ With `-a <package>`, E-MANAFA records the methods of the app with `am profile` (
 |---|---|---|
 | `am` (default with `-a`) | sampled method trace of `am profile` | `-a`, a debuggable or profileable app |
 | `hunter` (or `-ht`) | log lines of the Hunter instrumentation | an instrumented app |
+| `perf` | call-stack samples of `linux.perf`. Gives mostly native functions, with less overhead than `am` | `-a`, power rails, a debuggable or profileable app |
 | `none` | no method trace | nothing |
 
 ```bash
@@ -162,9 +166,13 @@ emanafa -a com.example.app -s 30 --trace-methods none
 
 How the energy of a method is calculated:
 
-- With power rails, a method gets the energy that the **CPU rails** measured while the method was on the call stack. Other rails (display, radios) are not attributed, because a method does not control them directly.
-- With the legacy model, a method gets the estimate of the model for the same time interval.
-- The interval contains the work of all threads and processes, not only of the method. A caller includes the energy of its callees.
+- With power rails, a method gets the energy of the **CPU rails** that the **processes of the app** consumed while the method was on the call stack. Other rails (display, radios) are not attributed, because a method does not control them directly.
+- With the legacy model, a method gets the estimate of the model for the same time interval, for all the device.
+- The interval contains the work of all threads of the app, not only of the method. A caller includes the energy of its callees.
+
+### Energy of each process
+
+In the `energy` mode, the trace also has the scheduler events. E-MANAFA divides the energy of each CPU rail between the threads that ran on the CPUs of that rail, in each interval between two rail samples. The results give the energy of each process (`energy.by_process`), and of each thread of the app (`energy.app_process`). The session report prints the processes with the most energy.
 
 ## Sunburst diagram
 
@@ -237,6 +245,8 @@ Each run prints a summary: total energy (J and Wh), the rails that consume the m
 }
 ```
 
+In the `energy` mode, `energy` also has `by_process` (energy of the CPU rails for each process), `app_process` (the app and its threads, with `-a`) and `method_energy_scope`. With `--trace-methods perf`, the file has `sampled_functions`.
+
 With method tracing, the JSON file has one record for each method call, so it can be some tens of MB. To keep it small, the signature of a method (`method_def`) is only in its first call, and a call has no fields for components with no energy.
 
 The raw files (Perfetto trace, batterystats log, method trace) and the power profile of the device are in `manafa/results/`. Each new run deletes the files of the previous run.
@@ -255,6 +265,56 @@ emanafa -d <directory with bstats-*, trace-* and method_traces-* files>
 This mode needs no device. With no device, give the power profile of the legacy model with `-p`.
 The recorded files are in `manafa/results` until the next measurement starts.
 
+## On-device mode
+
+In the normal mode, the computer controls the session through adb. In the on-device mode, a small recorder script on the device records the session, so the USB cable can be disconnected during the measurement (a connected cable charges the device). The computer analyses the recorded files later, with the same code as the normal mode.
+
+```bash
+emanafa ondevice install                      # put the recorder and the Perfetto configs on the device
+emanafa ondevice start -pm energy -a com.example.app
+# ... disconnect the cable, use the app, connect the cable ...
+emanafa ondevice stop
+emanafa ondevice export results/              # copy the recorded sessions to the computer
+emanafa ondevice analyze results/ --sunburst  # results of each session
+```
+
+`emanafa ondevice run results/ -s 30 -a com.example.app` does all the steps in sequence.
+
+After `install`, you can also start and stop a session in a shell on the device:
+
+```bash
+sh /data/local/tmp/emanafa/manafa.sh start energy com.example.app am
+sh /data/local/tmp/emanafa/manafa.sh stop
+```
+
+The recorder has the same modes (`energy`, `memory`, `both`, `legacy`) and the same method sources (`am`, `perf`) as the normal mode. It uses the same Perfetto configs and does the same steps in the same sequence. The device can keep many sessions before an export. `emanafa -d results/` also analyses an exported directory.
+
+## MCP server
+
+An LLM client (for example Claude Code or Claude Desktop) can record sessions and read their results through the MCP server.
+
+```bash
+pip install "manafa[mcp]"
+python -m manafa.mcp_server results/          # results directory with exported sessions
+```
+
+Configuration of the client:
+
+```json
+{ "mcpServers": { "e-manafa": { "command": "python", "args": ["-m", "manafa.mcp_server", "/path/to/results"] } } }
+```
+
+| Tool | Result |
+|---|---|
+| `list_sessions`, `get_session_summary` | Sessions, total energy, mean power, battery drain |
+| `get_power_rails`, `get_process_energy`, `get_app_threads` | Energy of each rail, each process, each thread of the app |
+| `get_memory` | System memory counters |
+| `get_hot_methods`, `get_sampled_functions` | Methods and native functions with the most energy |
+| `compare_sessions` | Difference of mean power between two sessions |
+| `query_trace` | PerfettoSQL query on the trace of a session |
+| `build_sunburst` | Sunburst diagram of a session |
+| `device_status`, `record_session` | State of the device, and a new session |
+
 ## Command-line reference
 
 | Option | Description |
@@ -264,7 +324,8 @@ The recorded files are in `manafa/results` until the next measurement starts.
 | `-cmd, --command "<cmd>"` | Run this command on the host, and stop when it is complete. |
 | `-pm, --profile-mode` | `energy` (default), `memory`, `both` or `legacy`. |
 | `--force-legacy` | Use the legacy model. |
-| `--trace-methods` | `am`, `hunter` or `none`. |
+| `--trace-methods` | `am`, `hunter`, `perf` or `none`. |
+| `ondevice <command>` | On-device mode. See [On-device mode](#on-device-mode). |
 | `-ht, --hunter` | Same as `--trace-methods hunter`. |
 | `--sunburst [FILE]` | Write the sunburst diagram. Needs `-a` and `plotly`. |
 | `--meminfo-period-ms <n>` | Period of memory polling. Default 50. |
@@ -315,7 +376,7 @@ For method energy, use `manafa.am_emanafa.AMEManafa(app_package_name=...)` or `m
 
 ```bash
 # tests that need no device
-python3 -m pytest manafa/tests/test_energy_model.py manafa/tests/test_main_cli.py manafa/tests/accuracy
+python3 -m pytest manafa/tests/test_*.py manafa/tests/accuracy manafa/tests/parsers manafa/tests/hunter
 
 # all tests (some need a connected device)
 python3 -m pytest manafa/tests

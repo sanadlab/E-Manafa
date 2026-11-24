@@ -130,7 +130,8 @@ class AmProfilerService(Service):
         """
         log("Stopping Am Profiler for package: %s" % self.package_name)
         res = execute_shell_command("adb shell am profile stop %s" % self.package_name)
-        res = execute_shell_command("adb shell find %s -type f | grep app_%s | xargs -I{} adb pull {} %s"
+        # -maxdepth 1: the on-device recorder keeps its traces in a directory below this one
+        res = execute_shell_command("adb shell find %s -maxdepth 1 -type f | grep app_%s | xargs -I{} adb pull {} %s"
                                          % (DEVICE_RESULTS_DIR, self.package_name, self.results_dir))
         #res, o, e = execute_shell_command(f"adb pull {DEVICE_RESULTS_DIR}/{filename}  {self.results_dir}")
         #print(f"Pulling trace file {filename} from device: {res}, {o}, {e}")

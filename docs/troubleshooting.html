@@ -6,15 +6,16 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Troubleshooting &mdash; E-MANAFA 0.4.14</title>
+  <title>Troubleshooting &mdash; E-MANAFA 1.0.0</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/custom.css?v=c1264a3d" />
 
   
+    <link rel="canonical" href="https://sanadlab.github.io/E-MANAFA/troubleshooting.html" />
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=1f5508e5"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/js/theme.js"></script>
@@ -85,6 +86,8 @@
 <li class="toctree-l2"><a class="reference internal" href="method_energy.html#how-the-trace-is-recorded">How the trace is recorded</a></li>
 <li class="toctree-l2"><a class="reference internal" href="method_energy.html#what-a-method-gets">What a method gets</a></li>
 <li class="toctree-l2"><a class="reference internal" href="method_energy.html#result-files">Result files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="method_energy.html#energy-of-each-process-and-thread">Energy of each process and thread</a></li>
+<li class="toctree-l2"><a class="reference internal" href="method_energy.html#call-stack-samples-trace-methods-perf">Call-stack samples (<code class="docutils literal notranslate"><span class="pre">--trace-methods</span> <span class="pre">perf</span></code>)</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="sunburst.html">Sunburst diagram</a><ul>
@@ -98,6 +101,18 @@
 <li class="toctree-l2"><a class="reference internal" href="sunburst.html#controls">Controls</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sunburst.html#what-the-values-are">What the values are</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sunburst.html#make-the-diagram-from-a-result-file">Make the diagram from a result file</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ondevice.html">On-device mode</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ondevice.html#commands">Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ondevice.html#start-and-stop-on-the-device">Start and stop on the device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ondevice.html#recorded-files">Recorded files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ondevice.html#agreement-with-the-normal-mode">Agreement with the normal mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ondevice.html#limits">Limits</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mcp.html">MCP server</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mcp.html#tools">Tools</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="output.html">Output files</a><ul>
@@ -158,6 +173,39 @@
 <li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.parsing.perfettoEnergyCalculator.count_power_rails"><code class="docutils literal notranslate"><span class="pre">count_power_rails()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.parsing.perfettoEnergyCalculator.PowerRailsTrace"><code class="docutils literal notranslate"><span class="pre">PowerRailsTrace</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.parsing.perfettoEnergyCalculator.calculate_memory_stats"><code class="docutils literal notranslate"><span class="pre">calculate_memory_stats()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.parsing.cpuAttribution.cluster_rails"><code class="docutils literal notranslate"><span class="pre">cluster_rails()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.parsing.cpuAttribution.CpuAttribution"><code class="docutils literal notranslate"><span class="pre">CpuAttribution</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.parsing.cpuAttribution.sampled_functions"><code class="docutils literal notranslate"><span class="pre">sampled_functions()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#module-manafa.ondevice">On-device mode and MCP server</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.ondevice.device_files"><code class="docutils literal notranslate"><span class="pre">device_files()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.ondevice.install"><code class="docutils literal notranslate"><span class="pre">install()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.ondevice.recorder"><code class="docutils literal notranslate"><span class="pre">recorder()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.ondevice.export"><code class="docutils literal notranslate"><span class="pre">export()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.ondevice.read_sessions"><code class="docutils literal notranslate"><span class="pre">read_sessions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.ondevice.session_file"><code class="docutils literal notranslate"><span class="pre">session_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.ondevice.session_power_profile"><code class="docutils literal notranslate"><span class="pre">session_power_profile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.ondevice.session_battery"><code class="docutils literal notranslate"><span class="pre">session_battery()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.ondevice.analyze_session"><code class="docutils literal notranslate"><span class="pre">analyze_session()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.ondevice.analyze"><code class="docutils literal notranslate"><span class="pre">analyze()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.mcp_server.tool"><code class="docutils literal notranslate"><span class="pre">tool()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.mcp_server.find_session"><code class="docutils literal notranslate"><span class="pre">find_session()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.mcp_server.load_results"><code class="docutils literal notranslate"><span class="pre">load_results()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.mcp_server.list_sessions"><code class="docutils literal notranslate"><span class="pre">list_sessions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.mcp_server.get_session_summary"><code class="docutils literal notranslate"><span class="pre">get_session_summary()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.mcp_server.get_power_rails"><code class="docutils literal notranslate"><span class="pre">get_power_rails()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.mcp_server.get_process_energy"><code class="docutils literal notranslate"><span class="pre">get_process_energy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.mcp_server.get_app_threads"><code class="docutils literal notranslate"><span class="pre">get_app_threads()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.mcp_server.get_memory"><code class="docutils literal notranslate"><span class="pre">get_memory()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.mcp_server.get_hot_methods"><code class="docutils literal notranslate"><span class="pre">get_hot_methods()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.mcp_server.get_sampled_functions"><code class="docutils literal notranslate"><span class="pre">get_sampled_functions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.mcp_server.compare_sessions"><code class="docutils literal notranslate"><span class="pre">compare_sessions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.mcp_server.query_trace"><code class="docutils literal notranslate"><span class="pre">query_trace()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.mcp_server.build_sunburst"><code class="docutils literal notranslate"><span class="pre">build_sunburst()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.mcp_server.device_status"><code class="docutils literal notranslate"><span class="pre">device_status()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.mcp_server.record_session"><code class="docutils literal notranslate"><span class="pre">record_session()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.mcp_server.build_server"><code class="docutils literal notranslate"><span class="pre">build_server()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="modules.html#module-manafa.sunburst">Sunburst diagram</a><ul>
@@ -190,6 +238,7 @@
 <li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.services.perfettoService.wait_for_our_perfetto_to_exit"><code class="docutils literal notranslate"><span class="pre">wait_for_our_perfetto_to_exit()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.services.perfettoService.PerfettoService"><code class="docutils literal notranslate"><span class="pre">PerfettoService</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.services.perfettoServiceEnhanced.device_supports_power_rails"><code class="docutils literal notranslate"><span class="pre">device_supports_power_rails()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.services.perfettoServiceEnhanced.render_config"><code class="docutils literal notranslate"><span class="pre">render_config()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.services.perfettoServiceEnhanced.PerfettoServiceEnhanced"><code class="docutils literal notranslate"><span class="pre">PerfettoServiceEnhanced</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.services.batteryStatsService.BatteryStatsService"><code class="docutils literal notranslate"><span class="pre">BatteryStatsService</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.services.AmProfilerService.AmProfilerService"><code class="docutils literal notranslate"><span class="pre">AmProfilerService</span></code></a></li>
@@ -211,6 +260,8 @@
 <li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.main.parse_rails_trace"><code class="docutils literal notranslate"><span class="pre">parse_rails_trace()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.main.preserve_trace_file"><code class="docutils literal notranslate"><span class="pre">preserve_trace_file()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.main.generate_sunburst"><code class="docutils literal notranslate"><span class="pre">generate_sunburst()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.main.report_legacy_session"><code class="docutils literal notranslate"><span class="pre">report_legacy_session()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.main.report_rails_session"><code class="docutils literal notranslate"><span class="pre">report_rails_session()</span></code></a></li>
 </ul>
 </li>
 </ul>

@@ -53,6 +53,8 @@ Where to start
    usage
    method_energy
    sunburst
+   ondevice
+   mcp
    output
 
 .. toctree::

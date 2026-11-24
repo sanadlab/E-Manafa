@@ -41,6 +41,17 @@ class ResolveMainActivityTests(TestCase):
                              "com.example.app/com.example.app.LauncherActivity")
 
 
+class StopCommandTests(TestCase):
+    def test_pull_does_not_take_the_traces_of_the_on_device_recorder(self):
+        # the recorder keeps its traces in /data/local/tmp/emanafa/results/am
+        svc = AmProfilerService("com.example.app")
+        with patch("manafa.services.AmProfilerService.execute_shell_command", return_value=(0, "", "")) as mock_exec, \
+             patch.object(AmProfilerService, "export", return_value="out.csv"):
+            svc.stop()
+        pull = next(call.args[0] for call in mock_exec.call_args_list if "adb pull" in call.args[0])
+        self.assertIn("-maxdepth 1", pull)
+
+
 class StartCommandTests(TestCase):
     """The startup `am start -P` call must pass --sampling so the framework
     accepts the request on apps using <profileable android:shell="true"/>."""

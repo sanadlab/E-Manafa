@@ -27,7 +27,19 @@ class BatteryDrainCalculator:
         if res != 0:
             log(f"Failed to get battery properties: {err}", LogSeverity.WARNING)
             return None
+        # Not all devices let the shell read the full charge capacity.
+        res, charge_full, _ = execute_shell_command("adb shell cat /sys/class/power_supply/battery/charge_full")
+        return self.parse_battery_properties(output, charge_full if res == 0 else "")
 
+    def parse_battery_properties(self, output, charge_full=""):
+        """Parses battery properties.
+
+        Args:
+            output: text of `dumpsys battery`.
+            charge_full: content of /sys/class/power_supply/battery/charge_full, or "".
+        Returns:
+            A dictionary containing battery properties or None if parsing fails.
+        """
         properties = {}
 
         # Regex patterns to find the required values
@@ -44,9 +56,8 @@ class BatteryDrainCalculator:
                 properties[key] = int(match[-1])
 
         # Full charge capacity. The kernel value is the capacity that the fuel gauge learned, so it
-        # already includes battery wear. Not all devices let the shell read it.
-        res, charge_full, _ = execute_shell_command("adb shell cat /sys/class/power_supply/battery/charge_full")
-        if res == 0 and charge_full.strip().isdigit() and int(charge_full) > 0:
+        # already includes battery wear.
+        if charge_full.strip().isdigit() and int(charge_full) > 0:
             properties['capacity_mah'] = int(charge_full) / 1000
         elif properties.get('charge_counter_uah') and properties.get('level'):
             # estimate: the remaining charge is level % of the full capacity

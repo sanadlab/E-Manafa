@@ -261,6 +261,47 @@ def focus_subtrees(calls, parent, prefixes):
     return keep, entry
 
 
+def method_own_energy(session, include_blocked=False):
+    """Energy that each method consumed in its own code (not in the methods that it calls).
+
+    Uses the same rules as the diagram: a frame that only waits gets no energy, and frames
+    of different threads that run at the same time share the energy.
+
+    Args:
+        session: results dict with 'energy' and 'method_invocations'.
+    Returns:
+        list of {'method', 'calls', 'joules', 'seconds'}, the highest energy first.
+        'seconds' is the time of the calls, with their callees.
+    """
+    invocations = session.get("method_invocations")
+    if not invocations or not invocations.get("trace_file"):
+        raise ValueError("session has no method trace; profile with -a <package> --trace-methods am")
+    energy = session.get("energy") or {}
+    if not energy.get("total"):
+        raise ValueError("session has no energy total")
+    if not os.path.exists(invocations["trace_file"]):
+        raise ValueError(f"call trace {invocations['trace_file']} is gone (each run wipes manafa/results)")
+    calls, t0, t1 = load_calls(invocations["trace_file"])
+    parent, children = build_tree(calls)
+    energy_at = energy_clock(energy.get("method_energy_series"), t0, t1, energy["total"])
+
+    def consumed(call):
+        return max(0.0, energy_at(call["end"]) - energy_at(call["ts"]))
+    own = {i: max(0.0, consumed(calls[i]) - sum(consumed(calls[k]) for k in children.get(i, [])))
+           for i in parent if include_blocked or not is_blocked(calls[i])}
+    span = sum(own.values())
+    if not span:
+        raise ValueError("the call trace and the energy samples do not overlap in time")
+    share = min(1.0, (energy_at(t1) - energy_at(t0)) / span)
+    methods = {}
+    for i in parent:
+        entry = methods.setdefault(calls[i]["name"], {'method': calls[i]["name"], 'calls': 0, 'joules': 0.0, 'seconds': 0.0})
+        entry['calls'] += 1
+        entry['joules'] += own.get(i, 0.0) * share
+        entry['seconds'] += (calls[i]["end"] - calls[i]["ts"]) * 1e-9
+    return sorted(methods.values(), key=lambda entry: entry['joules'], reverse=True)
+
+
 def build_sunburst(session, out_file, max_depth=DEFAULT_MAX_DEPTH,
                    frames=DEFAULT_FRAMES, title=None, focus=None,
                    include_blocked=False, package=None, hot_total_pct=HOT_TOTAL_PCT,

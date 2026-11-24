@@ -34,7 +34,29 @@ data_sources: {
             ftrace_events: "sched/sched_switch"
             ftrace_events: "power/cpu_frequency"
             ftrace_events: "power/cpu_idle"
+            # a new app process has the name of zygote until it is renamed
+            ftrace_events: "task/task_newtask"
+            ftrace_events: "task/task_rename"
         }
+    }
+}
+
+# names of the processes and the CPU clusters: the scheduler events and the CPU rails
+# then give the energy of each process
+data_sources: {
+    config {
+        name: "linux.process_stats"
+        target_buffer: 1
+        process_stats_config {
+            scan_all_processes_on_start: true
+        }
+    }
+}
+
+data_sources: {
+    config {
+        name: "linux.system_info"
+        target_buffer: 1
     }
 }
 

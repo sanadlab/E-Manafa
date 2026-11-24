@@ -69,6 +69,19 @@ Fields
    * - ``energy.method_energy_series``
      - Cumulative energy of these rails: pairs of time (``CLOCK_MONOTONIC``, nanoseconds)
        and joules. The sunburst diagram reads it.
+   * - ``energy.by_process``
+     - The 20 processes with the most energy of the CPU rails: name, pid, seconds on a CPU
+       and joules. Only in the ``energy`` mode. See :ref:`process-energy`.
+   * - ``energy.app_process``
+     - Energy of the CPU rails of the app, with its threads. Only with ``-a``.
+   * - ``energy.unattributed_cpu_joules``
+     - Energy of the CPU rails in the intervals where no thread ran.
+   * - ``energy.method_energy_scope``
+     - ``app process``: methods get the energy of the app. ``all processes``: methods get
+       the energy of all the CPU rails.
+   * - ``sampled_functions``
+     - Functions of the call-stack samples with their energy. Only with
+       ``--trace-methods perf``.
    * - ``memory.<counter>``
      - Minimum, mean and maximum of a ``/proc/meminfo`` counter, in MB.
    * - ``method_invocations.methods``

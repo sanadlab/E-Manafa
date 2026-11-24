@@ -1,0 +1,622 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>manafa.ondevice &mdash; E-MANAFA 0.4.15</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=c1264a3d" />
+
+  
+    <link rel="canonical" href="https://sanadlab.github.io/E-MANAFA/_modules/manafa/ondevice.html" />
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=bb2d8cfc"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            E-MANAFA
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started.html#first-measurement">First measurement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started.html#usb-or-wi-fi">USB or Wi-Fi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started.html#next-steps">Next steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../how_it_works.html">How it works</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../how_it_works.html#workflow">Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how_it_works.html#two-sources-of-energy-data">Two sources of energy data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../how_it_works.html#power-rails-default">Power rails (default)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../how_it_works.html#legacy-model">Legacy model</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../how_it_works.html#memory">Memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how_it_works.html#energy-of-a-method">Energy of a method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how_it_works.html#clocks">Clocks</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Measurement scenarios</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#energy-only">Energy only</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#memory-only">Memory only</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#energy-and-memory-in-separate-runs-recommended">Energy and memory in separate runs (recommended)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#energy-and-memory-in-one-run">Energy and memory in one run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#a-device-with-no-power-rails">A device with no power rails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#how-long-to-measure">How long to measure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#a-repeatable-workload">A repeatable workload</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#the-device-only-with-no-app">The device only, with no app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#an-app-with-no-method-trace">An app with no method trace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#finer-time-resolution">Finer time resolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#parse-recorded-files-again">Parse recorded files again</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../method_energy.html">Energy of each method</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../method_energy.html#method-trace-sources">Method trace sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../method_energy.html#the-app-must-permit-profiling">The app must permit profiling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../method_energy.html#how-the-trace-is-recorded">How the trace is recorded</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../method_energy.html#what-a-method-gets">What a method gets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../method_energy.html#result-files">Result files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../method_energy.html#energy-of-each-process-and-thread">Energy of each process and thread</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../method_energy.html#call-stack-samples-trace-methods-perf">Call-stack samples (<code class="docutils literal notranslate"><span class="pre">--trace-methods</span> <span class="pre">perf</span></code>)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../sunburst.html">Sunburst diagram</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../sunburst.html#the-three-views">The three views</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sunburst.html#call-graph">Call graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sunburst.html#packages-all-code">Packages: all code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sunburst.html#packages-app-only">Packages: app only</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../sunburst.html#hot-spots">Hot spots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../sunburst.html#controls">Controls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../sunburst.html#what-the-values-are">What the values are</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../sunburst.html#make-the-diagram-from-a-result-file">Make the diagram from a result file</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../ondevice.html">On-device mode</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../ondevice.html#commands">Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ondevice.html#start-and-stop-on-the-device">Start and stop on the device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ondevice.html#recorded-files">Recorded files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ondevice.html#agreement-with-the-normal-mode">Agreement with the normal mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ondevice.html#limits">Limits</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../mcp.html">MCP server</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../mcp.html#tools">Tools</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../output.html">Output files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../output.html#summary-in-the-terminal">Summary in the terminal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../output.html#result-file">Result file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../output.html#fields">Fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../output.html#raw-files">Raw files</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command-line reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../cli.html#session">Session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cli.html#methods-and-diagram">Methods and diagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cli.html#sampling">Sampling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cli.html#device-data">Device data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cli.html#output">Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cli.html#recorded-files">Recorded files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../library.html">Python library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../library.html#energy-and-memory-of-a-block-of-code">Energy and memory of a block of code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../library.html#energy-of-an-interval">Energy of an interval</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../library.html#legacy-model">Legacy model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../library.html#energy-of-methods">Energy of methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../library.html#sunburst-diagram">Sunburst diagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../library.html#one-session-for-each-object">One session for each object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../accuracy.html">Accuracy and limits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../accuracy.html#power-rails-are-measurements">Power rails are measurements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../accuracy.html#the-legacy-model-is-an-estimate">The legacy model is an estimate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../accuracy.html#limits-of-method-energy">Limits of method energy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../accuracy.html#limits-of-the-legacy-model">Limits of the legacy model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../accuracy.html#the-connection-to-the-device">The connection to the device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../accuracy.html#good-practice">Good practice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../accuracy.html#accuracy-tests">Accuracy tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development.html">Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../development.html#tests">Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../development.html#structure-of-the-code">Structure of the code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../development.html#build-these-pages">Build these pages</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#module-manafa.emanafa">Sessions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.emanafa.get_last_boot_time"><code class="docutils literal notranslate"><span class="pre">get_last_boot_time()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.emanafa.EManafa"><code class="docutils literal notranslate"><span class="pre">EManafa</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.am_emanafa.get_monotonic_to_epoch_s"><code class="docutils literal notranslate"><span class="pre">get_monotonic_to_epoch_s()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.am_emanafa.AMEManafa"><code class="docutils literal notranslate"><span class="pre">AMEManafa</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.hunter_emanafa.HunterEManafa"><code class="docutils literal notranslate"><span class="pre">HunterEManafa</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#module-manafa.parsing.perfettoEnergyCalculator">Power rails and memory</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.perfettoEnergyCalculator.count_power_rails"><code class="docutils literal notranslate"><span class="pre">count_power_rails()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.perfettoEnergyCalculator.PowerRailsTrace"><code class="docutils literal notranslate"><span class="pre">PowerRailsTrace</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.perfettoEnergyCalculator.calculate_memory_stats"><code class="docutils literal notranslate"><span class="pre">calculate_memory_stats()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.cpuAttribution.cluster_rails"><code class="docutils literal notranslate"><span class="pre">cluster_rails()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.cpuAttribution.CpuAttribution"><code class="docutils literal notranslate"><span class="pre">CpuAttribution</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.cpuAttribution.sampled_functions"><code class="docutils literal notranslate"><span class="pre">sampled_functions()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#module-manafa.ondevice">On-device mode and MCP server</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.ondevice.device_files"><code class="docutils literal notranslate"><span class="pre">device_files()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.ondevice.install"><code class="docutils literal notranslate"><span class="pre">install()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.ondevice.recorder"><code class="docutils literal notranslate"><span class="pre">recorder()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.ondevice.export"><code class="docutils literal notranslate"><span class="pre">export()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.ondevice.read_sessions"><code class="docutils literal notranslate"><span class="pre">read_sessions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.ondevice.session_file"><code class="docutils literal notranslate"><span class="pre">session_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.ondevice.session_power_profile"><code class="docutils literal notranslate"><span class="pre">session_power_profile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.ondevice.session_battery"><code class="docutils literal notranslate"><span class="pre">session_battery()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.ondevice.analyze_session"><code class="docutils literal notranslate"><span class="pre">analyze_session()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.ondevice.analyze"><code class="docutils literal notranslate"><span class="pre">analyze()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.mcp_server.tool"><code class="docutils literal notranslate"><span class="pre">tool()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.mcp_server.find_session"><code class="docutils literal notranslate"><span class="pre">find_session()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.mcp_server.load_results"><code class="docutils literal notranslate"><span class="pre">load_results()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.mcp_server.list_sessions"><code class="docutils literal notranslate"><span class="pre">list_sessions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.mcp_server.get_session_summary"><code class="docutils literal notranslate"><span class="pre">get_session_summary()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.mcp_server.get_power_rails"><code class="docutils literal notranslate"><span class="pre">get_power_rails()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.mcp_server.get_process_energy"><code class="docutils literal notranslate"><span class="pre">get_process_energy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.mcp_server.get_app_threads"><code class="docutils literal notranslate"><span class="pre">get_app_threads()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.mcp_server.get_memory"><code class="docutils literal notranslate"><span class="pre">get_memory()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.mcp_server.get_hot_methods"><code class="docutils literal notranslate"><span class="pre">get_hot_methods()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.mcp_server.get_sampled_functions"><code class="docutils literal notranslate"><span class="pre">get_sampled_functions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.mcp_server.compare_sessions"><code class="docutils literal notranslate"><span class="pre">compare_sessions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.mcp_server.query_trace"><code class="docutils literal notranslate"><span class="pre">query_trace()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.mcp_server.build_sunburst"><code class="docutils literal notranslate"><span class="pre">build_sunburst()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.mcp_server.device_status"><code class="docutils literal notranslate"><span class="pre">device_status()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.mcp_server.record_session"><code class="docutils literal notranslate"><span class="pre">record_session()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.mcp_server.build_server"><code class="docutils literal notranslate"><span class="pre">build_server()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#module-manafa.sunburst">Sunburst diagram</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.sunburst.load_calls"><code class="docutils literal notranslate"><span class="pre">load_calls()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.sunburst.build_tree"><code class="docutils literal notranslate"><span class="pre">build_tree()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.sunburst.energy_clock"><code class="docutils literal notranslate"><span class="pre">energy_clock()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.sunburst.hot_sectors"><code class="docutils literal notranslate"><span class="pre">hot_sectors()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.sunburst.focus_subtrees"><code class="docutils literal notranslate"><span class="pre">focus_subtrees()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.sunburst.build_sunburst"><code class="docutils literal notranslate"><span class="pre">build_sunburst()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#module-manafa.parsing.batteryStats.BatteryStatsParser">Parsers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.batteryStats.BatteryStatsParser.safe_division"><code class="docutils literal notranslate"><span class="pre">safe_division()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.batteryStats.BatteryStatsParser.BatteryEvent"><code class="docutils literal notranslate"><span class="pre">BatteryEvent</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.batteryStats.BatteryStatsParser.BatteryStatsParser"><code class="docutils literal notranslate"><span class="pre">BatteryStatsParser</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.perfetto.perfettoParser.interpolate"><code class="docutils literal notranslate"><span class="pre">interpolate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.perfetto.perfettoParser.CPU_STATE"><code class="docutils literal notranslate"><span class="pre">CPU_STATE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.perfetto.perfettoParser.PerfettoCPUEvent"><code class="docutils literal notranslate"><span class="pre">PerfettoCPUEvent</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.perfetto.perfettoParser.PerfettoCPUfreqParser"><code class="docutils literal notranslate"><span class="pre">PerfettoCPUfreqParser</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.perfetto.perfettoParser.parse_dumpsys_output"><code class="docutils literal notranslate"><span class="pre">parse_dumpsys_output()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.perfetto.perfettoParser.generate_power_profile_xml"><code class="docutils literal notranslate"><span class="pre">generate_power_profile_xml()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.powerProfile.PowerProfile.PowerProfile"><code class="docutils literal notranslate"><span class="pre">PowerProfile</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.method_traces.AMParser.AMParser"><code class="docutils literal notranslate"><span class="pre">AMParser</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.method_traces.HunterParser.HunterParser"><code class="docutils literal notranslate"><span class="pre">HunterParser</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.method_traces.AppConsumptionStats.AppConsumptionStats"><code class="docutils literal notranslate"><span class="pre">AppConsumptionStats</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#module-manafa.services.service">Device services</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.services.service.Service"><code class="docutils literal notranslate"><span class="pre">Service</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.services.perfettoService.wait_for_our_perfetto_to_exit"><code class="docutils literal notranslate"><span class="pre">wait_for_our_perfetto_to_exit()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.services.perfettoService.PerfettoService"><code class="docutils literal notranslate"><span class="pre">PerfettoService</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.services.perfettoServiceEnhanced.device_supports_power_rails"><code class="docutils literal notranslate"><span class="pre">device_supports_power_rails()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.services.perfettoServiceEnhanced.render_config"><code class="docutils literal notranslate"><span class="pre">render_config()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.services.perfettoServiceEnhanced.PerfettoServiceEnhanced"><code class="docutils literal notranslate"><span class="pre">PerfettoServiceEnhanced</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.services.batteryStatsService.BatteryStatsService"><code class="docutils literal notranslate"><span class="pre">BatteryStatsService</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.services.AmProfilerService.AmProfilerService"><code class="docutils literal notranslate"><span class="pre">AmProfilerService</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.services.LogcatService.LogcatService"><code class="docutils literal notranslate"><span class="pre">LogcatService</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#module-manafa.utils.BatteryDrainCalculator">Utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.utils.BatteryDrainCalculator.BatteryDrainCalculator"><code class="docutils literal notranslate"><span class="pre">BatteryDrainCalculator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.utils.dateUtils.get_tzinfo"><code class="docutils literal notranslate"><span class="pre">get_tzinfo()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.utils.dateUtils.local_time_to_timestamp"><code class="docutils literal notranslate"><span class="pre">local_time_to_timestamp()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#module-manafa.main">Command line</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.main.has_connected_devices"><code class="docutils literal notranslate"><span class="pre">has_connected_devices()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.main.export_to_json"><code class="docutils literal notranslate"><span class="pre">export_to_json()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.main.export_to_csv"><code class="docutils literal notranslate"><span class="pre">export_to_csv()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.main.display_new_profiler_results"><code class="docutils literal notranslate"><span class="pre">display_new_profiler_results()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.main.is_rails_trace"><code class="docutils literal notranslate"><span class="pre">is_rails_trace()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.main.parse_rails_trace"><code class="docutils literal notranslate"><span class="pre">parse_rails_trace()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.main.preserve_trace_file"><code class="docutils literal notranslate"><span class="pre">preserve_trace_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.main.generate_sunburst"><code class="docutils literal notranslate"><span class="pre">generate_sunburst()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.main.report_legacy_session"><code class="docutils literal notranslate"><span class="pre">report_legacy_session()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.main.report_rails_session"><code class="docutils literal notranslate"><span class="pre">report_rails_session()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">E-MANAFA</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">manafa.ondevice</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for manafa.ondevice</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""On-device mode: the device records a session with no computer, and E-MANAFA analyses it later.</span>
+
+<span class="sd">    emanafa ondevice install            put the recorder and the Perfetto configs on the device</span>
+<span class="sd">    emanafa ondevice start [-pm MODE] [-a APP] [--trace-methods am|perf]</span>
+<span class="sd">    emanafa ondevice stop</span>
+<span class="sd">    emanafa ondevice export [DIR]       copy the recorded sessions to the computer</span>
+<span class="sd">    emanafa ondevice analyze [DIR]      results of each recorded session, as in the normal mode</span>
+<span class="sd">    emanafa ondevice run -s SECONDS     all the steps in sequence</span>
+<span class="sd">    emanafa ondevice status | clean</span>
+
+<span class="sd">After `install`, `start` and `stop` can also be given in a shell on the device, with the</span>
+<span class="sd">USB cable disconnected:  sh /data/local/tmp/emanafa/manafa.sh start energy</span>
+
+<span class="sd">The recorder (resources/ondevice/manafa.sh) uses the same Perfetto configs and does the same</span>
+<span class="sd">steps as the E-MANAFA services, so the two modes give the same kind of results.</span>
+<span class="sd">"""</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">argparse</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">glob</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">manafa.utils.Logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">log</span><span class="p">,</span> <span class="n">LogSeverity</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">manafa.utils.Utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">execute_shell_command</span><span class="p">,</span> <span class="n">get_resources_dir</span>
+
+<span class="n">DEVICE_DIR</span> <span class="o">=</span> <span class="s2">"/data/local/tmp/emanafa"</span>
+<span class="n">SCRIPT</span> <span class="o">=</span> <span class="s2">"manafa.sh"</span>
+<span class="n">CONFIGS</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'energy'</span><span class="p">:</span> <span class="s1">'perfetto_config_power_rails.pbtxt'</span><span class="p">,</span> <span class="s1">'memory'</span><span class="p">:</span> <span class="s1">'perfetto_config_memory_only.pbtxt'</span><span class="p">,</span>
+           <span class="s1">'both'</span><span class="p">:</span> <span class="s1">'perfetto_config_both.pbtxt'</span><span class="p">}</span>
+<span class="n">LEGACY_CONFIG</span> <span class="o">=</span> <span class="s1">'perfetto.config.bin'</span>
+<span class="n">DEFAULT_RESULTS_DIR</span> <span class="o">=</span> <span class="s2">"emanafa_ondevice"</span>
+
+
+<div class="viewcode-block" id="device_files">
+<a class="viewcode-back" href="../../modules.html#manafa.ondevice.device_files">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">device_files</span><span class="p">(</span><span class="n">meminfo_period_ms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">battery_poll_ms</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Files that `install` puts on the device.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: file name on the device -&gt; content (bytes).</span>
+<span class="sd">    """</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">manafa.services.perfettoServiceEnhanced</span><span class="w"> </span><span class="kn">import</span> <span class="n">render_config</span><span class="p">,</span> <span class="n">DEFAULT_MEMINFO_PERIOD_MS</span><span class="p">,</span> \
+        <span class="n">DEFAULT_BATTERY_POLL_MS</span>
+    <span class="n">periods</span> <span class="o">=</span> <span class="p">(</span><span class="n">meminfo_period_ms</span> <span class="ow">or</span> <span class="n">DEFAULT_MEMINFO_PERIOD_MS</span><span class="p">,</span> <span class="n">battery_poll_ms</span> <span class="ow">or</span> <span class="n">DEFAULT_BATTERY_POLL_MS</span><span class="p">)</span>
+    <span class="n">resources</span> <span class="o">=</span> <span class="n">get_resources_dir</span><span class="p">()</span>
+    <span class="n">files</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">resources</span><span class="p">,</span> <span class="s1">'ondevice'</span><span class="p">,</span> <span class="n">SCRIPT</span><span class="p">),</span> <span class="s1">'rb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">files</span><span class="p">[</span><span class="n">SCRIPT</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">resources</span><span class="p">,</span> <span class="n">LEGACY_CONFIG</span><span class="p">),</span> <span class="s1">'rb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">files</span><span class="p">[</span><span class="s1">'config_legacy.bin'</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">mode</span><span class="p">,</span> <span class="n">cfg_file</span> <span class="ow">in</span> <span class="n">CONFIGS</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">files</span><span class="p">[</span><span class="sa">f</span><span class="s1">'config_</span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s1">.pbtxt'</span><span class="p">]</span> <span class="o">=</span> <span class="n">render_config</span><span class="p">(</span><span class="n">cfg_file</span><span class="p">,</span> <span class="o">*</span><span class="n">periods</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+    <span class="c1"># the recorder replaces __APP__ with the package of the app</span>
+    <span class="n">files</span><span class="p">[</span><span class="s1">'config_energy_perf.pbtxt'</span><span class="p">]</span> <span class="o">=</span> <span class="n">render_config</span><span class="p">(</span><span class="n">CONFIGS</span><span class="p">[</span><span class="s1">'energy'</span><span class="p">],</span> <span class="o">*</span><span class="n">periods</span><span class="p">,</span> <span class="n">callstack_package</span><span class="o">=</span><span class="s1">'__APP__'</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">files</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">adb</span><span class="p">(</span><span class="n">command</span><span class="p">):</span>
+    <span class="n">res</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">execute_shell_command</span><span class="p">(</span><span class="sa">f</span><span class="s2">"adb </span><span class="si">{</span><span class="n">command</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">res</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">"adb </span><span class="si">{</span><span class="n">command</span><span class="si">}</span><span class="s2"> failed: </span><span class="si">{</span><span class="n">err</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="n">out</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">out</span>
+
+
+<div class="viewcode-block" id="install">
+<a class="viewcode-back" href="../../modules.html#manafa.ondevice.install">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">install</span><span class="p">(</span><span class="n">meminfo_period_ms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">battery_poll_ms</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Puts the recorder and the Perfetto configs on the connected device."""</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">manafa.services.perfettoServiceEnhanced</span><span class="w"> </span><span class="kn">import</span> <span class="n">device_supports_power_rails</span>
+    <span class="n">files</span> <span class="o">=</span> <span class="n">device_files</span><span class="p">(</span><span class="n">meminfo_period_ms</span><span class="p">,</span> <span class="n">battery_poll_ms</span><span class="p">)</span>
+    <span class="n">files</span><span class="p">[</span><span class="s1">'power_rails'</span><span class="p">]</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">"1"</span> <span class="k">if</span> <span class="n">device_supports_power_rails</span><span class="p">()</span> <span class="k">else</span> <span class="sa">b</span><span class="s2">"0"</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s1">'emanafa_ondevice_'</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">adb</span><span class="p">(</span><span class="sa">f</span><span class="s2">"shell mkdir -p </span><span class="si">{</span><span class="n">DEVICE_DIR</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">content</span> <span class="ow">in</span> <span class="n">files</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span> <span class="s1">'wb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+            <span class="n">adb</span><span class="p">(</span><span class="sa">f</span><span class="s2">"push </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">)</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">DEVICE_DIR</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>
+    <span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Recorder installed in </span><span class="si">{</span><span class="n">DEVICE_DIR</span><span class="si">}</span><span class="s2">. On the device: sh </span><span class="si">{</span><span class="n">DEVICE_DIR</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">SCRIPT</span><span class="si">}</span><span class="s2"> start"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">SUCCESS</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="recorder">
+<a class="viewcode-back" href="../../modules.html#manafa.ondevice.recorder">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">recorder</span><span class="p">(</span><span class="n">command</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Runs a command of the recorder on the connected device. Returns its output."""</span>
+    <span class="n">res</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">execute_shell_command</span><span class="p">(</span><span class="sa">f</span><span class="s2">"adb shell sh </span><span class="si">{</span><span class="n">DEVICE_DIR</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">SCRIPT</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">command</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">((</span><span class="n">out</span> <span class="o">+</span> <span class="n">err</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">res</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">"the recorder command '</span><span class="si">{</span><span class="n">command</span><span class="si">}</span><span class="s2">' failed"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+
+<div class="viewcode-block" id="export">
+<a class="viewcode-back" href="../../modules.html#manafa.ondevice.export">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">export</span><span class="p">(</span><span class="n">directory</span><span class="o">=</span><span class="n">DEFAULT_RESULTS_DIR</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Copies the recorded sessions from the device to directory."""</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">adb</span><span class="p">(</span><span class="sa">f</span><span class="s2">"pull </span><span class="si">{</span><span class="n">DEVICE_DIR</span><span class="si">}</span><span class="s2">/results/. </span><span class="si">{</span><span class="n">directory</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">sessions</span> <span class="o">=</span> <span class="n">read_sessions</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
+    <span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">sessions</span><span class="p">)</span><span class="si">}</span><span class="s2"> session(s) in </span><span class="si">{</span><span class="n">directory</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">directory</span></div>
+
+
+
+<div class="viewcode-block" id="read_sessions">
+<a class="viewcode-back" href="../../modules.html#manafa.ondevice.read_sessions">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">read_sessions</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Sessions of a results directory, the oldest first.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list of dict: the key=value lines of each session-&lt;run&gt;.txt, plus 'directory'.</span>
+<span class="sd">    """</span>
+    <span class="n">sessions</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="s2">"session-*.txt"</span><span class="p">))):</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'directory'</span><span class="p">:</span> <span class="n">directory</span><span class="p">}</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">key</span><span class="p">,</span> <span class="n">sep</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="s2">"="</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">sep</span><span class="p">:</span>
+                    <span class="n">session</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">if</span> <span class="s1">'run'</span> <span class="ow">in</span> <span class="n">session</span><span class="p">:</span>
+            <span class="n">sessions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">sessions</span></div>
+
+
+
+<div class="viewcode-block" id="session_file">
+<a class="viewcode-back" href="../../modules.html#manafa.ondevice.session_file">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">session_file</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">pattern</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Path of the file of a session that matches pattern ({run} is replaced), or None."""</span>
+    <span class="n">matches</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">session</span><span class="p">[</span><span class="s1">'directory'</span><span class="p">],</span> <span class="n">pattern</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">run</span><span class="o">=</span><span class="n">session</span><span class="p">[</span><span class="s1">'run'</span><span class="p">]))))</span>
+    <span class="k">return</span> <span class="n">matches</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">matches</span> <span class="k">else</span> <span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="session_power_profile">
+<a class="viewcode-back" href="../../modules.html#manafa.ondevice.session_power_profile">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">session_power_profile</span><span class="p">(</span><span class="n">session</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Power profile xml of a session, made from the saved `dumpsys batterystats --power-profile`."""</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">manafa.parsing.perfetto.perfettoParser</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_dumpsys_output</span><span class="p">,</span> <span class="n">generate_power_profile_xml</span>
+    <span class="n">text_file</span> <span class="o">=</span> <span class="n">session_file</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="s2">"power_profile-</span><span class="si">{run}</span><span class="s2">.txt"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">text_file</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">text_file</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">text_file</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="k">if</span> <span class="s1">'unknown option'</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">xml_file</span> <span class="o">=</span> <span class="n">text_file</span><span class="p">[:</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="s2">".txt"</span><span class="p">)]</span> <span class="o">+</span> <span class="s2">".xml"</span>
+    <span class="n">generate_power_profile_xml</span><span class="p">(</span><span class="n">parse_dumpsys_output</span><span class="p">(</span><span class="n">text</span><span class="p">),</span> <span class="n">xml_file</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">xml_file</span></div>
+
+
+
+<div class="viewcode-block" id="session_battery">
+<a class="viewcode-back" href="../../modules.html#manafa.ondevice.session_battery">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">session_battery</span><span class="p">(</span><span class="n">session</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""BatteryDrainCalculator with the battery properties that the session saved. It does not use adb."""</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">manafa.utils.BatteryDrainCalculator</span><span class="w"> </span><span class="kn">import</span> <span class="n">BatteryDrainCalculator</span>
+    <span class="n">calculator</span> <span class="o">=</span> <span class="n">BatteryDrainCalculator</span><span class="p">()</span>
+    <span class="n">calculator</span><span class="o">.</span><span class="n">get_battery_properties</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="kc">None</span>
+    <span class="n">battery_file</span> <span class="o">=</span> <span class="n">session_file</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="s2">"battery-</span><span class="si">{run}</span><span class="s2">.txt"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">battery_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">battery_file</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">calculator</span><span class="o">.</span><span class="n">properties</span> <span class="o">=</span> <span class="n">calculator</span><span class="o">.</span><span class="n">parse_battery_properties</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'charge_full'</span><span class="p">,</span> <span class="s1">''</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">calculator</span></div>
+
+
+
+<div class="viewcode-block" id="analyze_session">
+<a class="viewcode-back" href="../../modules.html#manafa.ondevice.analyze_session">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">analyze_session</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">output_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output_format</span><span class="o">=</span><span class="s1">'json'</span><span class="p">,</span> <span class="n">power_profile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sunburst</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Computes, prints and saves the results of one recorded session.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        the E-MANAFA object with the parsed session.</span>
+<span class="sd">    """</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">manafa</span><span class="w"> </span><span class="kn">import</span> <span class="n">main</span> <span class="k">as</span> <span class="n">manafa_main</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">manafa.am_emanafa</span><span class="w"> </span><span class="kn">import</span> <span class="n">AMEManafa</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">manafa.emanafa</span><span class="w"> </span><span class="kn">import</span> <span class="n">EManafa</span><span class="p">,</span> <span class="n">DEFAULT_PROFILE</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">manafa.services.AmProfilerService</span><span class="w"> </span><span class="kn">import</span> <span class="n">convert_to_csv</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">manafa.services.perfettoService</span><span class="w"> </span><span class="kn">import</span> <span class="n">convert_to_systrace</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">manafa.utils.dateUtils</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_known_timezone</span>
+
+    <span class="n">mode</span><span class="p">,</span> <span class="n">app</span><span class="p">,</span> <span class="n">methods</span> <span class="o">=</span> <span class="n">session</span><span class="p">[</span><span class="s1">'mode'</span><span class="p">],</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'app'</span><span class="p">)</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'methods'</span><span class="p">,</span> <span class="s1">'none'</span><span class="p">)</span>
+    <span class="n">bts_file</span> <span class="o">=</span> <span class="n">session_file</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="s2">"batterystats/bstats-</span><span class="si">{run}</span><span class="s2">-*.log"</span><span class="p">)</span>
+    <span class="n">trace</span> <span class="o">=</span> <span class="n">session_file</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="s2">"perfetto/trace-</span><span class="si">{run}</span><span class="s2">-*"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">bts_file</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">trace</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">"session </span><span class="si">{</span><span class="n">session</span><span class="p">[</span><span class="s1">'run'</span><span class="p">]</span><span class="si">}</span><span class="s2"> has no batterystats file or no Perfetto trace"</span><span class="p">)</span>
+    <span class="n">profile</span> <span class="o">=</span> <span class="n">power_profile</span> <span class="ow">or</span> <span class="n">session_power_profile</span><span class="p">(</span><span class="n">session</span><span class="p">)</span> <span class="ow">or</span> <span class="n">DEFAULT_PROFILE</span>
+    <span class="n">timezone</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'timezone'</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_known_timezone</span><span class="p">(</span><span class="n">timezone</span> <span class="ow">or</span> <span class="s1">''</span><span class="p">):</span>
+        <span class="n">timezone</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'utc_offset'</span><span class="p">)</span> <span class="k">if</span> <span class="n">is_known_timezone</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'utc_offset'</span><span class="p">,</span> <span class="s1">''</span><span class="p">))</span> <span class="k">else</span> <span class="s1">'UTC'</span>
+
+    <span class="k">if</span> <span class="n">methods</span> <span class="o">==</span> <span class="s1">'am'</span><span class="p">:</span>
+        <span class="n">manafa</span> <span class="o">=</span> <span class="n">AMEManafa</span><span class="p">(</span><span class="n">app_package_name</span><span class="o">=</span><span class="n">app</span><span class="p">,</span> <span class="n">power_profile</span><span class="o">=</span><span class="n">profile</span><span class="p">,</span> <span class="n">timezone</span><span class="o">=</span><span class="n">timezone</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'clock_epoch'</span><span class="p">)</span> <span class="ow">and</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'clock_monotonic'</span><span class="p">):</span>
+            <span class="n">manafa</span><span class="o">.</span><span class="n">recorded_clock_offset</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">session</span><span class="p">[</span><span class="s1">'clock_epoch'</span><span class="p">])</span> <span class="o">-</span> <span class="nb">float</span><span class="p">(</span><span class="n">session</span><span class="p">[</span><span class="s1">'clock_monotonic'</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">manafa</span> <span class="o">=</span> <span class="n">EManafa</span><span class="p">(</span><span class="n">power_profile</span><span class="o">=</span><span class="n">profile</span><span class="p">,</span> <span class="n">timezone</span><span class="o">=</span><span class="n">timezone</span><span class="p">)</span>
+        <span class="n">manafa</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">app</span>
+    <span class="n">manafa</span><span class="o">.</span><span class="n">profiler_mode</span> <span class="o">=</span> <span class="n">mode</span>
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">'legacy'</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">trace</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">'.systrace'</span><span class="p">):</span>
+        <span class="n">trace</span> <span class="o">=</span> <span class="n">convert_to_systrace</span><span class="p">(</span><span class="n">trace</span><span class="p">)</span>
+    <span class="n">am_traces</span> <span class="o">=</span> <span class="p">[</span><span class="n">path</span> <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">session</span><span class="p">[</span><span class="s1">'directory'</span><span class="p">],</span> <span class="s2">"am"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"app_*_</span><span class="si">{</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'start'</span><span class="p">)</span><span class="si">}</span><span class="s2">_*.trace"</span><span class="p">))</span>
+                 <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">"_exec.trace"</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="n">methods</span> <span class="o">==</span> <span class="s1">'am'</span> <span class="ow">and</span> <span class="n">am_traces</span><span class="p">:</span>
+        <span class="n">manafa</span><span class="o">.</span><span class="n">parse_results</span><span class="p">(</span><span class="n">bts_file</span><span class="p">,</span> <span class="n">trace</span><span class="p">,</span> <span class="n">convert_to_csv</span><span class="p">(</span><span class="n">am_traces</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">am_traces</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">manafa</span><span class="o">.</span><span class="n">parse_results</span><span class="p">(</span><span class="n">bts_file</span><span class="p">,</span> <span class="n">trace</span><span class="p">)</span>
+
+    <span class="n">duration</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'stop'</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'start'</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span><span class="p">(</span><span class="n">profile_mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span> <span class="n">app_package</span><span class="o">=</span><span class="n">app</span><span class="p">,</span> <span class="n">time_in_secs</span><span class="o">=</span><span class="n">duration</span><span class="p">,</span> <span class="n">trace_methods</span><span class="o">=</span><span class="n">methods</span><span class="p">,</span>
+                              <span class="n">output_file</span><span class="o">=</span><span class="n">output_file</span><span class="p">,</span> <span class="n">output_format</span><span class="o">=</span><span class="n">output_format</span><span class="p">,</span> <span class="n">sunburst</span><span class="o">=</span><span class="n">sunburst</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Session </span><span class="si">{</span><span class="n">session</span><span class="p">[</span><span class="s1">'run'</span><span class="p">]</span><span class="si">}</span><span class="s2">: mode </span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">duration</span><span class="si">}</span><span class="s2"> s"</span> <span class="o">+</span> <span class="p">(</span><span class="sa">f</span><span class="s2">", app </span><span class="si">{</span><span class="n">app</span><span class="si">}</span><span class="s2">"</span> <span class="k">if</span> <span class="n">app</span> <span class="k">else</span> <span class="s2">""</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">manafa</span><span class="o">.</span><span class="n">uses_power_rails</span><span class="p">(</span><span class="n">trace</span><span class="p">):</span>
+        <span class="n">manafa_main</span><span class="o">.</span><span class="n">report_rails_session</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">manafa</span><span class="p">,</span> <span class="n">session_battery</span><span class="p">(</span><span class="n">session</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">manafa_main</span><span class="o">.</span><span class="n">report_legacy_session</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">manafa</span><span class="p">,</span> <span class="n">session_battery</span><span class="p">(</span><span class="n">session</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">manafa</span></div>
+
+
+
+<div class="viewcode-block" id="analyze">
+<a class="viewcode-back" href="../../modules.html#manafa.ondevice.analyze">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">analyze</span><span class="p">(</span><span class="n">directory</span><span class="o">=</span><span class="n">DEFAULT_RESULTS_DIR</span><span class="p">,</span> <span class="n">output_format</span><span class="o">=</span><span class="s1">'json'</span><span class="p">,</span> <span class="n">power_profile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sunburst</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">runs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Analyses the sessions of a results directory. Each session gets a results file in directory.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        runs: run ids of the sessions to analyse. Default: all the sessions.</span>
+<span class="sd">    """</span>
+    <span class="n">sessions</span> <span class="o">=</span> <span class="p">[</span><span class="n">session</span> <span class="k">for</span> <span class="n">session</span> <span class="ow">in</span> <span class="n">read_sessions</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span> <span class="k">if</span> <span class="n">runs</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">session</span><span class="p">[</span><span class="s1">'run'</span><span class="p">]</span> <span class="ow">in</span> <span class="n">runs</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">sessions</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">"no recorded session (session-*.txt) in </span><span class="si">{</span><span class="n">directory</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">session</span> <span class="ow">in</span> <span class="n">sessions</span><span class="p">:</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"emanafa_</span><span class="si">{</span><span class="n">session</span><span class="p">[</span><span class="s1">'mode'</span><span class="p">]</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">session</span><span class="p">[</span><span class="s1">'run'</span><span class="p">]</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">output_format</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">html</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"emanafa_sunburst_</span><span class="si">{</span><span class="n">session</span><span class="p">[</span><span class="s1">'run'</span><span class="p">]</span><span class="si">}</span><span class="s2">.html"</span><span class="p">)</span> <span class="k">if</span> <span class="n">sunburst</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">analyze_session</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="n">output_format</span><span class="p">,</span> <span class="n">power_profile</span><span class="p">,</span> <span class="n">html</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Session </span><span class="si">{</span><span class="n">session</span><span class="p">[</span><span class="s1">'run'</span><span class="p">]</span><span class="si">}</span><span class="s2"> could not be analysed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">sessions</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">argv</span><span class="p">):</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">prog</span><span class="o">=</span><span class="s2">"emanafa ondevice"</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="vm">__doc__</span><span class="p">,</span>
+                                     <span class="n">formatter_class</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">RawDescriptionHelpFormatter</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"command"</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s1">'install'</span><span class="p">,</span> <span class="s1">'start'</span><span class="p">,</span> <span class="s1">'stop'</span><span class="p">,</span> <span class="s1">'status'</span><span class="p">,</span> <span class="s1">'clean'</span><span class="p">,</span> <span class="s1">'export'</span><span class="p">,</span> <span class="s1">'analyze'</span><span class="p">,</span> <span class="s1">'run'</span><span class="p">])</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"directory"</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s1">'?'</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">DEFAULT_RESULTS_DIR</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="sa">f</span><span class="s2">"results directory on the computer, for export, analyze and run (default: </span><span class="si">{</span><span class="n">DEFAULT_RESULTS_DIR</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"-pm"</span><span class="p">,</span> <span class="s2">"--profile-mode"</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s1">'legacy'</span><span class="p">,</span> <span class="s1">'energy'</span><span class="p">,</span> <span class="s1">'memory'</span><span class="p">,</span> <span class="s1">'both'</span><span class="p">],</span> <span class="n">default</span><span class="o">=</span><span class="s1">'energy'</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"-a"</span><span class="p">,</span> <span class="s2">"--app_package"</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">"package of the app to profile"</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"--trace-methods"</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s1">'none'</span><span class="p">,</span> <span class="s1">'am'</span><span class="p">,</span> <span class="s1">'perf'</span><span class="p">],</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">"default: am if -a is given, otherwise none"</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"-s"</span><span class="p">,</span> <span class="s2">"--time_in_secs"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">"run: time to profile"</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"-cmd"</span><span class="p">,</span> <span class="s2">"--command-to-profile"</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">"workload"</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">"run: command to profile"</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"-p"</span><span class="p">,</span> <span class="s2">"--profile"</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">"analyze: power profile file for the legacy model"</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"-of"</span><span class="p">,</span> <span class="s2">"--output-format"</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s1">'json'</span><span class="p">,</span> <span class="s1">'csv'</span><span class="p">],</span> <span class="n">default</span><span class="o">=</span><span class="s1">'json'</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"--sunburst"</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">'store_true'</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">"analyze: write the sunburst diagram of each session"</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"--meminfo-period-ms"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"--battery-poll-ms"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">trace_methods</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">trace_methods</span> <span class="o">=</span> <span class="s1">'am'</span> <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">app_package</span> <span class="k">else</span> <span class="s1">'none'</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">trace_methods</span> <span class="o">!=</span> <span class="s1">'none'</span> <span class="ow">and</span> <span class="n">args</span><span class="o">.</span><span class="n">app_package</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">"--trace-methods=</span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">trace_methods</span><span class="si">}</span><span class="s2"> requires -a/--app_package"</span><span class="p">)</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"start </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">profile_mode</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">app_package</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="s1">''</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">trace_methods</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">args</span><span class="o">.</span><span class="n">app_package</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">''</span><span class="si">}</span><span class="s2">"</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s1">'install'</span><span class="p">:</span>
+        <span class="n">install</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">meminfo_period_ms</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">battery_poll_ms</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s1">'start'</span><span class="p">:</span>
+        <span class="n">recorder</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">'stop'</span><span class="p">,</span> <span class="s1">'status'</span><span class="p">,</span> <span class="s1">'clean'</span><span class="p">):</span>
+        <span class="n">recorder</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">command</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s1">'export'</span><span class="p">:</span>
+        <span class="n">export</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">directory</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s1">'analyze'</span><span class="p">:</span>
+        <span class="n">analyze</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">output_format</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">profile</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">sunburst</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s1">'run'</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">time_in_secs</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">args</span><span class="o">.</span><span class="n">workload</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">parser</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">"run needs -s SECONDS or -cmd COMMAND"</span><span class="p">)</span>
+        <span class="n">install</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">meminfo_period_ms</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">battery_poll_ms</span><span class="p">)</span>
+        <span class="n">recorder</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">workload</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">workload</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">time_in_secs</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">recorder</span><span class="p">(</span><span class="s2">"stop"</span><span class="p">)</span>
+        <span class="n">export</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">directory</span><span class="p">)</span>
+        <span class="c1"># the device can have older sessions. analyse only the new one</span>
+        <span class="n">analyze</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">output_format</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">profile</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">sunburst</span><span class="p">,</span>
+                <span class="n">runs</span><span class="o">=</span><span class="p">[</span><span class="n">word</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">out</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">if</span> <span class="n">word</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()])</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2026, Rui Rua.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

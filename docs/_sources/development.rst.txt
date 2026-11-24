@@ -7,7 +7,7 @@ Tests
 .. code-block:: console
 
    # tests that need no device
-   $ python3 -m pytest manafa/tests/test_energy_model.py manafa/tests/test_main_cli.py manafa/tests/accuracy
+   $ python3 -m pytest manafa/tests/test_*.py manafa/tests/accuracy manafa/tests/parsers manafa/tests/hunter
 
    # all tests (some need a connected device)
    $ python3 -m pytest manafa/tests
@@ -31,10 +31,18 @@ Structure of the code
      - Control of the device services: Perfetto, ``batterystats``, ``am profile``, logcat.
    * - ``manafa/parsing/``
      - Parsers of the recorded files, and the power rails calculation.
+   * - ``manafa/parsing/cpuAttribution.py``
+     - Energy of the CPU rails for each thread and process.
    * - ``manafa/sunburst.py``
      - Sunburst diagram.
+   * - ``manafa/ondevice.py``
+     - On-device mode: install, export and analysis of recorded sessions.
+   * - ``manafa/mcp_server.py``
+     - MCP server.
    * - ``manafa/resources/``
      - Perfetto configurations, power profiles, and trace tools.
+   * - ``manafa/resources/ondevice/manafa.sh``
+     - Recorder script that runs on the device.
 
 Build these pages
 -----------------

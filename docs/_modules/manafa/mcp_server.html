@@ -1,0 +1,714 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>manafa.mcp_server &mdash; E-MANAFA 0.4.15</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=c1264a3d" />
+
+  
+    <link rel="canonical" href="https://sanadlab.github.io/E-MANAFA/_modules/manafa/mcp_server.html" />
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=bb2d8cfc"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            E-MANAFA
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started.html#first-measurement">First measurement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started.html#usb-or-wi-fi">USB or Wi-Fi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started.html#next-steps">Next steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../how_it_works.html">How it works</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../how_it_works.html#workflow">Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how_it_works.html#two-sources-of-energy-data">Two sources of energy data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../how_it_works.html#power-rails-default">Power rails (default)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../how_it_works.html#legacy-model">Legacy model</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../how_it_works.html#memory">Memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how_it_works.html#energy-of-a-method">Energy of a method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how_it_works.html#clocks">Clocks</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Measurement scenarios</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#energy-only">Energy only</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#memory-only">Memory only</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#energy-and-memory-in-separate-runs-recommended">Energy and memory in separate runs (recommended)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#energy-and-memory-in-one-run">Energy and memory in one run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#a-device-with-no-power-rails">A device with no power rails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#how-long-to-measure">How long to measure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#a-repeatable-workload">A repeatable workload</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#the-device-only-with-no-app">The device only, with no app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#an-app-with-no-method-trace">An app with no method trace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#finer-time-resolution">Finer time resolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#parse-recorded-files-again">Parse recorded files again</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../method_energy.html">Energy of each method</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../method_energy.html#method-trace-sources">Method trace sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../method_energy.html#the-app-must-permit-profiling">The app must permit profiling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../method_energy.html#how-the-trace-is-recorded">How the trace is recorded</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../method_energy.html#what-a-method-gets">What a method gets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../method_energy.html#result-files">Result files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../method_energy.html#energy-of-each-process-and-thread">Energy of each process and thread</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../method_energy.html#call-stack-samples-trace-methods-perf">Call-stack samples (<code class="docutils literal notranslate"><span class="pre">--trace-methods</span> <span class="pre">perf</span></code>)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../sunburst.html">Sunburst diagram</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../sunburst.html#the-three-views">The three views</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sunburst.html#call-graph">Call graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sunburst.html#packages-all-code">Packages: all code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sunburst.html#packages-app-only">Packages: app only</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../sunburst.html#hot-spots">Hot spots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../sunburst.html#controls">Controls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../sunburst.html#what-the-values-are">What the values are</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../sunburst.html#make-the-diagram-from-a-result-file">Make the diagram from a result file</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../ondevice.html">On-device mode</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../ondevice.html#commands">Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ondevice.html#start-and-stop-on-the-device">Start and stop on the device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ondevice.html#recorded-files">Recorded files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ondevice.html#agreement-with-the-normal-mode">Agreement with the normal mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../ondevice.html#limits">Limits</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../mcp.html">MCP server</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../mcp.html#tools">Tools</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../output.html">Output files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../output.html#summary-in-the-terminal">Summary in the terminal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../output.html#result-file">Result file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../output.html#fields">Fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../output.html#raw-files">Raw files</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command-line reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../cli.html#session">Session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cli.html#methods-and-diagram">Methods and diagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cli.html#sampling">Sampling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cli.html#device-data">Device data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cli.html#output">Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cli.html#recorded-files">Recorded files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../library.html">Python library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../library.html#energy-and-memory-of-a-block-of-code">Energy and memory of a block of code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../library.html#energy-of-an-interval">Energy of an interval</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../library.html#legacy-model">Legacy model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../library.html#energy-of-methods">Energy of methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../library.html#sunburst-diagram">Sunburst diagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../library.html#one-session-for-each-object">One session for each object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../accuracy.html">Accuracy and limits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../accuracy.html#power-rails-are-measurements">Power rails are measurements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../accuracy.html#the-legacy-model-is-an-estimate">The legacy model is an estimate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../accuracy.html#limits-of-method-energy">Limits of method energy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../accuracy.html#limits-of-the-legacy-model">Limits of the legacy model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../accuracy.html#the-connection-to-the-device">The connection to the device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../accuracy.html#good-practice">Good practice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../accuracy.html#accuracy-tests">Accuracy tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development.html">Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../development.html#tests">Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../development.html#structure-of-the-code">Structure of the code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../development.html#build-these-pages">Build these pages</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#module-manafa.emanafa">Sessions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.emanafa.get_last_boot_time"><code class="docutils literal notranslate"><span class="pre">get_last_boot_time()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.emanafa.EManafa"><code class="docutils literal notranslate"><span class="pre">EManafa</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.am_emanafa.get_monotonic_to_epoch_s"><code class="docutils literal notranslate"><span class="pre">get_monotonic_to_epoch_s()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.am_emanafa.AMEManafa"><code class="docutils literal notranslate"><span class="pre">AMEManafa</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.hunter_emanafa.HunterEManafa"><code class="docutils literal notranslate"><span class="pre">HunterEManafa</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#module-manafa.parsing.perfettoEnergyCalculator">Power rails and memory</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.perfettoEnergyCalculator.count_power_rails"><code class="docutils literal notranslate"><span class="pre">count_power_rails()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.perfettoEnergyCalculator.PowerRailsTrace"><code class="docutils literal notranslate"><span class="pre">PowerRailsTrace</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.perfettoEnergyCalculator.calculate_memory_stats"><code class="docutils literal notranslate"><span class="pre">calculate_memory_stats()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.cpuAttribution.cluster_rails"><code class="docutils literal notranslate"><span class="pre">cluster_rails()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.cpuAttribution.CpuAttribution"><code class="docutils literal notranslate"><span class="pre">CpuAttribution</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.cpuAttribution.sampled_functions"><code class="docutils literal notranslate"><span class="pre">sampled_functions()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#module-manafa.ondevice">On-device mode and MCP server</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.ondevice.device_files"><code class="docutils literal notranslate"><span class="pre">device_files()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.ondevice.install"><code class="docutils literal notranslate"><span class="pre">install()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.ondevice.recorder"><code class="docutils literal notranslate"><span class="pre">recorder()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.ondevice.export"><code class="docutils literal notranslate"><span class="pre">export()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.ondevice.read_sessions"><code class="docutils literal notranslate"><span class="pre">read_sessions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.ondevice.session_file"><code class="docutils literal notranslate"><span class="pre">session_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.ondevice.session_power_profile"><code class="docutils literal notranslate"><span class="pre">session_power_profile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.ondevice.session_battery"><code class="docutils literal notranslate"><span class="pre">session_battery()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.ondevice.analyze_session"><code class="docutils literal notranslate"><span class="pre">analyze_session()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.ondevice.analyze"><code class="docutils literal notranslate"><span class="pre">analyze()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.mcp_server.tool"><code class="docutils literal notranslate"><span class="pre">tool()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.mcp_server.find_session"><code class="docutils literal notranslate"><span class="pre">find_session()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.mcp_server.load_results"><code class="docutils literal notranslate"><span class="pre">load_results()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.mcp_server.list_sessions"><code class="docutils literal notranslate"><span class="pre">list_sessions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.mcp_server.get_session_summary"><code class="docutils literal notranslate"><span class="pre">get_session_summary()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.mcp_server.get_power_rails"><code class="docutils literal notranslate"><span class="pre">get_power_rails()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.mcp_server.get_process_energy"><code class="docutils literal notranslate"><span class="pre">get_process_energy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.mcp_server.get_app_threads"><code class="docutils literal notranslate"><span class="pre">get_app_threads()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.mcp_server.get_memory"><code class="docutils literal notranslate"><span class="pre">get_memory()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.mcp_server.get_hot_methods"><code class="docutils literal notranslate"><span class="pre">get_hot_methods()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.mcp_server.get_sampled_functions"><code class="docutils literal notranslate"><span class="pre">get_sampled_functions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.mcp_server.compare_sessions"><code class="docutils literal notranslate"><span class="pre">compare_sessions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.mcp_server.query_trace"><code class="docutils literal notranslate"><span class="pre">query_trace()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.mcp_server.build_sunburst"><code class="docutils literal notranslate"><span class="pre">build_sunburst()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.mcp_server.device_status"><code class="docutils literal notranslate"><span class="pre">device_status()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.mcp_server.record_session"><code class="docutils literal notranslate"><span class="pre">record_session()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.mcp_server.build_server"><code class="docutils literal notranslate"><span class="pre">build_server()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#module-manafa.sunburst">Sunburst diagram</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.sunburst.load_calls"><code class="docutils literal notranslate"><span class="pre">load_calls()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.sunburst.build_tree"><code class="docutils literal notranslate"><span class="pre">build_tree()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.sunburst.energy_clock"><code class="docutils literal notranslate"><span class="pre">energy_clock()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.sunburst.hot_sectors"><code class="docutils literal notranslate"><span class="pre">hot_sectors()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.sunburst.focus_subtrees"><code class="docutils literal notranslate"><span class="pre">focus_subtrees()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.sunburst.build_sunburst"><code class="docutils literal notranslate"><span class="pre">build_sunburst()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#module-manafa.parsing.batteryStats.BatteryStatsParser">Parsers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.batteryStats.BatteryStatsParser.safe_division"><code class="docutils literal notranslate"><span class="pre">safe_division()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.batteryStats.BatteryStatsParser.BatteryEvent"><code class="docutils literal notranslate"><span class="pre">BatteryEvent</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.batteryStats.BatteryStatsParser.BatteryStatsParser"><code class="docutils literal notranslate"><span class="pre">BatteryStatsParser</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.perfetto.perfettoParser.interpolate"><code class="docutils literal notranslate"><span class="pre">interpolate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.perfetto.perfettoParser.CPU_STATE"><code class="docutils literal notranslate"><span class="pre">CPU_STATE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.perfetto.perfettoParser.PerfettoCPUEvent"><code class="docutils literal notranslate"><span class="pre">PerfettoCPUEvent</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.perfetto.perfettoParser.PerfettoCPUfreqParser"><code class="docutils literal notranslate"><span class="pre">PerfettoCPUfreqParser</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.perfetto.perfettoParser.parse_dumpsys_output"><code class="docutils literal notranslate"><span class="pre">parse_dumpsys_output()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.perfetto.perfettoParser.generate_power_profile_xml"><code class="docutils literal notranslate"><span class="pre">generate_power_profile_xml()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.powerProfile.PowerProfile.PowerProfile"><code class="docutils literal notranslate"><span class="pre">PowerProfile</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.method_traces.AMParser.AMParser"><code class="docutils literal notranslate"><span class="pre">AMParser</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.method_traces.HunterParser.HunterParser"><code class="docutils literal notranslate"><span class="pre">HunterParser</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.method_traces.AppConsumptionStats.AppConsumptionStats"><code class="docutils literal notranslate"><span class="pre">AppConsumptionStats</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#module-manafa.services.service">Device services</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.services.service.Service"><code class="docutils literal notranslate"><span class="pre">Service</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.services.perfettoService.wait_for_our_perfetto_to_exit"><code class="docutils literal notranslate"><span class="pre">wait_for_our_perfetto_to_exit()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.services.perfettoService.PerfettoService"><code class="docutils literal notranslate"><span class="pre">PerfettoService</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.services.perfettoServiceEnhanced.device_supports_power_rails"><code class="docutils literal notranslate"><span class="pre">device_supports_power_rails()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.services.perfettoServiceEnhanced.render_config"><code class="docutils literal notranslate"><span class="pre">render_config()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.services.perfettoServiceEnhanced.PerfettoServiceEnhanced"><code class="docutils literal notranslate"><span class="pre">PerfettoServiceEnhanced</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.services.batteryStatsService.BatteryStatsService"><code class="docutils literal notranslate"><span class="pre">BatteryStatsService</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.services.AmProfilerService.AmProfilerService"><code class="docutils literal notranslate"><span class="pre">AmProfilerService</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.services.LogcatService.LogcatService"><code class="docutils literal notranslate"><span class="pre">LogcatService</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#module-manafa.utils.BatteryDrainCalculator">Utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.utils.BatteryDrainCalculator.BatteryDrainCalculator"><code class="docutils literal notranslate"><span class="pre">BatteryDrainCalculator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.utils.dateUtils.get_tzinfo"><code class="docutils literal notranslate"><span class="pre">get_tzinfo()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.utils.dateUtils.local_time_to_timestamp"><code class="docutils literal notranslate"><span class="pre">local_time_to_timestamp()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#module-manafa.main">Command line</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.main.has_connected_devices"><code class="docutils literal notranslate"><span class="pre">has_connected_devices()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.main.export_to_json"><code class="docutils literal notranslate"><span class="pre">export_to_json()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.main.export_to_csv"><code class="docutils literal notranslate"><span class="pre">export_to_csv()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.main.display_new_profiler_results"><code class="docutils literal notranslate"><span class="pre">display_new_profiler_results()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.main.is_rails_trace"><code class="docutils literal notranslate"><span class="pre">is_rails_trace()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.main.parse_rails_trace"><code class="docutils literal notranslate"><span class="pre">parse_rails_trace()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.main.preserve_trace_file"><code class="docutils literal notranslate"><span class="pre">preserve_trace_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.main.generate_sunburst"><code class="docutils literal notranslate"><span class="pre">generate_sunburst()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.main.report_legacy_session"><code class="docutils literal notranslate"><span class="pre">report_legacy_session()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.main.report_rails_session"><code class="docutils literal notranslate"><span class="pre">report_rails_session()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">E-MANAFA</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">manafa.mcp_server</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for manafa.mcp_server</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""MCP server of E-MANAFA: an LLM client can record sessions and read their results.</span>
+
+<span class="sd">    pip install "manafa[mcp]"</span>
+<span class="sd">    python -m manafa.mcp_server [results directory]</span>
+
+<span class="sd">The results directory (default: emanafa_ondevice, or the EMANAFA_RESULTS_DIR variable) has the</span>
+<span class="sd">sessions that `emanafa ondevice export` copied from a device. The tool `record_session` adds</span>
+<span class="sd">new sessions to it.</span>
+
+<span class="sd">Each tool is a function of this module, so it can also be used with no MCP client.</span>
+<span class="sd">"""</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">contextlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">functools</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">glob</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">manafa</span><span class="w"> </span><span class="kn">import</span> <span class="n">ondevice</span>
+
+<span class="n">RESULTS_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"EMANAFA_RESULTS_DIR"</span><span class="p">,</span> <span class="n">ondevice</span><span class="o">.</span><span class="n">DEFAULT_RESULTS_DIR</span><span class="p">)</span>
+<span class="n">MAX_ROWS</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">TOOLS</span> <span class="o">=</span> <span class="p">[]</span>
+
+
+<div class="viewcode-block" id="tool">
+<a class="viewcode-back" href="../../modules.html#manafa.mcp_server.tool">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">tool</span><span class="p">(</span><span class="n">function</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Marks a function as an MCP tool. E-MANAFA prints its log on stdout, which is the</span>
+<span class="sd">    channel of the MCP protocol, so the log goes to stderr while the tool runs."""</span>
+    <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">function</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">redirect_stdout</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">function</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">TOOLS</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wrapper</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">wrapper</span></div>
+
+
+
+<div class="viewcode-block" id="find_session">
+<a class="viewcode-back" href="../../modules.html#manafa.mcp_server.find_session">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">find_session</span><span class="p">(</span><span class="n">session</span><span class="o">=</span><span class="s2">""</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Session with the run id `session`. The most recent session if `session` is empty."""</span>
+    <span class="n">sessions</span> <span class="o">=</span> <span class="n">ondevice</span><span class="o">.</span><span class="n">read_sessions</span><span class="p">(</span><span class="n">RESULTS_DIR</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">sessions</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"no recorded session in </span><span class="si">{</span><span class="n">RESULTS_DIR</span><span class="si">}</span><span class="s2">. Use record_session, or `emanafa ondevice export`"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">session</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">sessions</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">candidate</span> <span class="ow">in</span> <span class="n">sessions</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">candidate</span><span class="p">[</span><span class="s1">'run'</span><span class="p">]</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">session</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">candidate</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"no session </span><span class="si">{</span><span class="n">session</span><span class="si">}</span><span class="s2">. Sessions: </span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="s1">'run'</span><span class="p">]</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">sessions</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">results_file</span><span class="p">(</span><span class="n">session</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">RESULTS_DIR</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"emanafa_</span><span class="si">{</span><span class="n">session</span><span class="p">[</span><span class="s1">'mode'</span><span class="p">]</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">session</span><span class="p">[</span><span class="s1">'run'</span><span class="p">]</span><span class="si">}</span><span class="s2">.json"</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="load_results">
+<a class="viewcode-back" href="../../modules.html#manafa.mcp_server.load_results">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_results</span><span class="p">(</span><span class="n">session</span><span class="o">=</span><span class="s2">""</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Results of a session. Analyses the session first if it has no results file."""</span>
+    <span class="n">session</span> <span class="o">=</span> <span class="n">find_session</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">results_file</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+        <span class="n">ondevice</span><span class="o">.</span><span class="n">analyze_session</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"session </span><span class="si">{</span><span class="n">session</span><span class="p">[</span><span class="s1">'run'</span><span class="p">]</span><span class="si">}</span><span class="s2"> gave no results"</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s1">'global'</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>  <span class="c1"># legacy model</span>
+        <span class="n">legacy</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">'global'</span><span class="p">]</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'mode'</span><span class="p">:</span> <span class="s1">'legacy'</span><span class="p">,</span> <span class="s1">'app'</span><span class="p">:</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'app'</span><span class="p">)</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span>
+                   <span class="s1">'energy'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'total'</span><span class="p">:</span> <span class="n">legacy</span><span class="p">[</span><span class="s1">'total_energy:'</span><span class="p">],</span> <span class="s1">'measured_duration_seconds'</span><span class="p">:</span> <span class="n">legacy</span><span class="p">[</span><span class="s1">'elapsed_time'</span><span class="p">],</span>
+                              <span class="s1">'by_component'</span><span class="p">:</span> <span class="n">legacy</span><span class="p">[</span><span class="s1">'per_component_consumption'</span><span class="p">]},</span>
+                   <span class="s1">'method_invocations'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'methods'</span><span class="p">:</span> <span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'invoked_methods'</span><span class="p">,</span> <span class="p">{})}}</span>
+    <span class="n">results</span><span class="p">[</span><span class="s1">'session'</span><span class="p">]</span> <span class="o">=</span> <span class="n">session</span><span class="p">[</span><span class="s1">'run'</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">results</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">energy_of</span><span class="p">(</span><span class="n">results</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'energy'</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"session </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">'session'</span><span class="p">]</span><span class="si">}</span><span class="s2"> has no energy data (mode </span><span class="si">{</span><span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'mode'</span><span class="p">)</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">results</span><span class="p">[</span><span class="s1">'energy'</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="list_sessions">
+<a class="viewcode-back" href="../../modules.html#manafa.mcp_server.list_sessions">[docs]</a>
+<span class="nd">@tool</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">list_sessions</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Lists the recorded sessions: run id, mode, app, duration and the device model."""</span>
+    <span class="k">return</span> <span class="p">[{</span><span class="s1">'session'</span><span class="p">:</span> <span class="n">s</span><span class="p">[</span><span class="s1">'run'</span><span class="p">],</span> <span class="s1">'mode'</span><span class="p">:</span> <span class="n">s</span><span class="p">[</span><span class="s1">'mode'</span><span class="p">],</span> <span class="s1">'app'</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'app'</span><span class="p">)</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span>
+             <span class="s1">'trace_methods'</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'methods'</span><span class="p">,</span> <span class="s1">'none'</span><span class="p">),</span>
+             <span class="s1">'duration_seconds'</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'stop'</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'start'</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span>
+             <span class="s1">'device'</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'model'</span><span class="p">),</span> <span class="s1">'analysed'</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">results_file</span><span class="p">(</span><span class="n">s</span><span class="p">))}</span>
+            <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">ondevice</span><span class="o">.</span><span class="n">read_sessions</span><span class="p">(</span><span class="n">RESULTS_DIR</span><span class="p">)]</span></div>
+
+
+
+<div class="viewcode-block" id="get_session_summary">
+<a class="viewcode-back" href="../../modules.html#manafa.mcp_server.get_session_summary">[docs]</a>
+<span class="nd">@tool</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_session_summary</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Main results of a session: total energy (J), mean power (W), battery drain, and what</span>
+<span class="sd">    other data the session has. Empty session = the most recent one."""</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">load_results</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
+    <span class="n">summary</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">'session'</span><span class="p">,</span> <span class="s1">'mode'</span><span class="p">,</span> <span class="s1">'app'</span><span class="p">,</span> <span class="s1">'duration_seconds'</span><span class="p">)}</span>
+    <span class="n">energy</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'energy'</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">energy</span><span class="p">:</span>
+        <span class="n">duration</span> <span class="o">=</span> <span class="n">energy</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'measured_duration_seconds'</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span>
+        <span class="n">summary</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">'energy_joules'</span><span class="p">:</span> <span class="n">energy</span><span class="p">[</span><span class="s1">'total'</span><span class="p">],</span> <span class="s1">'measured_duration_seconds'</span><span class="p">:</span> <span class="n">duration</span><span class="p">,</span>
+                        <span class="s1">'mean_power_watts'</span><span class="p">:</span> <span class="n">energy</span><span class="p">[</span><span class="s1">'total'</span><span class="p">]</span> <span class="o">/</span> <span class="n">duration</span> <span class="k">if</span> <span class="n">duration</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+                        <span class="s1">'source'</span><span class="p">:</span> <span class="s1">'power rails'</span> <span class="k">if</span> <span class="s1">'by_rail'</span> <span class="ow">in</span> <span class="n">energy</span> <span class="k">else</span> <span class="s1">'legacy model (estimate)'</span><span class="p">})</span>
+        <span class="k">if</span> <span class="n">energy</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'app_process'</span><span class="p">):</span>
+            <span class="n">summary</span><span class="p">[</span><span class="s1">'app_cpu_energy_joules'</span><span class="p">]</span> <span class="o">=</span> <span class="n">energy</span><span class="p">[</span><span class="s1">'app_process'</span><span class="p">][</span><span class="s1">'energy_joules'</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'battery_drain'</span><span class="p">):</span>
+        <span class="n">summary</span><span class="p">[</span><span class="s1">'battery_drain_percent'</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">'battery_drain'</span><span class="p">][</span><span class="s1">'battery_drain_percentage'</span><span class="p">]</span>
+    <span class="n">summary</span><span class="p">[</span><span class="s1">'has'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">present</span> <span class="ow">in</span> <span class="p">(</span>
+        <span class="p">(</span><span class="s1">'power_rails'</span><span class="p">,</span> <span class="nb">bool</span><span class="p">(</span><span class="n">energy</span> <span class="ow">and</span> <span class="n">energy</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'by_rail'</span><span class="p">))),</span>
+        <span class="p">(</span><span class="s1">'process_energy'</span><span class="p">,</span> <span class="nb">bool</span><span class="p">(</span><span class="n">energy</span> <span class="ow">and</span> <span class="n">energy</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'by_process'</span><span class="p">))),</span>
+        <span class="p">(</span><span class="s1">'memory'</span><span class="p">,</span> <span class="nb">bool</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'memory'</span><span class="p">))),</span>
+        <span class="p">(</span><span class="s1">'methods'</span><span class="p">,</span> <span class="nb">bool</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'method_invocations'</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'methods'</span><span class="p">))),</span>
+        <span class="p">(</span><span class="s1">'sampled_functions'</span><span class="p">,</span> <span class="nb">bool</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'sampled_functions'</span><span class="p">))))</span> <span class="k">if</span> <span class="n">present</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">summary</span></div>
+
+
+
+<div class="viewcode-block" id="get_power_rails">
+<a class="viewcode-back" href="../../modules.html#manafa.mcp_server.get_power_rails">[docs]</a>
+<span class="nd">@tool</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_power_rails</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Energy (J) and mean power (mW) of each hardware power rail of a session, the highest</span>
+<span class="sd">    first. With the legacy model: the estimate of each component."""</span>
+    <span class="n">energy</span> <span class="o">=</span> <span class="n">energy_of</span><span class="p">(</span><span class="n">load_results</span><span class="p">(</span><span class="n">session</span><span class="p">))</span>
+    <span class="n">duration</span> <span class="o">=</span> <span class="n">energy</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'measured_duration_seconds'</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span>
+    <span class="n">rails</span> <span class="o">=</span> <span class="n">energy</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'by_rail'</span><span class="p">)</span> <span class="ow">or</span> <span class="n">energy</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'by_component'</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s1">'total_joules'</span><span class="p">:</span> <span class="n">energy</span><span class="p">[</span><span class="s1">'total'</span><span class="p">],</span> <span class="s1">'measured_duration_seconds'</span><span class="p">:</span> <span class="n">duration</span><span class="p">,</span>
+            <span class="s1">'rails'</span><span class="p">:</span> <span class="p">[{</span><span class="s1">'rail'</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span> <span class="s1">'joules'</span><span class="p">:</span> <span class="n">joules</span><span class="p">,</span> <span class="s1">'mean_milliwatts'</span><span class="p">:</span> <span class="n">joules</span> <span class="o">/</span> <span class="n">duration</span> <span class="o">*</span> <span class="mi">1000</span> <span class="k">if</span> <span class="n">duration</span> <span class="k">else</span> <span class="kc">None</span><span class="p">}</span>
+                      <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">joules</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">rails</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)]}</span></div>
+
+
+
+<div class="viewcode-block" id="get_process_energy">
+<a class="viewcode-back" href="../../modules.html#manafa.mcp_server.get_process_energy">[docs]</a>
+<span class="nd">@tool</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_process_energy</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span> <span class="n">top</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">15</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Energy of the CPU rails for each process of a session (J), from the scheduler events.</span>
+<span class="sd">    Needs a session of the energy mode."""</span>
+    <span class="n">energy</span> <span class="o">=</span> <span class="n">energy_of</span><span class="p">(</span><span class="n">load_results</span><span class="p">(</span><span class="n">session</span><span class="p">))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">energy</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'by_process'</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"the session has no scheduler events. Record it in energy mode"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s1">'cpu_rails_joules'</span><span class="p">:</span> <span class="nb">sum</span><span class="p">(</span><span class="n">energy</span><span class="p">[</span><span class="s1">'by_rail'</span><span class="p">][</span><span class="n">rail</span><span class="p">]</span> <span class="k">for</span> <span class="n">rail</span> <span class="ow">in</span> <span class="n">energy</span><span class="p">[</span><span class="s1">'method_rails'</span><span class="p">]),</span>
+            <span class="s1">'unattributed_joules'</span><span class="p">:</span> <span class="n">energy</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'unattributed_cpu_joules'</span><span class="p">),</span>
+            <span class="s1">'processes'</span><span class="p">:</span> <span class="n">energy</span><span class="p">[</span><span class="s1">'by_process'</span><span class="p">][:</span><span class="n">top</span><span class="p">]}</span></div>
+
+
+
+<div class="viewcode-block" id="get_app_threads">
+<a class="viewcode-back" href="../../modules.html#manafa.mcp_server.get_app_threads">[docs]</a>
+<span class="nd">@tool</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_app_threads</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Energy of the CPU rails for each thread of the profiled app (J). Needs a session of the</span>
+<span class="sd">    energy mode that was recorded with an app."""</span>
+    <span class="n">energy</span> <span class="o">=</span> <span class="n">energy_of</span><span class="p">(</span><span class="n">load_results</span><span class="p">(</span><span class="n">session</span><span class="p">))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">energy</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'app_process'</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"the session has no app, or no scheduler events of the app"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">energy</span><span class="p">[</span><span class="s1">'app_process'</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="get_memory">
+<a class="viewcode-back" href="../../modules.html#manafa.mcp_server.get_memory">[docs]</a>
+<span class="nd">@tool</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_memory</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""System memory counters of a session (minimum, mean, maximum, in MB). Needs the memory</span>
+<span class="sd">    or both mode."""</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">load_results</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'memory'</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"session </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">'session'</span><span class="p">]</span><span class="si">}</span><span class="s2"> has no memory data (mode </span><span class="si">{</span><span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'mode'</span><span class="p">)</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">results</span><span class="p">[</span><span class="s1">'memory'</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="get_hot_methods">
+<a class="viewcode-back" href="../../modules.html#manafa.mcp_server.get_hot_methods">[docs]</a>
+<span class="nd">@tool</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_hot_methods</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span> <span class="n">top</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">app_only</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Methods with the most energy in a session, the highest first. Needs method tracing</span>
+<span class="sd">    (trace_methods am).</span>
+
+<span class="sd">    With power rails: `joules` is the energy of the code of the method itself, not of the</span>
+<span class="sd">    methods that it calls, and `scope` says if it is the energy of the app or of all the</span>
+<span class="sd">    processes. With the legacy model: `joules` is the estimate for the time of the calls,</span>
+<span class="sd">    and includes the callees.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        app_only: only the methods of the package of the app.</span>
+<span class="sd">    """</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">load_results</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
+    <span class="n">energy</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'energy'</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="s1">'by_rail'</span> <span class="ow">in</span> <span class="n">energy</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">manafa.sunburst</span><span class="w"> </span><span class="kn">import</span> <span class="n">method_own_energy</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">results_file</span><span class="p">(</span><span class="n">find_session</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">'session'</span><span class="p">])))</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">ranked</span> <span class="o">=</span> <span class="n">method_own_energy</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
+        <span class="n">includes_callees</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ranked</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">calls</span> <span class="ow">in</span> <span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'method_invocations'</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'methods'</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">ranked</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">'method'</span><span class="p">:</span> <span class="n">name</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s1">'_'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">'calls'</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">calls</span><span class="p">),</span>
+                           <span class="s1">'joules'</span><span class="p">:</span> <span class="nb">sum</span><span class="p">(</span><span class="n">call</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'consumption'</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span> <span class="k">for</span> <span class="n">call</span> <span class="ow">in</span> <span class="n">calls</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span>
+                           <span class="s1">'seconds'</span><span class="p">:</span> <span class="nb">sum</span><span class="p">(</span><span class="n">call</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'end_time'</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span> <span class="o">-</span> <span class="n">call</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'begin_time'</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span> <span class="k">for</span> <span class="n">call</span> <span class="ow">in</span> <span class="n">calls</span><span class="o">.</span><span class="n">values</span><span class="p">())})</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ranked</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"session </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">'session'</span><span class="p">]</span><span class="si">}</span><span class="s2"> has no method trace"</span><span class="p">)</span>
+        <span class="n">ranked</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">entry</span><span class="p">:</span> <span class="n">entry</span><span class="p">[</span><span class="s1">'joules'</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">includes_callees</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">if</span> <span class="n">app_only</span> <span class="ow">and</span> <span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'app'</span><span class="p">):</span>
+        <span class="n">ranked</span> <span class="o">=</span> <span class="p">[</span><span class="n">entry</span> <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">ranked</span> <span class="k">if</span> <span class="n">entry</span><span class="p">[</span><span class="s1">'method'</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">'app'</span><span class="p">])]</span>
+    <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">ranked</span><span class="p">:</span>
+        <span class="n">entry</span><span class="p">[</span><span class="s1">'mean_joules_per_call'</span><span class="p">]</span> <span class="o">=</span> <span class="n">entry</span><span class="p">[</span><span class="s1">'joules'</span><span class="p">]</span> <span class="o">/</span> <span class="n">entry</span><span class="p">[</span><span class="s1">'calls'</span><span class="p">]</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s1">'scope'</span><span class="p">:</span> <span class="n">energy</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'method_energy_scope'</span><span class="p">,</span> <span class="s1">'all processes'</span><span class="p">),</span> <span class="s1">'joules_include_callees'</span><span class="p">:</span> <span class="n">includes_callees</span><span class="p">,</span>
+            <span class="s1">'distinct_methods'</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">ranked</span><span class="p">),</span> <span class="s1">'methods'</span><span class="p">:</span> <span class="n">ranked</span><span class="p">[:</span><span class="n">top</span><span class="p">]}</span></div>
+
+
+
+<div class="viewcode-block" id="get_sampled_functions">
+<a class="viewcode-back" href="../../modules.html#manafa.mcp_server.get_sampled_functions">[docs]</a>
+<span class="nd">@tool</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_sampled_functions</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span> <span class="n">top</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Functions in the call-stack samples of the app (trace_methods perf), with the energy of</span>
+<span class="sd">    their samples. Mostly native functions."""</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">load_results</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
+    <span class="n">sampled</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'sampled_functions'</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">sampled</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"session </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">'session'</span><span class="p">]</span><span class="si">}</span><span class="s2"> has no call-stack samples"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">sampled</span><span class="p">,</span> <span class="n">functions</span><span class="o">=</span><span class="n">sampled</span><span class="p">[</span><span class="s1">'functions'</span><span class="p">][:</span><span class="n">top</span><span class="p">])</span></div>
+
+
+
+<div class="viewcode-block" id="compare_sessions">
+<a class="viewcode-back" href="../../modules.html#manafa.mcp_server.compare_sessions">[docs]</a>
+<span class="nd">@tool</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">compare_sessions</span><span class="p">(</span><span class="n">session_a</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">session_b</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Compares the energy of two sessions: totals, mean power, and the rails with the largest</span>
+<span class="sd">    difference of mean power (b - a)."""</span>
+    <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">energy_of</span><span class="p">(</span><span class="n">load_results</span><span class="p">(</span><span class="n">session_a</span><span class="p">)),</span> <span class="n">energy_of</span><span class="p">(</span><span class="n">load_results</span><span class="p">(</span><span class="n">session_b</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">power</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">joules</span><span class="p">):</span>
+        <span class="n">duration</span> <span class="o">=</span> <span class="n">energy</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'measured_duration_seconds'</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">joules</span> <span class="o">/</span> <span class="n">duration</span> <span class="o">*</span> <span class="mi">1000</span> <span class="k">if</span> <span class="n">duration</span> <span class="k">else</span> <span class="mf">0.0</span>
+    <span class="n">rails_a</span><span class="p">,</span> <span class="n">rails_b</span> <span class="o">=</span> <span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'by_rail'</span><span class="p">)</span> <span class="ow">or</span> <span class="n">e</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'by_component'</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+    <span class="n">rails</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">'rail'</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span> <span class="s1">'a_milliwatts'</span><span class="p">:</span> <span class="n">power</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">rails_a</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)),</span> <span class="s1">'b_milliwatts'</span><span class="p">:</span> <span class="n">power</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">rails_b</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))}</span>
+             <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">rails_a</span><span class="p">)</span> <span class="o">|</span> <span class="nb">set</span><span class="p">(</span><span class="n">rails_b</span><span class="p">))]</span>
+    <span class="k">for</span> <span class="n">rail</span> <span class="ow">in</span> <span class="n">rails</span><span class="p">:</span>
+        <span class="n">rail</span><span class="p">[</span><span class="s1">'difference_milliwatts'</span><span class="p">]</span> <span class="o">=</span> <span class="n">rail</span><span class="p">[</span><span class="s1">'b_milliwatts'</span><span class="p">]</span> <span class="o">-</span> <span class="n">rail</span><span class="p">[</span><span class="s1">'a_milliwatts'</span><span class="p">]</span>
+    <span class="n">rails</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">rail</span><span class="p">:</span> <span class="nb">abs</span><span class="p">(</span><span class="n">rail</span><span class="p">[</span><span class="s1">'difference_milliwatts'</span><span class="p">]),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s1">'a'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'session'</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">session_a</span><span class="p">),</span> <span class="s1">'joules'</span><span class="p">:</span> <span class="n">a</span><span class="p">[</span><span class="s1">'total'</span><span class="p">],</span> <span class="s1">'mean_milliwatts'</span><span class="p">:</span> <span class="n">power</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">[</span><span class="s1">'total'</span><span class="p">])},</span>
+            <span class="s1">'b'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'session'</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">session_b</span><span class="p">),</span> <span class="s1">'joules'</span><span class="p">:</span> <span class="n">b</span><span class="p">[</span><span class="s1">'total'</span><span class="p">],</span> <span class="s1">'mean_milliwatts'</span><span class="p">:</span> <span class="n">power</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">b</span><span class="p">[</span><span class="s1">'total'</span><span class="p">])},</span>
+            <span class="s1">'difference_milliwatts'</span><span class="p">:</span> <span class="n">power</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">b</span><span class="p">[</span><span class="s1">'total'</span><span class="p">])</span> <span class="o">-</span> <span class="n">power</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">[</span><span class="s1">'total'</span><span class="p">]),</span>
+            <span class="s1">'rails'</span><span class="p">:</span> <span class="n">rails</span><span class="p">[:</span><span class="mi">10</span><span class="p">]}</span></div>
+
+
+
+<div class="viewcode-block" id="query_trace">
+<a class="viewcode-back" href="../../modules.html#manafa.mcp_server.query_trace">[docs]</a>
+<span class="nd">@tool</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">query_trace</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sql</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Runs a PerfettoSQL query on the Perfetto trace of a session, for questions that the</span>
+<span class="sd">    other tools do not answer. Returns at most 100 rows."""</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">perfetto.trace_processor</span><span class="w"> </span><span class="kn">import</span> <span class="n">TraceProcessor</span>
+    <span class="n">trace</span> <span class="o">=</span> <span class="n">ondevice</span><span class="o">.</span><span class="n">session_file</span><span class="p">(</span><span class="n">find_session</span><span class="p">(</span><span class="n">session</span><span class="p">),</span> <span class="s2">"perfetto/trace-</span><span class="si">{run}</span><span class="s2">-*"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">trace</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"session </span><span class="si">{</span><span class="n">session</span><span class="si">}</span><span class="s2"> has no Perfetto trace"</span><span class="p">)</span>
+    <span class="n">tp</span> <span class="o">=</span> <span class="n">TraceProcessor</span><span class="p">(</span><span class="n">trace</span><span class="o">=</span><span class="n">trace</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">tp</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">sql</span><span class="p">):</span>
+            <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">))</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">MAX_ROWS</span><span class="p">:</span>
+                <span class="k">break</span>
+        <span class="k">return</span> <span class="n">rows</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">tp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="build_sunburst">
+<a class="viewcode-back" href="../../modules.html#manafa.mcp_server.build_sunburst">[docs]</a>
+<span class="nd">@tool</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">build_sunburst</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Writes the sunburst diagram (html) of the method energy of a session. Returns the path</span>
+<span class="sd">    of the file. Needs a session of the energy mode with method tracing (trace_methods am)."""</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">manafa.sunburst</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_sunburst</span> <span class="k">as</span> <span class="n">build</span>
+    <span class="n">found</span> <span class="o">=</span> <span class="n">find_session</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
+    <span class="n">load_results</span><span class="p">(</span><span class="n">found</span><span class="p">[</span><span class="s1">'run'</span><span class="p">])</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">results_file</span><span class="p">(</span><span class="n">found</span><span class="p">))</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">RESULTS_DIR</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"emanafa_sunburst_</span><span class="si">{</span><span class="n">found</span><span class="p">[</span><span class="s1">'run'</span><span class="p">]</span><span class="si">}</span><span class="s2">.html"</span><span class="p">)</span>
+    <span class="n">build</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">out</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">out</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="device_status">
+<a class="viewcode-back" href="../../modules.html#manafa.mcp_server.device_status">[docs]</a>
+<span class="nd">@tool</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">device_status</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Connected Android devices, and the state of the E-MANAFA recorder on the device."""</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">manafa.utils.Utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">execute_shell_command</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">execute_shell_command</span><span class="p">(</span><span class="s2">"adb devices"</span><span class="p">)</span>
+    <span class="n">devices</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">out</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[</span><span class="mi">1</span><span class="p">:]</span> <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">"device"</span><span class="p">)]</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">devices</span><span class="p">:</span>
+        <span class="n">res</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">execute_shell_command</span><span class="p">(</span><span class="sa">f</span><span class="s2">"adb shell sh </span><span class="si">{</span><span class="n">ondevice</span><span class="o">.</span><span class="n">DEVICE_DIR</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">ondevice</span><span class="o">.</span><span class="n">SCRIPT</span><span class="si">}</span><span class="s2"> status"</span><span class="p">)</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">if</span> <span class="n">res</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="s2">"recorder not installed"</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s1">'devices'</span><span class="p">:</span> <span class="n">devices</span><span class="p">,</span> <span class="s1">'recorder'</span><span class="p">:</span> <span class="n">status</span><span class="p">}</span></div>
+
+
+
+<div class="viewcode-block" id="record_session">
+<a class="viewcode-back" href="../../modules.html#manafa.mcp_server.record_session">[docs]</a>
+<span class="nd">@tool</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">record_session</span><span class="p">(</span><span class="n">seconds</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"energy"</span><span class="p">,</span> <span class="n">app</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span> <span class="n">trace_methods</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Records a new session on the connected device and returns its summary.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        seconds: time to record (1 to 600).</span>
+<span class="sd">        mode: energy (power rails), memory, both, or legacy (power profile estimate).</span>
+<span class="sd">        app: package of an app to profile. Empty: all the device.</span>
+<span class="sd">        trace_methods: am (method trace; the app starts again), perf (call-stack samples) or</span>
+<span class="sd">            none. Default: am if app is given.</span>
+<span class="sd">    """</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+    <span class="k">if</span> <span class="n">mode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">'energy'</span><span class="p">,</span> <span class="s1">'memory'</span><span class="p">,</span> <span class="s1">'both'</span><span class="p">,</span> <span class="s1">'legacy'</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"mode must be energy, memory, both or legacy"</span><span class="p">)</span>
+    <span class="n">trace_methods</span> <span class="o">=</span> <span class="n">trace_methods</span> <span class="ow">or</span> <span class="p">(</span><span class="s1">'am'</span> <span class="k">if</span> <span class="n">app</span> <span class="k">else</span> <span class="s1">'none'</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">trace_methods</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">'none'</span><span class="p">,</span> <span class="s1">'am'</span><span class="p">,</span> <span class="s1">'perf'</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">trace_methods</span> <span class="o">!=</span> <span class="s1">'none'</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">app</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"trace_methods must be none, am or perf, and am and perf need an app"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="mi">1</span> <span class="o">&lt;=</span> <span class="n">seconds</span> <span class="o">&lt;=</span> <span class="mi">600</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"seconds must be from 1 to 600"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="ow">not</span> <span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">isalnum</span><span class="p">()</span> <span class="ow">or</span> <span class="n">c</span> <span class="ow">in</span> <span class="s2">"._"</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">app</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"app must be a package name"</span><span class="p">)</span>
+    <span class="n">ondevice</span><span class="o">.</span><span class="n">install</span><span class="p">()</span>
+    <span class="n">ondevice</span><span class="o">.</span><span class="n">recorder</span><span class="p">(</span><span class="sa">f</span><span class="s2">"start </span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">app</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">trace_methods</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">app</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">''</span><span class="si">}</span><span class="s2">"</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">seconds</span><span class="p">)</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">ondevice</span><span class="o">.</span><span class="n">recorder</span><span class="p">(</span><span class="s2">"stop"</span><span class="p">)</span>
+    <span class="n">ondevice</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">RESULTS_DIR</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">get_session_summary</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="build_server">
+<a class="viewcode-back" href="../../modules.html#manafa.mcp_server.build_server">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">build_server</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">"""MCP server with all the tools. Needs the `mcp` package."""</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">mcp.server.mcpserver</span><span class="w"> </span><span class="kn">import</span> <span class="n">MCPServer</span>  <span class="c1"># mcp 2</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">mcp.server.fastmcp</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastMCP</span> <span class="k">as</span> <span class="n">MCPServer</span>  <span class="c1"># mcp 1</span>
+    <span class="n">server</span> <span class="o">=</span> <span class="n">MCPServer</span><span class="p">(</span><span class="s2">"e-manafa"</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">mcp.server.mcpserver.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">ToolError</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">mcp.server.fastmcp.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">ToolError</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">with_messages</span><span class="p">(</span><span class="n">function</span><span class="p">):</span>
+        <span class="c1"># the client gets the message of a ToolError, but not of other exceptions</span>
+        <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">function</span><span class="p">)</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">function</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">ToolError</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+        <span class="k">return</span> <span class="n">wrapper</span>
+    <span class="k">for</span> <span class="n">function</span> <span class="ow">in</span> <span class="n">TOOLS</span><span class="p">:</span>
+        <span class="n">server</span><span class="o">.</span><span class="n">tool</span><span class="p">()(</span><span class="n">with_messages</span><span class="p">(</span><span class="n">function</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">server</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="k">global</span> <span class="n">RESULTS_DIR</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">RESULTS_DIR</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">build_server</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2026, Rui Rua.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
