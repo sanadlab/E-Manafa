@@ -1,0 +1,6 @@
+>com.example.app.MainActivity.onCreate_1a2b[1700000000000]
+>com.example.app.Repository.load_3c4d[1700000000100]
+<com.example.app.Repository.load_3c4d[1700000000250]
+>com.example.app.Repository.load_3c4d[1700000000300]
+<com.example.app.Repository.load_3c4d[1700000000350]
+<com.example.app.MainActivity.onCreate_1a2b[1700000000400]

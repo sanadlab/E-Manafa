@@ -1,11 +1,19 @@
+# buffer 0: power rails and battery counters. buffer 1: ftrace.
+# ftrace is high volume, so it has its own buffer and cannot push out the power data.
 buffers: {
-    size_kb: 65536
+    size_kb: 4096
+    fill_policy: DISCARD
+}
+
+buffers: {
+    size_kb: 61440
     fill_policy: DISCARD
 }
 
 data_sources: {
     config {
         name: "android.power"
+        target_buffer: 0
         android_power_config {
             battery_poll_ms: 250
             battery_counters: BATTERY_COUNTER_UNSPECIFIED
@@ -21,11 +29,13 @@ data_sources: {
 data_sources: {
     config {
         name: "linux.ftrace"
+        target_buffer: 1
         ftrace_config {
             ftrace_events: "sched/sched_switch"
             ftrace_events: "power/cpu_frequency"
+            ftrace_events: "power/cpu_idle"
         }
     }
 }
 
-duration_ms: 30000
+# no duration_ms: the trace runs until the profiler stops it

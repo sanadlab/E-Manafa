@@ -15,26 +15,43 @@ DEFAULT_OUT_DIR = "/data/misc/perfetto-traces"
 CONFIG_FILE_ENHANCED = "perfetto_config_power_rails.pbtxt"
 DEFAULT_MEMINFO_PERIOD_MS = 50
 DEFAULT_BATTERY_POLL_MS = 250
+PROBE_TRACE = DEFAULT_OUT_DIR + "/rails_probe"
+PROBE_CONFIG = 'buffers { size_kb: 1024 } data_sources { config { name: "android.power" ' \
+               'android_power_config { battery_poll_ms: 250 collect_power_rails: true } } } duration_ms: 1000'
 
 
 def device_supports_power_rails():
     """Check if device supports power rails data collection.
-    
-    Power rails data is collected via the android.power data source
-    with the collect_power_rails option, not as a separate data source.
-    
+
+    The android.power data source exists on devices that have no power rails,
+    so its presence proves nothing. This records a 1 second trace and checks
+    that it contains power rail counters.
+
     Returns:
         bool: True if device supports power rails, False otherwise.
     """
-    #use strings command to handle binary output from perfetto
-    cmd = "adb shell perfetto --query-raw 2>/dev/null | strings | grep -q 'android.power'"
-    res, output, _ = execute_shell_command(cmd)
-    
-    if res == 0:
-        log("Device supports power rails via android.power data source", log_sev=LogSeverity.INFO)
+    fd, local = tempfile.mkstemp(prefix='emanafa_probe_', suffix='.perfetto-trace')
+    os.close(fd)
+    try:
+        execute_shell_command(f"adb shell rm -f {PROBE_TRACE}")
+        execute_shell_command(f"echo '{PROBE_CONFIG}' | adb shell perfetto --txt -c - -o {PROBE_TRACE}")
+        res, _, _ = execute_shell_command(f"adb pull {PROBE_TRACE} {local}")
+        execute_shell_command(f"adb shell rm -f {PROBE_TRACE}")
+        n_rails = 0
+        if res == 0:
+            from ..parsing.perfettoEnergyCalculator import count_power_rails
+            n_rails = count_power_rails(local)
+    except Exception as e:
+        log(f"Power rails probe failed: {e}", log_sev=LogSeverity.WARNING)
+        n_rails = 0
+    finally:
+        os.remove(local)
+
+    if n_rails > 0:
+        log(f"Device reports {n_rails} power rails", log_sev=LogSeverity.INFO)
         return True
-    
-    log("Device does not support android.power data source, falling back to legacy profiler",
+
+    log("Device reports no power rails, falling back to legacy profiler",
         log_sev=LogSeverity.WARNING)
     return False
 
@@ -130,6 +147,8 @@ class PerfettoServiceEnhanced(PerfettoService):
         Uses text-based protobuf config (.pbtxt) with --txt flag for power rails.
         """
         config_path = os.path.join(RESOURCES_DIR, self.cfg_file)
+        # see PerfettoService.start
+        execute_shell_command(f"adb shell rm -f {self.output_filename}")
         if self.cfg_file.endswith('.pbtxt'):
             self._rendered_config_path = self._render_config(config_path)
             config_path = self._rendered_config_path

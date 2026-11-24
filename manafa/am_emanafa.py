@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import time
 
 from manafa.emanafa import EManafa, MANAFA_RESOURCES_DIR
@@ -8,6 +9,28 @@ from manafa.services.AmProfilerService import AmProfilerService
 from manafa.parsing.method_traces.AppConsumptionStats import AppConsumptionStats
 from manafa.utils.Logger import log, LogSeverity
 from manafa.utils.Utils import execute_shell_command
+
+
+def get_monotonic_to_epoch_s():
+    """Reads the offset between CLOCK_MONOTONIC and epoch time of the connected device.
+
+    Writes one log line and reads its time on the two clocks.
+    Returns:
+        float: epoch time - CLOCK_MONOTONIC, in seconds. None if it cannot be read.
+    """
+    for attempt in range(3):
+        # on a busy device, the line is sometimes not in the log buffer immediately
+        execute_shell_command("adb shell log -t EMANAFA_CLOCK sync")
+        stamps = []
+        for clock in ("epoch", "monotonic"):
+            _, out, _ = execute_shell_command(f"adb shell logcat -d -v {clock} -s EMANAFA_CLOCK -t 1")
+            mat = re.search(r"^\s*(\d+\.\d+)\s.*EMANAFA_CLOCK", out, re.MULTILINE)
+            if mat is not None:
+                stamps.append(float(mat.group(1)))
+        if len(stamps) == 2:
+            return stamps[0] - stamps[1]
+        time.sleep(0.5)
+    return None
 
 
 class AMEManafa(EManafa):
@@ -42,7 +65,7 @@ class AMEManafa(EManafa):
     def start(self):
         """starts inner services."""
         super().start()
-        self.log_service.start(self.boot_time)
+        self.log_service.start()
 
     def stop(self, run_id=None):
         """stops inner services."""
@@ -60,7 +83,7 @@ class AMEManafa(EManafa):
     def calculate_function_consumption(self, run_id=None): #, to_instrument_file, not_instrument_file):
         """calculates consumption per function called during the profiling session."""
         self.am_log_parser.parse_file(self.trace_out_file)
-        run_id = os.path.basename(self.trace_out_file).split("_")[-1] if self.pft_out_file is not None and run_id is None else run_id
+        run_id = os.path.basename(self.trace_out_file).split("_")[-2] if self.pft_out_file is not None and run_id is None else run_id
         am_trace = self.am_log_parser.trace
         total_consumption = 0
         total_cpu_consumption = 0
@@ -77,7 +100,7 @@ class AMEManafa(EManafa):
                     end = time['end_time']
                 else:
                     end = begin
-                consumption, per_component_consumption, m = self.get_consumption_in_between(begin, end)
+                consumption, per_component_consumption, m = self.get_method_consumption(begin, end)
                 if consumption <= 0 or per_component_consumption['cpu'] <= 0:
                     consumption = 0.0
                     per_component_consumption.update({'cpu': 0.0})
@@ -86,6 +109,9 @@ class AMEManafa(EManafa):
                 func_cpu_consumption += per_component_consumption['cpu']
             total_consumption += func_consumption
             total_cpu_consumption += func_cpu_consumption
+        if total_consumption == 0:
+            log("No method overlaps the energy data in time. No method energy could be attributed",
+                log_sev=LogSeverity.ERROR)
             #self.app_consumptions.write_consumptions(consumption_log, func_cpu_consumption, function)
         #self.app_consumptions.write_consumptions(consumption_log, total_cpu_consumption)
         #hunter_edited = self.am_log_parser.add_cpu_consumption_to_trace_file(self.trace_out_file, functions, True)
@@ -106,8 +132,20 @@ class AMEManafa(EManafa):
         """Given the output files from a previous session, it parses and generates results from that session."""
         super().parse_results(bts_file, pf_file)
         self.trace_out_file = self.trace_out_file if htr_file is None else htr_file
+        # the AM trace uses CLOCK_MONOTONIC of the device. convert it to epoch time, the
+        # time base of the energy data. the perfetto trace has the exact offset. the legacy
+        # pipeline reads it from the device. the boot time is not correct here: CLOCK_MONOTONIC
+        # stops while the device is suspended.
+        if self.power_rails is not None:
+            self.am_log_parser.boot_time = self.power_rails.monotonic_to_epoch_s
+        else:
+            self.am_log_parser.boot_time = get_monotonic_to_epoch_s()
+            if self.am_log_parser.boot_time is None:
+                log("Unable to read the clock offset from the device. Using the boot time: the method "
+                    "times are wrong if the device was suspended after boot", log_sev=LogSeverity.WARNING)
+                self.am_log_parser.boot_time = self.boot_time
         a, b = None, None
-        if len(self.bat_events.events) > 0:
+        if self.power_rails is not None or len(self.bat_events.events) > 0:
             a, b = self.calculate_function_consumption()
         elif self.trace_out_file is not None:
             # Energy/memory modes often run with the device plugged in, so batterystats

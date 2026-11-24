@@ -1,182 +1,263 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../../">
 <head>
   <meta charset="utf-8" />
-  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <title>manafa.parsing.perfetto.perfettoParser &mdash; e-manafa 0.3.5 documentation</title>
-  
+  <title>manafa.parsing.perfetto.perfettoParser &mdash; E-MANAFA 0.4.14</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=c1264a3d" />
 
   
-  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
-  <!--[if lt IE 9]>
-    <script src="../../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
-        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
-        <script src="../../../../_static/jquery.js"></script>
-        <script src="../../../../_static/underscore.js"></script>
-        <script src="../../../../_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
-
-    
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=1f5508e5"></script>
+      <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
 
           
-            <a href="../../../../index.html" class="icon icon-home"> e-manafa
           
-
-          
+          <a href="../../../../index.html" class="icon icon-home">
+            E-MANAFA
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User guide</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../README.html">E-MANAFA: Energy Monitor and ANAlyzer For Android</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../README.html#setup">SETUP</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../README.html#installation">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../README.html#usage">Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../README.html#supported-devices">Supported devices:</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../README.html#todo">TODO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../modules.html">manafa</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../getting_started.html">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../getting_started.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../getting_started.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../getting_started.html#first-measurement">First measurement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../getting_started.html#usb-or-wi-fi">USB or Wi-Fi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../getting_started.html#next-steps">Next steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../how_it_works.html">How it works</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../how_it_works.html#workflow">Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../how_it_works.html#two-sources-of-energy-data">Two sources of energy data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../how_it_works.html#power-rails-default">Power rails (default)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../how_it_works.html#legacy-model">Legacy model</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../how_it_works.html#memory">Memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../how_it_works.html#energy-of-a-method">Energy of a method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../how_it_works.html#clocks">Clocks</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../usage.html">Measurement scenarios</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../usage.html#energy-only">Energy only</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../usage.html#memory-only">Memory only</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../usage.html#energy-and-memory-in-separate-runs-recommended">Energy and memory in separate runs (recommended)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../usage.html#energy-and-memory-in-one-run">Energy and memory in one run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../usage.html#a-device-with-no-power-rails">A device with no power rails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../usage.html#how-long-to-measure">How long to measure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../usage.html#a-repeatable-workload">A repeatable workload</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../usage.html#the-device-only-with-no-app">The device only, with no app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../usage.html#an-app-with-no-method-trace">An app with no method trace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../usage.html#finer-time-resolution">Finer time resolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../usage.html#parse-recorded-files-again">Parse recorded files again</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../method_energy.html">Energy of each method</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../method_energy.html#method-trace-sources">Method trace sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../method_energy.html#the-app-must-permit-profiling">The app must permit profiling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../method_energy.html#how-the-trace-is-recorded">How the trace is recorded</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../method_energy.html#what-a-method-gets">What a method gets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../method_energy.html#result-files">Result files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../sunburst.html">Sunburst diagram</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../sunburst.html#the-three-views">The three views</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../sunburst.html#call-graph">Call graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../sunburst.html#packages-all-code">Packages: all code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../sunburst.html#packages-app-only">Packages: app only</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../sunburst.html#hot-spots">Hot spots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../sunburst.html#controls">Controls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../sunburst.html#what-the-values-are">What the values are</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../sunburst.html#make-the-diagram-from-a-result-file">Make the diagram from a result file</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../output.html">Output files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../output.html#summary-in-the-terminal">Summary in the terminal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../output.html#result-file">Result file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../output.html#fields">Fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../output.html#raw-files">Raw files</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cli.html">Command-line reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../cli.html#session">Session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../cli.html#methods-and-diagram">Methods and diagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../cli.html#sampling">Sampling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../cli.html#device-data">Device data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../cli.html#output">Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../cli.html#recorded-files">Recorded files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../library.html">Python library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../library.html#energy-and-memory-of-a-block-of-code">Energy and memory of a block of code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../library.html#energy-of-an-interval">Energy of an interval</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../library.html#legacy-model">Legacy model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../library.html#energy-of-methods">Energy of methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../library.html#sunburst-diagram">Sunburst diagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../library.html#one-session-for-each-object">One session for each object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../accuracy.html">Accuracy and limits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../accuracy.html#power-rails-are-measurements">Power rails are measurements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../accuracy.html#the-legacy-model-is-an-estimate">The legacy model is an estimate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../accuracy.html#limits-of-method-energy">Limits of method energy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../accuracy.html#limits-of-the-legacy-model">Limits of the legacy model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../accuracy.html#the-connection-to-the-device">The connection to the device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../accuracy.html#good-practice">Good practice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../accuracy.html#accuracy-tests">Accuracy tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development.html">Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../development.html#tests">Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../development.html#structure-of-the-code">Structure of the code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../development.html#build-these-pages">Build these pages</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../modules.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../modules.html#module-manafa.emanafa">Sessions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.emanafa.get_last_boot_time"><code class="docutils literal notranslate"><span class="pre">get_last_boot_time()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.emanafa.EManafa"><code class="docutils literal notranslate"><span class="pre">EManafa</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.am_emanafa.get_monotonic_to_epoch_s"><code class="docutils literal notranslate"><span class="pre">get_monotonic_to_epoch_s()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.am_emanafa.AMEManafa"><code class="docutils literal notranslate"><span class="pre">AMEManafa</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.hunter_emanafa.HunterEManafa"><code class="docutils literal notranslate"><span class="pre">HunterEManafa</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../modules.html#module-manafa.parsing.perfettoEnergyCalculator">Power rails and memory</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.parsing.perfettoEnergyCalculator.count_power_rails"><code class="docutils literal notranslate"><span class="pre">count_power_rails()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.parsing.perfettoEnergyCalculator.PowerRailsTrace"><code class="docutils literal notranslate"><span class="pre">PowerRailsTrace</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.parsing.perfettoEnergyCalculator.calculate_memory_stats"><code class="docutils literal notranslate"><span class="pre">calculate_memory_stats()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../modules.html#module-manafa.sunburst">Sunburst diagram</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.sunburst.load_calls"><code class="docutils literal notranslate"><span class="pre">load_calls()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.sunburst.build_tree"><code class="docutils literal notranslate"><span class="pre">build_tree()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.sunburst.energy_clock"><code class="docutils literal notranslate"><span class="pre">energy_clock()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.sunburst.hot_sectors"><code class="docutils literal notranslate"><span class="pre">hot_sectors()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.sunburst.focus_subtrees"><code class="docutils literal notranslate"><span class="pre">focus_subtrees()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.sunburst.build_sunburst"><code class="docutils literal notranslate"><span class="pre">build_sunburst()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../modules.html#module-manafa.parsing.batteryStats.BatteryStatsParser">Parsers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.parsing.batteryStats.BatteryStatsParser.safe_division"><code class="docutils literal notranslate"><span class="pre">safe_division()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.parsing.batteryStats.BatteryStatsParser.BatteryEvent"><code class="docutils literal notranslate"><span class="pre">BatteryEvent</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.parsing.batteryStats.BatteryStatsParser.BatteryStatsParser"><code class="docutils literal notranslate"><span class="pre">BatteryStatsParser</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.parsing.perfetto.perfettoParser.interpolate"><code class="docutils literal notranslate"><span class="pre">interpolate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.parsing.perfetto.perfettoParser.CPU_STATE"><code class="docutils literal notranslate"><span class="pre">CPU_STATE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.parsing.perfetto.perfettoParser.PerfettoCPUEvent"><code class="docutils literal notranslate"><span class="pre">PerfettoCPUEvent</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.parsing.perfetto.perfettoParser.PerfettoCPUfreqParser"><code class="docutils literal notranslate"><span class="pre">PerfettoCPUfreqParser</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.parsing.perfetto.perfettoParser.parse_dumpsys_output"><code class="docutils literal notranslate"><span class="pre">parse_dumpsys_output()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.parsing.perfetto.perfettoParser.generate_power_profile_xml"><code class="docutils literal notranslate"><span class="pre">generate_power_profile_xml()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.parsing.powerProfile.PowerProfile.PowerProfile"><code class="docutils literal notranslate"><span class="pre">PowerProfile</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.parsing.method_traces.AMParser.AMParser"><code class="docutils literal notranslate"><span class="pre">AMParser</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.parsing.method_traces.HunterParser.HunterParser"><code class="docutils literal notranslate"><span class="pre">HunterParser</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.parsing.method_traces.AppConsumptionStats.AppConsumptionStats"><code class="docutils literal notranslate"><span class="pre">AppConsumptionStats</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../modules.html#module-manafa.services.service">Device services</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.services.service.Service"><code class="docutils literal notranslate"><span class="pre">Service</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.services.perfettoService.wait_for_our_perfetto_to_exit"><code class="docutils literal notranslate"><span class="pre">wait_for_our_perfetto_to_exit()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.services.perfettoService.PerfettoService"><code class="docutils literal notranslate"><span class="pre">PerfettoService</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.services.perfettoServiceEnhanced.device_supports_power_rails"><code class="docutils literal notranslate"><span class="pre">device_supports_power_rails()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.services.perfettoServiceEnhanced.PerfettoServiceEnhanced"><code class="docutils literal notranslate"><span class="pre">PerfettoServiceEnhanced</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.services.batteryStatsService.BatteryStatsService"><code class="docutils literal notranslate"><span class="pre">BatteryStatsService</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.services.AmProfilerService.AmProfilerService"><code class="docutils literal notranslate"><span class="pre">AmProfilerService</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.services.LogcatService.LogcatService"><code class="docutils literal notranslate"><span class="pre">LogcatService</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../modules.html#module-manafa.utils.BatteryDrainCalculator">Utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.utils.BatteryDrainCalculator.BatteryDrainCalculator"><code class="docutils literal notranslate"><span class="pre">BatteryDrainCalculator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.utils.dateUtils.get_tzinfo"><code class="docutils literal notranslate"><span class="pre">get_tzinfo()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.utils.dateUtils.local_time_to_timestamp"><code class="docutils literal notranslate"><span class="pre">local_time_to_timestamp()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../modules.html#module-manafa.main">Command line</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.main.has_connected_devices"><code class="docutils literal notranslate"><span class="pre">has_connected_devices()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.main.export_to_json"><code class="docutils literal notranslate"><span class="pre">export_to_json()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.main.export_to_csv"><code class="docutils literal notranslate"><span class="pre">export_to_csv()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.main.display_new_profiler_results"><code class="docutils literal notranslate"><span class="pre">display_new_profiler_results()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.main.is_rails_trace"><code class="docutils literal notranslate"><span class="pre">is_rails_trace()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.main.parse_rails_trace"><code class="docutils literal notranslate"><span class="pre">parse_rails_trace()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.main.preserve_trace_file"><code class="docutils literal notranslate"><span class="pre">preserve_trace_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.main.generate_sunburst"><code class="docutils literal notranslate"><span class="pre">generate_sunburst()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../../index.html">e-manafa</a>
-        
+          <a href="../../../../index.html">E-MANAFA</a>
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
-        
-          <li><a href="../../../index.html">Module code</a> &raquo;</li>
-        
-      <li>manafa.parsing.perfetto.perfettoParser</li>
-    
-    
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">manafa.parsing.perfetto.perfettoParser</li>
       <li class="wy-breadcrumbs-aside">
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   <h1>Source code for manafa.parsing.perfetto.perfettoParser</h1><div class="highlight"><pre>
 <span></span>
 
-<span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">xml.etree.ElementTree</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ET</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">manafa.parsing.powerProfile.PowerProfile</span><span class="w"> </span><span class="kn">import</span> <span class="n">PowerProfile</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">manafa.utils.Logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">log</span><span class="p">,</span> <span class="n">LogSeverity</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">manafa.utils.Utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">execute_shell_command</span>
 
-<span class="kn">from</span> <span class="nn">manafa.parsing.powerProfile.PowerProfile</span> <span class="kn">import</span> <span class="n">PowerProfile</span>
-
-<span class="n">x</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;import time</span>
+<span class="n">x</span><span class="o">=</span><span class="s2">"""import time</span>
 <span class="s2">import subprocess</span>
 <span class="s2">def executeShCommand(command):</span>
 
 <span class="s2">    pipes = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)</span>
 <span class="s2">    std_out, std_err = pipes.communicate()</span>
-<span class="s2">    output = std_out.decode(&quot;utf-8&quot;).lower()</span>
+<span class="s2">    output = std_out.decode("utf-8").lower()</span>
 <span class="s2">    if pipes.returncode != 0:</span>
-<span class="s2">        err_msg = &quot;</span><span class="si">%s</span><span class="s2">. Code: </span><span class="si">%s</span><span class="s2">&quot; % (std_err.decode(&#39;utf-8&#39;).strip(), pipes.returncode)</span>
-<span class="s2">        print(&quot;error executing command </span><span class="si">%s</span><span class="s2">&quot; </span><span class="si">% c</span><span class="s2">ommand)</span>
+<span class="s2">        err_msg = "</span><span class="si">%s</span><span class="s2">. Code: </span><span class="si">%s</span><span class="s2">" % (std_err.decode('utf-8').strip(), pipes.returncode)</span>
+<span class="s2">        print("error executing command </span><span class="si">%s</span><span class="s2">" </span><span class="si">% c</span><span class="s2">ommand)</span>
 <span class="s2">        print(err_msg)</span>
 <span class="s2">        return -1    </span>
 <span class="s2">    elif len(std_err)==0:</span>
@@ -185,56 +266,58 @@
 
 <span class="s2">def epochToDate(ts):</span>
 <span class="s2">	return time.ctime(ts)</span>
-<span class="s2">###&quot;&quot;&quot;</span>
+<span class="s2">###"""</span>
 
-<div class="viewcode-block" id="interpolate"><a class="viewcode-back" href="../../../../manafa.parsing.perfetto.html#manafa.parsing.perfetto.perfettoParser.interpolate">[docs]</a><span class="k">def</span> <span class="nf">interpolate</span><span class="p">(</span><span class="n">x1</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">x2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">y1</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">y2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
-	<span class="sd">&quot;&quot;&quot;Performs linear interpolation for x between (x1,y1) and (x2,y2) &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="interpolate">
+<a class="viewcode-back" href="../../../../modules.html#manafa.parsing.perfetto.perfettoParser.interpolate">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">interpolate</span><span class="p">(</span><span class="n">x1</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">x2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">y1</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">y2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">"""Performs linear interpolation for x between (x1,y1) and (x2,y2) """</span>
 	<span class="k">return</span> <span class="p">((</span><span class="n">y2</span> <span class="o">-</span> <span class="n">y1</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">x2</span> <span class="o">*</span> <span class="n">y1</span> <span class="o">-</span> <span class="n">x1</span> <span class="o">*</span> <span class="n">y2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">x2</span> <span class="o">-</span> <span class="n">x1</span><span class="p">)</span>  <span class="k">if</span> <span class="p">(</span><span class="n">x2</span><span class="o">-</span><span class="n">x1</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span> <span class="k">else</span> <span class="n">y1</span></div>
+
 	<span class="c1">#print(val)</span>
-	<span class="c1">#print(&quot;---&quot;)</span>
+	<span class="c1">#print("---")</span>
 	<span class="c1">#return val</span>
 
 
-<div class="viewcode-block" id="CPU_STATE"><a class="viewcode-back" href="../../../../manafa.parsing.perfetto.html#manafa.parsing.perfetto.perfettoParser.CPU_STATE">[docs]</a><span class="k">class</span> <span class="nc">CPU_STATE</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-	<span class="n">SUSPEND</span> <span class="o">=</span> <span class="s2">&quot;suspend&quot;</span>
-	<span class="n">IDLE</span> <span class="o">=</span> <span class="s2">&quot;idle&quot;</span>
-	<span class="n">AWAKE</span> <span class="o">=</span> <span class="s2">&quot;awake&quot;</span>
-	<span class="n">ACTIVE</span> <span class="o">=</span> <span class="s2">&quot;active&quot;</span></div>
+<div class="viewcode-block" id="CPU_STATE">
+<a class="viewcode-back" href="../../../../modules.html#manafa.parsing.perfetto.perfettoParser.CPU_STATE">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">CPU_STATE</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+	<span class="n">SUSPEND</span> <span class="o">=</span> <span class="s2">"suspend"</span>
+	<span class="n">IDLE</span> <span class="o">=</span> <span class="s2">"idle"</span>
+	<span class="n">AWAKE</span> <span class="o">=</span> <span class="s2">"awake"</span>
+	<span class="n">ACTIVE</span> <span class="o">=</span> <span class="s2">"active"</span></div>
 
-<div class="viewcode-block" id="PerfettoCPUEvent"><a class="viewcode-back" href="../../../../manafa.parsing.perfetto.html#manafa.parsing.perfetto.perfettoParser.PerfettoCPUEvent">[docs]</a><span class="k">class</span> <span class="nc">PerfettoCPUEvent</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-	<span class="sd">&quot;&quot;&quot;Stores information regarding each cpu frequency in a given time.</span>
+
+
+<span class="n">CPU_IDLE_EXIT</span> <span class="o">=</span> <span class="mi">4294967295</span>  <span class="c1"># value of 'state' in a cpu_idle event when the core leaves idle</span>
+
+
+<div class="viewcode-block" id="PerfettoCPUEvent">
+<a class="viewcode-back" href="../../../../modules.html#manafa.parsing.perfetto.perfettoParser.PerfettoCPUEvent">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PerfettoCPUEvent</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">"""Stores information regarding each cpu frequency in a given time.</span>
 
 <span class="sd">	A perfetto  cpufreq event information, corresponding to a line in an results output file in systrace format.</span>
 <span class="sd">	Attributes:</span>
 <span class="sd">		time: event_time.</span>
 <span class="sd">		vals: frequency for each cpu of device.</span>
-<span class="sd">	&quot;&quot;&quot;</span>
-	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="p">[]):</span>
+<span class="sd">		idle: for each cpu of device, True if the cpu is in an idle state. A cpu without information is not idle.</span>
+<span class="sd">	"""</span>
+	<span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="p">[],</span> <span class="n">idle</span><span class="o">=</span><span class="p">[]):</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="o">=</span><span class="n">time</span>
-		<span class="bp">self</span><span class="o">.</span><span class="n">vals</span><span class="o">=</span><span class="p">[]</span>
-		<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">vals</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">idle</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">idle</span><span class="p">)</span>
 
-	<span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="k">return</span> <span class="s2">&quot;time: </span><span class="si">%f</span><span class="s2"> vals =  </span><span class="si">%s</span><span class="s2"> , &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vals</span><span class="p">))</span>
+	<span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="s2">"time: </span><span class="si">%f</span><span class="s2"> vals =  </span><span class="si">%s</span><span class="s2"> , idle = </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vals</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">idle</span><span class="p">))</span>
 
-	<span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
-<div class="viewcode-block" id="PerfettoCPUEvent.init_all"><a class="viewcode-back" href="../../../../manafa.parsing.perfetto.html#manafa.parsing.perfetto.perfettoParser.PerfettoCPUEvent.init_all">[docs]</a>	<span class="k">def</span> <span class="nf">init_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">default_len</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;inits values for each cpu.</span>
-<span class="sd">		Args:</span>
-<span class="sd">			default_len: number of cores.</span>
-<span class="sd">			val: default value.</span>
-<span class="sd">		&quot;&quot;&quot;</span>
-		<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">default_len</span><span class="p">):</span>
-			<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vals</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">x</span><span class="p">:</span>
-				<span class="bp">self</span><span class="o">.</span><span class="n">vals</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
-			<span class="k">else</span><span class="p">:</span>
-				<span class="bp">self</span><span class="o">.</span><span class="n">vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="PerfettoCPUEvent.update"><a class="viewcode-back" href="../../../../manafa.parsing.perfetto.html#manafa.parsing.perfetto.perfettoParser.PerfettoCPUEvent.update">[docs]</a>	<span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cpu_id</span><span class="p">,</span><span class="n">cpu_freq</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;update/insert cpufreq val for each cpu id&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="PerfettoCPUEvent.update">
+<a class="viewcode-back" href="../../../../modules.html#manafa.parsing.perfetto.perfettoParser.PerfettoCPUEvent.update">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cpu_id</span><span class="p">,</span><span class="n">cpu_freq</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">"""update/insert cpufreq val for each cpu id"""</span>
 		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vals</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">cpu_id</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">vals</span><span class="p">[</span><span class="n">cpu_id</span><span class="p">]</span><span class="o">=</span><span class="n">cpu_freq</span>
 		<span class="k">else</span><span class="p">:</span>
@@ -242,170 +325,405 @@
 				<span class="bp">self</span><span class="o">.</span><span class="n">vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cpu_freq</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="PerfettoCPUEvent.calculate_CPUs_current"><a class="viewcode-back" href="../../../../manafa.parsing.perfetto.html#manafa.parsing.perfetto.perfettoParser.PerfettoCPUEvent.calculate_CPUs_current">[docs]</a>	<span class="k">def</span> <span class="nf">calculate_CPUs_current</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">profile</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;given a power profile and a cpu state, returns the instantaneous current being consumed by all cpu cores in that state.</span>
-<span class="sd">			Args:</span>
-<span class="sd">				state: cpu state in CPU_STATE values</span>
-<span class="sd">				profile: power profile class</span>
-<span class="sd">		&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="PerfettoCPUEvent.set_idle">
+<a class="viewcode-back" href="../../../../modules.html#manafa.parsing.perfetto.perfettoParser.PerfettoCPUEvent.set_idle">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">set_idle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cpu_id</span><span class="p">,</span> <span class="n">is_idle</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">"""update/insert the idle state of a cpu id"""</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">idle</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="kc">False</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">cpu_id</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">idle</span><span class="p">)))</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">idle</span><span class="p">[</span><span class="n">cpu_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">is_idle</span></div>
+
+
+<div class="viewcode-block" id="PerfettoCPUEvent.calculate_CPUs_current">
+<a class="viewcode-back" href="../../../../modules.html#manafa.parsing.perfetto.perfettoParser.PerfettoCPUEvent.calculate_CPUs_current">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">calculate_CPUs_current</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">profile</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">"""given a power profile and a cpu state, returns the instantaneous current being consumed by all cpu cores in that state.</span>
+
+<span class="sd">		This is the model of the Android power profile: each running core consumes the current of its cluster at its</span>
+<span class="sd">		frequency (cpu.core_power). Each cluster with a running core adds cpu.cluster_power, and cpu.active is added once.</span>
+<span class="sd">		When no core is running, the cpus consume cpu.idle.</span>
+
+<span class="sd">		Args:</span>
+<span class="sd">			state: cpu state in CPU_STATE values</span>
+<span class="sd">			profile: power profile class</span>
+<span class="sd">		"""</span>
+		<span class="k">if</span> <span class="n">state</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"idle"</span><span class="p">,</span> <span class="s2">"suspend"</span><span class="p">]:</span>
+			<span class="k">return</span> <span class="n">profile</span><span class="o">.</span><span class="n">get_CPU_state_current</span><span class="p">(</span><span class="n">state</span><span class="p">)</span> <span class="o">/</span> <span class="mi">1000</span>
 		<span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
-		<span class="k">if</span> <span class="n">state</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;idle&quot;</span><span class="p">,</span> <span class="s2">&quot;suspend&quot;</span><span class="p">]:</span>
-			<span class="k">for</span> <span class="n">core_id</span><span class="p">,</span> <span class="n">freq</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vals</span><span class="p">):</span>
-				<span class="n">bf</span><span class="p">,</span> <span class="n">aft</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">get_CPU_core_speed_pair</span><span class="p">(</span><span class="n">core_id</span><span class="p">,</span> <span class="n">freq</span><span class="p">)</span>
-				<span class="n">lin_inter_val</span> <span class="o">=</span> <span class="n">interpolate</span><span class="p">(</span><span class="n">bf</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">aft</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">bf</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">aft</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">freq</span><span class="p">)</span>
-				<span class="n">total</span> <span class="o">+=</span> <span class="n">lin_inter_val</span>
-			<span class="n">total</span> <span class="o">=</span> <span class="n">total</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vals</span><span class="p">)</span>
-		<span class="k">else</span><span class="p">:</span>
-			<span class="n">total</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">get_CPU_state_current</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
-		<span class="k">return</span> <span class="n">total</span> <span class="o">/</span> <span class="mi">1000</span></div></div>
+		<span class="n">running_clusters</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+		<span class="k">for</span> <span class="n">core_id</span><span class="p">,</span> <span class="n">freq</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vals</span><span class="p">):</span>
+			<span class="k">if</span> <span class="n">core_id</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">idle</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">idle</span><span class="p">[</span><span class="n">core_id</span><span class="p">]:</span>
+				<span class="k">continue</span>
+			<span class="n">bf</span><span class="p">,</span> <span class="n">aft</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">get_CPU_core_speed_pair</span><span class="p">(</span><span class="n">core_id</span><span class="p">,</span> <span class="n">freq</span><span class="p">)</span>
+			<span class="n">total</span> <span class="o">+=</span> <span class="n">interpolate</span><span class="p">(</span><span class="n">bf</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">aft</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">bf</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">aft</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">freq</span><span class="p">)</span>
+			<span class="n">running_clusters</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">get_CPU_core_cluster</span><span class="p">(</span><span class="n">core_id</span><span class="p">))</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">running_clusters</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">profile</span><span class="o">.</span><span class="n">get_CPU_state_current</span><span class="p">(</span><span class="s2">"idle"</span><span class="p">)</span> <span class="o">/</span> <span class="mi">1000</span>
+		<span class="k">return</span> <span class="p">(</span><span class="n">total</span> <span class="o">+</span> <span class="n">profile</span><span class="o">.</span><span class="n">get_CPU_shared_current</span><span class="p">(</span><span class="n">running_clusters</span><span class="p">))</span> <span class="o">/</span> <span class="mi">1000</span></div>
+</div>
 
 
-<div class="viewcode-block" id="PerfettoCPUfreqParser"><a class="viewcode-back" href="../../../../manafa.parsing.perfetto.html#manafa.parsing.perfetto.perfettoParser.PerfettoCPUfreqParser">[docs]</a><span class="k">class</span> <span class="nc">PerfettoCPUfreqParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-	<span class="sd">&quot;&quot;&quot;Parses cpu frequency updates from a log file obtained with perfetto.</span>
+
+<div class="viewcode-block" id="PerfettoCPUfreqParser">
+<a class="viewcode-back" href="../../../../modules.html#manafa.parsing.perfetto.perfettoParser.PerfettoCPUfreqParser">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PerfettoCPUfreqParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">"""Parses cpu frequency updates from a log file obtained with perfetto.</span>
 <span class="sd">	Attributes:</span>
 <span class="sd">		power_profile: current device power profile.</span>
 <span class="sd">		start_time: lower timestamp bound to consider.</span>
 <span class="sd">		timezone: device timezone.</span>
-<span class="sd">	&quot;&quot;&quot;</span>
-	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">power_profile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">timezone</span><span class="o">=</span><span class="s2">&quot;EST&quot;</span><span class="p">):</span>
+<span class="sd">	"""</span>
+	<span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">power_profile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">timezone</span><span class="o">=</span><span class="s2">"EST"</span><span class="p">):</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">events</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">first_freqs</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># cpu id -&gt; first frequency seen in the trace</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="n">start_time</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">power_profile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_power_profile</span><span class="p">(</span><span class="n">power_profile</span><span class="p">)</span> <span class="k">if</span> <span class="n">power_profile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}</span>
 
-<div class="viewcode-block" id="PerfettoCPUfreqParser.load_power_profile"><a class="viewcode-back" href="../../../../manafa.parsing.perfetto.html#manafa.parsing.perfetto.perfettoParser.PerfettoCPUfreqParser.load_power_profile">[docs]</a>	<span class="nd">@staticmethod</span>
-	<span class="k">def</span> <span class="nf">load_power_profile</span><span class="p">(</span><span class="n">xml_profile</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;Loads power profile from xml_profile filepath.</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">get_device_current_frequency_vals</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="n">cpu_vals</span> <span class="o">=</span> <span class="n">execute_shell_command</span><span class="p">(</span><span class="s2">"adb shell cat '/sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq' "</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+		<span class="k">return</span> <span class="n">cpu_vals</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+
+	<span class="k">def</span><span class="w"> </span><span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="n">start_time</span> <span class="o">=</span> <span class="n">execute_shell_command</span><span class="p">(</span><span class="s2">"adb shell date +</span><span class="si">%s</span><span class="s2">"</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+		<span class="n">pce</span> <span class="o">=</span> <span class="n">PerfettoCPUEvent</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">start_time</span><span class="p">))</span>
+		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">cpu_f</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_device_current_frequency_vals</span><span class="p">()):</span>
+			<span class="n">pce</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">cpu_f</span><span class="p">))</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pce</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PerfettoCPUfreqParser.load_power_profile">
+<a class="viewcode-back" href="../../../../modules.html#manafa.parsing.perfetto.perfettoParser.PerfettoCPUfreqParser.load_power_profile">[docs]</a>
+	<span class="nd">@staticmethod</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">load_power_profile</span><span class="p">(</span><span class="n">xml_profile</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">"""Loads power profile from xml_profile filepath.</span>
 <span class="sd">		Returns:</span>
 <span class="sd">			object: power profile file. </span>
-<span class="sd">		&quot;&quot;&quot;</span>
+<span class="sd">		"""</span>
 		<span class="k">return</span> <span class="n">PowerProfile</span><span class="p">(</span><span class="n">xml_profile</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PerfettoCPUfreqParser.parse_file"><a class="viewcode-back" href="../../../../manafa.parsing.perfetto.html#manafa.parsing.perfetto.perfettoParser.PerfettoCPUfreqParser.parse_file">[docs]</a>	<span class="k">def</span> <span class="nf">parse_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;parses filename.</span>
+
+<div class="viewcode-block" id="PerfettoCPUfreqParser.parse_file">
+<a class="viewcode-back" href="../../../../modules.html#manafa.parsing.perfetto.perfettoParser.PerfettoCPUfreqParser.parse_file">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">parse_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">"""parses filename.</span>
 <span class="sd">		Args:</span>
 <span class="sd">			filename: path of log file resultant of a profiling session with perfetto.</span>
-<span class="sd">		&quot;&quot;&quot;</span>
-		<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">filehandle</span><span class="p">:</span>
+<span class="sd">		"""</span>
+		<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">filehandle</span><span class="p">:</span>
 			<span class="n">lines</span> <span class="o">=</span> <span class="n">filehandle</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">parse_history</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PerfettoCPUfreqParser.parse_history"><a class="viewcode-back" href="../../../../manafa.parsing.perfetto.html#manafa.parsing.perfetto.perfettoParser.PerfettoCPUfreqParser.parse_history">[docs]</a>	<span class="k">def</span> <span class="nf">parse_history</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;parses event from lines.</span>
+
+<div class="viewcode-block" id="PerfettoCPUfreqParser.parse_history">
+<a class="viewcode-back" href="../../../../modules.html#manafa.parsing.perfetto.perfettoParser.PerfettoCPUfreqParser.parse_history">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">parse_history</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">"""parses event from lines.</span>
 <span class="sd">		Args:</span>
 <span class="sd">			lines: list of lines from file.</span>
-<span class="sd">		&quot;&quot;&quot;</span>
+<span class="sd">		"""</span>
+		<span class="n">parsed</span> <span class="o">=</span> <span class="p">[]</span>
 		<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
-			<span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">):</span>
+			<span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"#"</span><span class="p">):</span>
 				<span class="k">continue</span>
-			<span class="n">z</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^\s*([^\s]+)\-(\d+)\s*\(\s*(\d+|\-+)\) \[(\d+)\] (\d+|\.+) ([0-9]*\.[0-9]+|[0-9]+)\: (.*)?$&quot;</span><span class="p">,</span><span class="n">line</span><span class="p">)</span>
+			<span class="n">z</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">"^\s*([^\s]+)\-(\d+)\s*\(\s*(\d+|\-+)\) \[(\d+)\] (\d+|\.+) ([0-9]*\.[0-9]+|[0-9]+)\: (.*)?$"</span><span class="p">,</span><span class="n">line</span><span class="p">)</span>
 			<span class="k">if</span> <span class="n">z</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 				<span class="n">time</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">groups</span><span class="p">()[</span><span class="mi">5</span><span class="p">])</span>
 				<span class="n">time</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span>
-				<span class="n">ev_pair</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_event</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">groups</span><span class="p">()[</span><span class="mi">6</span><span class="p">])</span>
-				<span class="k">if</span> <span class="n">ev_pair</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-					<span class="n">cpu_id</span> <span class="o">=</span> <span class="n">ev_pair</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-					<span class="n">cpu_freq</span> <span class="o">=</span> <span class="n">ev_pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-					<span class="bp">self</span><span class="o">.</span><span class="n">add_event</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">cpu_id</span><span class="p">,</span> <span class="n">cpu_freq</span><span class="p">)</span>
+				<span class="n">freq_pair</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_event</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">groups</span><span class="p">()[</span><span class="mi">6</span><span class="p">])</span>
+				<span class="n">idle_pair</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_idle_event</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">groups</span><span class="p">()[</span><span class="mi">6</span><span class="p">])</span>
+				<span class="k">if</span> <span class="n">freq_pair</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+					<span class="c1"># the first frequency seen for a cpu is the best estimate of its frequency before that event</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">first_freqs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">freq_pair</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">freq_pair</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+				<span class="n">parsed</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">time</span><span class="p">,</span> <span class="n">freq_pair</span><span class="p">,</span> <span class="n">idle_pair</span><span class="p">))</span>
 			<span class="k">else</span><span class="p">:</span>
-				<span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Error parsing file&quot;</span><span class="p">)</span></div>
+				<span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">"Error parsing file"</span><span class="p">)</span>
+		<span class="k">for</span> <span class="n">time</span><span class="p">,</span> <span class="n">freq_pair</span><span class="p">,</span> <span class="n">idle_pair</span> <span class="ow">in</span> <span class="n">parsed</span><span class="p">:</span>
+			<span class="k">if</span> <span class="n">freq_pair</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">add_event</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">freq_pair</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">freq_pair</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+			<span class="k">elif</span> <span class="n">idle_pair</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">add_idle_event</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">idle_pair</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">idle_pair</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">idle_pair</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">idle_pair</span> <span class="ow">in</span> <span class="n">parsed</span><span class="p">):</span>
+			<span class="n">log</span><span class="p">(</span><span class="s2">"The trace has no cpu_idle events. All cores are counted as running, "</span>
+				<span class="s2">"so the reported CPU energy is an upper bound"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PerfettoCPUfreqParser.add_event"><a class="viewcode-back" href="../../../../manafa.parsing.perfetto.html#manafa.parsing.perfetto.perfettoParser.PerfettoCPUfreqParser.add_event">[docs]</a>	<span class="k">def</span> <span class="nf">add_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">cpu_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">cpu_freq</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;add or update cpu freq event based on values passed as argument.</span>
+
+	<span class="k">def</span><span class="w"> </span><span class="nf">__new_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">"""appends and returns a new event at time, with the cpu values of the last event."""</span>
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+			<span class="n">known_cores</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">power_profile</span><span class="o">.</span><span class="n">get_CPU_cluster_cores</span><span class="p">())</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">power_profile</span> <span class="k">else</span> <span class="mi">0</span>
+			<span class="n">n_cores</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">known_cores</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">cpu_id</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">cpu_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">first_freqs</span><span class="p">])</span>
+			<span class="c1"># a frequency of 0 gives the current of the lowest speed in the power profile</span>
+			<span class="n">z</span> <span class="o">=</span> <span class="n">PerfettoCPUEvent</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">first_freqs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cpu_id</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">cpu_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_cores</span><span class="p">)])</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">last</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+			<span class="n">z</span> <span class="o">=</span> <span class="n">PerfettoCPUEvent</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">last</span><span class="o">.</span><span class="n">vals</span><span class="p">,</span> <span class="n">last</span><span class="o">.</span><span class="n">idle</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">z</span>
+
+<div class="viewcode-block" id="PerfettoCPUfreqParser.add_event">
+<a class="viewcode-back" href="../../../../modules.html#manafa.parsing.perfetto.perfettoParser.PerfettoCPUfreqParser.add_event">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">add_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">cpu_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">cpu_freq</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">"""add or update cpu freq event based on values passed as argument.</span>
 <span class="sd">		Args:</span>
 <span class="sd">			time: timestamp of event.</span>
 <span class="sd">			cpu_id: id of cpu.</span>
 <span class="sd">			cpu_freq: frequency value.</span>
-<span class="sd">		&quot;&quot;&quot;</span>
-		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-			<span class="n">z</span> <span class="o">=</span> <span class="n">PerfettoCPUEvent</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
-			<span class="n">z</span><span class="o">.</span><span class="n">init_all</span><span class="p">(</span><span class="n">default_len</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="n">cpu_freq</span><span class="p">)</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
-		<span class="k">else</span><span class="p">:</span>
-			<span class="n">last</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-			<span class="n">z</span> <span class="o">=</span> <span class="n">PerfettoCPUEvent</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">last</span><span class="o">.</span><span class="n">vals</span><span class="p">)</span>
-			<span class="n">z</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">cpu_id</span><span class="p">,</span><span class="n">cpu_freq</span><span class="p">)</span>
-			<span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">z</span><span class="p">)</span></div>
+<span class="sd">		"""</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">__new_event</span><span class="p">(</span><span class="n">time</span><span class="p">)</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">cpu_id</span><span class="p">,</span> <span class="n">cpu_freq</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="PerfettoCPUfreqParser.parse_event"><a class="viewcode-back" href="../../../../manafa.parsing.perfetto.html#manafa.parsing.perfetto.perfettoParser.PerfettoCPUfreqParser.parse_event">[docs]</a>	<span class="k">def</span> <span class="nf">parse_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ev_str</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot; parse frequency and cpu id from string.</span>
+
+<div class="viewcode-block" id="PerfettoCPUfreqParser.add_idle_event">
+<a class="viewcode-back" href="../../../../modules.html#manafa.parsing.perfetto.perfettoParser.PerfettoCPUfreqParser.add_idle_event">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">add_idle_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">cpu_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">is_idle</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">"""add an event where a cpu enters or leaves an idle state.</span>
+<span class="sd">		Args:</span>
+<span class="sd">			time: timestamp of event.</span>
+<span class="sd">			cpu_id: id of cpu.</span>
+<span class="sd">			is_idle: True if the cpu enters an idle state.</span>
+<span class="sd">		"""</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">__new_event</span><span class="p">(</span><span class="n">time</span><span class="p">)</span><span class="o">.</span><span class="n">set_idle</span><span class="p">(</span><span class="n">cpu_id</span><span class="p">,</span> <span class="n">is_idle</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PerfettoCPUfreqParser.parse_event">
+<a class="viewcode-back" href="../../../../modules.html#manafa.parsing.perfetto.perfettoParser.PerfettoCPUfreqParser.parse_event">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">parse_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ev_str</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">""" parse frequency and cpu id from string.</span>
 <span class="sd">		Args:</span>
 <span class="sd">			ev_str: string expecting to have the patttern.</span>
 <span class="sd">		Returns:</span>
 <span class="sd">			cpu_id(int): id of the cpu.</span>
 <span class="sd">			cpu_freq(int): frequency value.</span>
-<span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">mat</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;cpu_frequency: state=(\d+) cpu_id=(\d+)&#39;</span><span class="p">,</span> <span class="n">ev_str</span><span class="p">)</span>
+<span class="sd">		"""</span>
+		<span class="n">mat</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">'cpu_frequency: state=(\d+) cpu_id=(\d+)'</span><span class="p">,</span> <span class="n">ev_str</span><span class="p">)</span>
 		<span class="k">if</span> <span class="n">mat</span><span class="p">:</span>
 			<span class="n">cpu_id</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">groups</span><span class="p">()[</span><span class="mi">1</span><span class="p">])</span>
 			<span class="n">cpu_freq</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">groups</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
 			<span class="k">return</span> <span class="n">cpu_id</span><span class="p">,</span> <span class="n">cpu_freq</span>
 		<span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="PerfettoCPUfreqParser.get_closest_pair"><a class="viewcode-back" href="../../../../manafa.parsing.perfetto.html#manafa.parsing.perfetto.perfettoParser.PerfettoCPUfreqParser.get_closest_pair">[docs]</a>	<span class="k">def</span> <span class="nf">get_closest_pair</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;return the closest indexes of samples to time.</span>
+
+<div class="viewcode-block" id="PerfettoCPUfreqParser.parse_idle_event">
+<a class="viewcode-back" href="../../../../modules.html#manafa.parsing.perfetto.perfettoParser.PerfettoCPUfreqParser.parse_idle_event">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">parse_idle_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ev_str</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">""" parse cpu id and idle state from string.</span>
+<span class="sd">		Args:</span>
+<span class="sd">			ev_str: string expecting to have the patttern.</span>
+<span class="sd">		Returns:</span>
+<span class="sd">			cpu_id(int): id of the cpu.</span>
+<span class="sd">			is_idle(bool): True if the cpu enters an idle state, False if it leaves it.</span>
+<span class="sd">		"""</span>
+		<span class="n">mat</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">'cpu_idle: state=(\d+) cpu_id=(\d+)'</span><span class="p">,</span> <span class="n">ev_str</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">mat</span><span class="p">:</span>
+			<span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">groups</span><span class="p">()[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">groups</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span> <span class="o">!=</span> <span class="n">CPU_IDLE_EXIT</span>
+		<span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="PerfettoCPUfreqParser.get_closest_pair">
+<a class="viewcode-back" href="../../../../modules.html#manafa.parsing.perfetto.perfettoParser.PerfettoCPUfreqParser.get_closest_pair">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">get_closest_pair</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">"""return the closest indexes of samples to time.</span>
 <span class="sd">		Args:</span>
 <span class="sd">			time: reference time.</span>
 <span class="sd">		Returns:</span>
 <span class="sd">			lasti(int): before index.</span>
 <span class="sd">			i(int): after index.</span>
-<span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">lasti</span> <span class="o">=</span> <span class="mi">0</span>
-		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">):</span>
-			<span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">time</span> <span class="o">&gt;</span> <span class="n">time</span><span class="p">:</span>
-				<span class="k">return</span> <span class="n">lasti</span><span class="p">,</span> <span class="n">i</span>
-			<span class="n">lasti</span> <span class="o">=</span> <span class="n">i</span>
-		<span class="k">return</span> <span class="n">lasti</span><span class="p">,</span> <span class="n">lasti</span></div></div>
+<span class="sd">		"""</span>
+		<span class="c1"># binary search for the first event after time. cpu_idle events make the list long</span>
+		<span class="n">lo</span><span class="p">,</span> <span class="n">hi</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">)</span>
+		<span class="k">while</span> <span class="n">lo</span> <span class="o">&lt;</span> <span class="n">hi</span><span class="p">:</span>
+			<span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">lo</span> <span class="o">+</span> <span class="n">hi</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+			<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span><span class="o">.</span><span class="n">time</span> <span class="o">&gt;</span> <span class="n">time</span><span class="p">:</span>
+				<span class="n">hi</span> <span class="o">=</span> <span class="n">mid</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">lo</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span>
+		<span class="k">if</span> <span class="n">lo</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">):</span>
+			<span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">lo</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">lo</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+		<span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">lo</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">lo</span></div>
+</div>
 
-<span class="c1">#bootTime = float ( executeShCommand (&quot;adb shell cat /proc/stat | grep btime | awk &#39;{print $2}&#39;&quot;).strip() )</span>
+
+
+<div class="viewcode-block" id="parse_dumpsys_output">
+<a class="viewcode-back" href="../../../../modules.html#manafa.parsing.perfetto.perfettoParser.parse_dumpsys_output">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_dumpsys_output</span><span class="p">(</span><span class="n">dumpsys_text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">	</span><span class="sd">"""</span>
+<span class="sd">    Parses the plain text output from the dumpsys command into a dictionary.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        dumpsys_text: The multi-line string output from the adb command.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A dictionary where keys are the power profile items (e.g., 'cpu.active')</span>
+<span class="sd">        and values are either floats or lists of floats.</span>
+<span class="sd">    """</span>
+	<span class="n">parsed_data</span> <span class="o">=</span> <span class="p">{}</span>
+	<span class="n">lines</span> <span class="o">=</span> <span class="n">dumpsys_text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+
+	<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+		<span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+		<span class="c1"># Stop at special sections that don't follow the key=value format</span>
+		<span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'modem values'</span><span class="p">):</span>
+			<span class="k">break</span>
+
+		<span class="c1"># Skip lines that are not key-value pairs</span>
+		<span class="k">if</span> <span class="s1">'='</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+			<span class="k">continue</span>
+
+		<span class="n">key</span><span class="p">,</span> <span class="n">value_str</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'='</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+		<span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+		<span class="n">value_str</span> <span class="o">=</span> <span class="n">value_str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+		<span class="c1"># Check if the value is a list (array)</span>
+		<span class="k">if</span> <span class="n">value_str</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'['</span><span class="p">)</span> <span class="ow">and</span> <span class="n">value_str</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">']'</span><span class="p">):</span>
+			<span class="c1"># It's a list. Parse its contents.</span>
+			<span class="n">list_content</span> <span class="o">=</span> <span class="n">value_str</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+			<span class="k">if</span> <span class="n">list_content</span><span class="p">:</span>
+				<span class="c1"># Split by comma and convert each element to float</span>
+				<span class="n">parsed_value</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">list_content</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">','</span><span class="p">)]</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">parsed_value</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="c1"># It's a single item. Convert to float.</span>
+			<span class="k">try</span><span class="p">:</span>
+				<span class="n">parsed_value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value_str</span><span class="p">)</span>
+			<span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+				<span class="c1"># Skip if the value is not a valid float</span>
+				<span class="k">continue</span>
+
+		<span class="n">parsed_data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">parsed_value</span>
+
+	<span class="k">return</span> <span class="n">parsed_data</span></div>
+
+
+
+<div class="viewcode-block" id="generate_power_profile_xml">
+<a class="viewcode-back" href="../../../../modules.html#manafa.parsing.perfetto.perfettoParser.generate_power_profile_xml">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_power_profile_xml</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">output_filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">"""</span>
+<span class="sd">    Generates a power_profile.xml file from a parsed data dictionary.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        data: The dictionary generated by parse_dumpsys_output.</span>
+<span class="sd">        output_filename: The name of the file to save (e.g., 'power_profile.xml').</span>
+<span class="sd">    """</span>
+	<span class="c1"># Create the root element &lt;device name="Android"&gt;</span>
+	<span class="n">root</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="s2">"device"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"Android"</span><span class="p">)</span>
+
+	<span class="c1"># Sort keys for a consistent output file</span>
+	<span class="n">sorted_keys</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+	<span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">sorted_keys</span><span class="p">:</span>
+		<span class="n">value</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+			<span class="c1"># This is an array</span>
+			<span class="n">array_element</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="s2">"array"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
+			<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">value</span><span class="p">:</span>
+				<span class="n">value_element</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">array_element</span><span class="p">,</span> <span class="s2">"value"</span><span class="p">)</span>
+				<span class="n">value_element</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="c1"># This is a single item</span>
+			<span class="n">item_element</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="s2">"item"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
+			<span class="n">item_element</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+	<span class="c1"># Create an ElementTree object and write it to a file</span>
+	<span class="n">tree</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">ElementTree</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+
+	<span class="c1"># Use ET.indent for pretty-printing the XML (available in Python 3.9+)</span>
+	<span class="c1"># This makes the output human-readable.</span>
+	<span class="n">ET</span><span class="o">.</span><span class="n">indent</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">space</span><span class="o">=</span><span class="s2">"</span><span class="se">\t</span><span class="s2">"</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+	<span class="n">tree</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">output_filename</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">,</span> <span class="n">xml_declaration</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+	<span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Successfully generated '</span><span class="si">{</span><span class="n">output_filename</span><span class="si">}</span><span class="s2">'"</span><span class="p">)</span></div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
+	<span class="c1"># --- Paste the output of 'adb shell dumpsys batterystats --power-profile' here ---</span>
+	<span class="n">sample_dumpsys_output</span> <span class="o">=</span> <span class="s2">"""</span>
+<span class="s2">    Power Profile: </span>
+<span class="s2">        ambient.on=32.0 </span>
+<span class="s2">        wifi.controller.tx=540.0 </span>
+<span class="s2">        cpu.active=10.62 </span>
+<span class="s2">        wifi.controller.rx=39.0 </span>
+<span class="s2">        modem.controller.idle=156.0 </span>
+<span class="s2">        camera.avg=900.0 </span>
+<span class="s2">        video=25.0 </span>
+<span class="s2">        screen.full.display0=470.0 </span>
+<span class="s2">        camera.flashlight=240.47 </span>
+<span class="s2">        modem.controller.rx=145.0 </span>
+<span class="s2">        gps.voltage=3700.0 </span>
+<span class="s2">        screen.on=98.0 </span>
+<span class="s2">        modem.controller.sleep=0.0 </span>
+<span class="s2">        cpu.suspend=9.28 </span>
+<span class="s2">        audio=75.0 </span>
+<span class="s2">        wifi.controller.voltage=3850.0 </span>
+<span class="s2">        modem.controller.voltage=3700.0 </span>
+<span class="s2">        wifi.controller.idle=31.0 </span>
+<span class="s2">        screen.on.display0=98.0 </span>
+<span class="s2">        screen.full=470.0 </span>
+<span class="s2">        cpu.cluster_power.cluster0=0.0 </span>
+<span class="s2">        cpu.cluster_power.cluster1=1.12 </span>
+<span class="s2">        cpu.idle=22.71 </span>
+<span class="s2">        cpu.cluster_power.cluster2=2.2 </span>
+<span class="s2">        ambient.on.display0=32.0 </span>
+<span class="s2">        cpu.core_speeds.cluster2=[700000.0, 1164000.0, 1296000.0, 1557000.0, 1745000.0, 1885000.0, 1999000.0, 2147000.0, 2294000.0, 2363000.0, 2499000.0, 2687000.0, 2802000.0, 2914000.0, 2943000.0, 2970000.0, 3015000.0, 3105000.0] </span>
+<span class="s2">        cpu.core_power.cluster0=[1.27, 5.87, 6.5, 7.93, 10.5, 14.06, 16.18, 17.65, 20.92, 24.67, 34.09, 47.41] </span>
+<span class="s2">        gps.signalqualitybased=[28.0, 5.0] </span>
+<span class="s2">        cpu.core_power.cluster2=[16.91, 29.84, 39.6, 47.85, 58.03, 66.96, 74.66, 87.45, 102.03, 110.83, 130.63, 165.41, 193.74, 229.21, 238.15, 244.34, 251.35, 253.83] </span>
+<span class="s2">        modem.controller.tx=[153.0, 212.0, 292.0, 359.0, 471.0] </span>
+<span class="s2">        cpu.core_power.cluster1=[5.4, 8.9, 9.9, 12.65, 14.65, 18.15, 22.65, 25.15, 28.65, 33.9, 46.4, 56.9, 71.15, 81.4, 92.9, 102.4, 124.9] </span>
+<span class="s2">        cpu.core_speeds.cluster0=[324000.0, 610000.0, 820000.0, 955000.0, 1098000.0, 1197000.0, 1328000.0, 1425000.0, 1548000.0, 1696000.0, 1849000.0, 1950000.0] </span>
+<span class="s2">        cpu.core_speeds.cluster1=[357000.0, 578000.0, 648000.0, 787000.0, 910000.0, 1065000.0, 1221000.0, 1328000.0, 1418000.0, 1549000.0, 1795000.0, 1945000.0, 2130000.0, 2245000.0, 2367000.0, 2450000.0, 2600000.0] </span>
+<span class="s2">        cpu.clusters.cores=[4.0, 3.0, 1.0] </span>
+<span class="s2">        Modem values:</span>
+<span class="s2">          drain:SLEEP,RAT:DEFAULT=0.0</span>
+<span class="s2">          drain:IDLE,RAT:DEFAULT=156.0</span>
+<span class="s2">          drain:RX,RAT:DEFAULT=145.0</span>
+<span class="s2">          drain:TX,level:0,RAT:DEFAULT=153.0</span>
+<span class="s2">    """</span>
+
+	<span class="c1"># Define the output file name</span>
+	<span class="n">output_xml_file</span> <span class="o">=</span> <span class="s2">"power_profile.xml"</span>
+
+	<span class="c1"># 1. Parse the text output</span>
+	<span class="n">parsed_profile_data</span> <span class="o">=</span> <span class="n">parse_dumpsys_output</span><span class="p">(</span><span class="n">sample_dumpsys_output</span><span class="p">)</span>
+
+	<span class="c1"># 2. Generate the XML file from the parsed data</span>
+	<span class="n">generate_power_profile_xml</span><span class="p">(</span><span class="n">parsed_profile_data</span><span class="p">,</span> <span class="n">output_xml_file</span><span class="p">)</span>
+
+<span class="c1">#bootTime = float ( executeShCommand ("adb shell cat /proc/stat | grep btime | awk '{print $2}'").strip() )</span>
 <span class="c1">#print(bootTime)</span>
 <span class="c1">#print(epochToDate(bootTime))</span>
 <span class="c1">#x = PerfettoCPUfreqParser(bootTime)</span>
-<span class="c1">#x.parseFile(&quot;/Users/ruirua/repos/petra_like/results/perfetto/trace-1605638909.systrace&quot;)</span>
+<span class="c1">#x.parseFile("/Users/ruirua/repos/petra_like/results/perfetto/trace-1605638909.systrace")</span>
 <span class="c1">#print(x.events)</span>
 
 </pre></div>
 
            </div>
-           
           </div>
           <footer>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2021, Rui Rua.
-
-    </p>
+    <p>&#169; Copyright 2021-2026, Rui Rua.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

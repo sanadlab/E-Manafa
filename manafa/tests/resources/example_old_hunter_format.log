@@ -1,0 +1,4 @@
+>com.example.app.MainActivity.onCreate [m=example, cpu = 0.0, t = 1700000000000]
+>com.example.app.Repository.load [m=example, cpu = 0.0, t = 1700000000100]
+<com.example.app.Repository.load [m=example, cpu = 0.0, t = 1700000000250]
+<com.example.app.MainActivity.onCreate [m=example, cpu = 0.0, t = 1700000000400]

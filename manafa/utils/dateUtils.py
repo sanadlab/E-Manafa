@@ -24,21 +24,42 @@ def convertBatStatTimeToTimeStamp(batstattime,timezone="EST"):
 	#return time.mktime(d.timetuple())
 
 
-def convertBatStatTimeToTimeStampNew(batstattime, year, timezone="EST"):
+def get_tzinfo(timezone):
+	"""returns the tzinfo of a timezone given as IANA name (e.g. Europe/Lisbon) or as UTC offset (e.g. +0100).
+	Returns None if the timezone is not known."""
+	offset = re.match(r'^([+-])(\d{2}):?(\d{2})$', str(timezone).strip())
+	if offset:
+		delta = datetime.timedelta(hours=int(offset.group(2)), minutes=int(offset.group(3)))
+		return datetime.timezone(-delta if offset.group(1) == '-' else delta)
+	try:
+		return pytz.timezone(str(timezone).strip())
+	except pytz.UnknownTimeZoneError:
+		return None
+
+
+def is_known_timezone(timezone):
+	return get_tzinfo(timezone) is not None
+
+
+def local_time_to_timestamp(local_time, timezone):
+	"""converts a naive datetime in the device timezone to a Unix timestamp (secs.ms)."""
+	tz = get_tzinfo(timezone)
+	if tz is None:
+		raise ValueError("Unknown timezone '%s'. Use an IANA name (e.g. Europe/Lisbon) or a UTC offset (e.g. +0100)" % timezone)
+	aware = tz.localize(local_time) if hasattr(tz, 'localize') else local_time.replace(tzinfo=tz)
+	return aware.timestamp()
+
+
+def convertBatStatTimeToTimeStampNew(batstattime, year, timezone="UTC"):
 	# parse data like  11-11 14:49:47.952
 	batstattime = str(year) + "-" + batstattime
 	d1 = datetime.datetime.strptime(batstattime, '%Y-%m-%d %H:%M:%S.%f')
-	pst = pytz.timezone(timezone)
-	d = pst.localize(d1)
-	return time.mktime(d.timetuple())
+	return local_time_to_timestamp(d1, timezone)
 
 
-def batStatResetTimeToTimeStamp(matime, timezone="UTC", default_tz="UTC"):
-	cv_timezone = convert_to_pytz_timezone(timezone, default_tz)
+def batStatResetTimeToTimeStamp(matime, timezone="UTC"):
 	d1 = datetime.datetime.strptime(matime, '%Y-%m-%d-%H-%M-%S')
-	pst = pytz.timezone(cv_timezone)
-	d = pst.localize(d1)
-	return time.mktime(d.timetuple())
+	return local_time_to_timestamp(d1, timezone)
 
 
 def convertDateToTimeStamp(date, timezone="EST"):
@@ -51,13 +72,6 @@ def convertDateToTimeStamp(date, timezone="EST"):
 def epochToDate(ts):
 	return time.ctime(ts)
 
-
-def convert_to_pytz_timezone(tz_date, default_tz="EST"):
-	if tz_date == "WEST":
-		return "WET"
-	elif tz_date == "CEST":
-		return "LMT"
-	return default_tz
 
 #x="2020-11-17-12-06-18"
 #z = batStatResetTimeToTimeStamp(x)

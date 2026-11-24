@@ -1,0 +1,432 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sunburst diagram &mdash; E-MANAFA 0.4.14</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=c1264a3d" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=1f5508e5"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Output files" href="output.html" />
+    <link rel="prev" title="Energy of each method" href="method_energy.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            E-MANAFA
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#first-measurement">First measurement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#usb-or-wi-fi">USB or Wi-Fi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#next-steps">Next steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="how_it_works.html">How it works</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="how_it_works.html#workflow">Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="how_it_works.html#two-sources-of-energy-data">Two sources of energy data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="how_it_works.html#power-rails-default">Power rails (default)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="how_it_works.html#legacy-model">Legacy model</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="how_it_works.html#memory">Memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="how_it_works.html#energy-of-a-method">Energy of a method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="how_it_works.html#clocks">Clocks</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Measurement scenarios</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#energy-only">Energy only</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#memory-only">Memory only</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#energy-and-memory-in-separate-runs-recommended">Energy and memory in separate runs (recommended)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#energy-and-memory-in-one-run">Energy and memory in one run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#a-device-with-no-power-rails">A device with no power rails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#how-long-to-measure">How long to measure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#a-repeatable-workload">A repeatable workload</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#the-device-only-with-no-app">The device only, with no app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#an-app-with-no-method-trace">An app with no method trace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#finer-time-resolution">Finer time resolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#parse-recorded-files-again">Parse recorded files again</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="method_energy.html">Energy of each method</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="method_energy.html#method-trace-sources">Method trace sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="method_energy.html#the-app-must-permit-profiling">The app must permit profiling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="method_energy.html#how-the-trace-is-recorded">How the trace is recorded</a></li>
+<li class="toctree-l2"><a class="reference internal" href="method_energy.html#what-a-method-gets">What a method gets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="method_energy.html#result-files">Result files</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Sunburst diagram</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-three-views">The three views</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#call-graph">Call graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#packages-all-code">Packages: all code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#packages-app-only">Packages: app only</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#hot-spots">Hot spots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#controls">Controls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-the-values-are">What the values are</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#make-the-diagram-from-a-result-file">Make the diagram from a result file</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="output.html">Output files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="output.html#summary-in-the-terminal">Summary in the terminal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="output.html#result-file">Result file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="output.html#fields">Fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="output.html#raw-files">Raw files</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Command-line reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#session">Session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#methods-and-diagram">Methods and diagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#sampling">Sampling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#device-data">Device data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#output">Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#recorded-files">Recorded files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="library.html">Python library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="library.html#energy-and-memory-of-a-block-of-code">Energy and memory of a block of code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="library.html#energy-of-an-interval">Energy of an interval</a></li>
+<li class="toctree-l2"><a class="reference internal" href="library.html#legacy-model">Legacy model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="library.html#energy-of-methods">Energy of methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="library.html#sunburst-diagram">Sunburst diagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="library.html#one-session-for-each-object">One session for each object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="accuracy.html">Accuracy and limits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="accuracy.html#power-rails-are-measurements">Power rails are measurements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="accuracy.html#the-legacy-model-is-an-estimate">The legacy model is an estimate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="accuracy.html#limits-of-method-energy">Limits of method energy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="accuracy.html#limits-of-the-legacy-model">Limits of the legacy model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="accuracy.html#the-connection-to-the-device">The connection to the device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="accuracy.html#good-practice">Good practice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="accuracy.html#accuracy-tests">Accuracy tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="development.html#tests">Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development.html#structure-of-the-code">Structure of the code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development.html#build-these-pages">Build these pages</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#module-manafa.emanafa">Sessions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.emanafa.get_last_boot_time"><code class="docutils literal notranslate"><span class="pre">get_last_boot_time()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.emanafa.EManafa"><code class="docutils literal notranslate"><span class="pre">EManafa</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.am_emanafa.get_monotonic_to_epoch_s"><code class="docutils literal notranslate"><span class="pre">get_monotonic_to_epoch_s()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.am_emanafa.AMEManafa"><code class="docutils literal notranslate"><span class="pre">AMEManafa</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.hunter_emanafa.HunterEManafa"><code class="docutils literal notranslate"><span class="pre">HunterEManafa</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#module-manafa.parsing.perfettoEnergyCalculator">Power rails and memory</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.parsing.perfettoEnergyCalculator.count_power_rails"><code class="docutils literal notranslate"><span class="pre">count_power_rails()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.parsing.perfettoEnergyCalculator.PowerRailsTrace"><code class="docutils literal notranslate"><span class="pre">PowerRailsTrace</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.parsing.perfettoEnergyCalculator.calculate_memory_stats"><code class="docutils literal notranslate"><span class="pre">calculate_memory_stats()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#module-manafa.sunburst">Sunburst diagram</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.sunburst.load_calls"><code class="docutils literal notranslate"><span class="pre">load_calls()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.sunburst.build_tree"><code class="docutils literal notranslate"><span class="pre">build_tree()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.sunburst.energy_clock"><code class="docutils literal notranslate"><span class="pre">energy_clock()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.sunburst.hot_sectors"><code class="docutils literal notranslate"><span class="pre">hot_sectors()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.sunburst.focus_subtrees"><code class="docutils literal notranslate"><span class="pre">focus_subtrees()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.sunburst.build_sunburst"><code class="docutils literal notranslate"><span class="pre">build_sunburst()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#module-manafa.parsing.batteryStats.BatteryStatsParser">Parsers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.parsing.batteryStats.BatteryStatsParser.safe_division"><code class="docutils literal notranslate"><span class="pre">safe_division()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.parsing.batteryStats.BatteryStatsParser.BatteryEvent"><code class="docutils literal notranslate"><span class="pre">BatteryEvent</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.parsing.batteryStats.BatteryStatsParser.BatteryStatsParser"><code class="docutils literal notranslate"><span class="pre">BatteryStatsParser</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.parsing.perfetto.perfettoParser.interpolate"><code class="docutils literal notranslate"><span class="pre">interpolate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.parsing.perfetto.perfettoParser.CPU_STATE"><code class="docutils literal notranslate"><span class="pre">CPU_STATE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.parsing.perfetto.perfettoParser.PerfettoCPUEvent"><code class="docutils literal notranslate"><span class="pre">PerfettoCPUEvent</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.parsing.perfetto.perfettoParser.PerfettoCPUfreqParser"><code class="docutils literal notranslate"><span class="pre">PerfettoCPUfreqParser</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.parsing.perfetto.perfettoParser.parse_dumpsys_output"><code class="docutils literal notranslate"><span class="pre">parse_dumpsys_output()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.parsing.perfetto.perfettoParser.generate_power_profile_xml"><code class="docutils literal notranslate"><span class="pre">generate_power_profile_xml()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.parsing.powerProfile.PowerProfile.PowerProfile"><code class="docutils literal notranslate"><span class="pre">PowerProfile</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.parsing.method_traces.AMParser.AMParser"><code class="docutils literal notranslate"><span class="pre">AMParser</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.parsing.method_traces.HunterParser.HunterParser"><code class="docutils literal notranslate"><span class="pre">HunterParser</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.parsing.method_traces.AppConsumptionStats.AppConsumptionStats"><code class="docutils literal notranslate"><span class="pre">AppConsumptionStats</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#module-manafa.services.service">Device services</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.services.service.Service"><code class="docutils literal notranslate"><span class="pre">Service</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.services.perfettoService.wait_for_our_perfetto_to_exit"><code class="docutils literal notranslate"><span class="pre">wait_for_our_perfetto_to_exit()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.services.perfettoService.PerfettoService"><code class="docutils literal notranslate"><span class="pre">PerfettoService</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.services.perfettoServiceEnhanced.device_supports_power_rails"><code class="docutils literal notranslate"><span class="pre">device_supports_power_rails()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.services.perfettoServiceEnhanced.PerfettoServiceEnhanced"><code class="docutils literal notranslate"><span class="pre">PerfettoServiceEnhanced</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.services.batteryStatsService.BatteryStatsService"><code class="docutils literal notranslate"><span class="pre">BatteryStatsService</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.services.AmProfilerService.AmProfilerService"><code class="docutils literal notranslate"><span class="pre">AmProfilerService</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.services.LogcatService.LogcatService"><code class="docutils literal notranslate"><span class="pre">LogcatService</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#module-manafa.utils.BatteryDrainCalculator">Utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.utils.BatteryDrainCalculator.BatteryDrainCalculator"><code class="docutils literal notranslate"><span class="pre">BatteryDrainCalculator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.utils.dateUtils.get_tzinfo"><code class="docutils literal notranslate"><span class="pre">get_tzinfo()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.utils.dateUtils.local_time_to_timestamp"><code class="docutils literal notranslate"><span class="pre">local_time_to_timestamp()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html#module-manafa.main">Command line</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.main.has_connected_devices"><code class="docutils literal notranslate"><span class="pre">has_connected_devices()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.main.export_to_json"><code class="docutils literal notranslate"><span class="pre">export_to_json()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.main.export_to_csv"><code class="docutils literal notranslate"><span class="pre">export_to_csv()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.main.display_new_profiler_results"><code class="docutils literal notranslate"><span class="pre">display_new_profiler_results()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.main.is_rails_trace"><code class="docutils literal notranslate"><span class="pre">is_rails_trace()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.main.parse_rails_trace"><code class="docutils literal notranslate"><span class="pre">parse_rails_trace()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.main.preserve_trace_file"><code class="docutils literal notranslate"><span class="pre">preserve_trace_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.main.generate_sunburst"><code class="docutils literal notranslate"><span class="pre">generate_sunburst()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">E-MANAFA</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Sunburst diagram</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/sunburst.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="sunburst-diagram">
+<h1>Sunburst diagram<a class="headerlink" href="#sunburst-diagram" title="Link to this heading"></a></h1>
+<p>The sunburst shows where the app consumes energy in its call graph.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>plotly
+<span class="gp">$ </span>emanafa<span class="w"> </span>-a<span class="w"> </span>com.example.app<span class="w"> </span>-s<span class="w"> </span><span class="m">30</span><span class="w"> </span>--sunburst<span class="w"> </span>app.html
+</pre></div>
+</div>
+<p>Open <code class="docutils literal notranslate"><span class="pre">app.html</span></code> in a browser. The file contains all that it needs.</p>
+<p>The diagram needs the power rails. With the legacy model, E-MANAFA writes no diagram.</p>
+<a class="reference internal image-reference" href="_images/sunburst_call_graph.png"><img alt="Call graph view of the sunburst diagram" src="_images/sunburst_call_graph.png" style="width: 100%;" />
+</a>
+<section id="the-three-views">
+<h2>The three views<a class="headerlink" href="#the-three-views" title="Link to this heading"></a></h2>
+<p>Select a view with the buttons above the diagram.</p>
+<section id="call-graph">
+<h3>Call graph<a class="headerlink" href="#call-graph" title="Link to this heading"></a></h3>
+<p>The graph starts at the methods of the app and contains all that they call. Each ring is one
+call level. A sector is one <strong>call path</strong>: a method with its callers. All the calls of a
+method that have the same callers are one sector. The size and the colour of a sector show
+its energy, with its callees.</p>
+</section>
+<section id="packages-all-code">
+<h3>Packages: all code<a class="headerlink" href="#packages-all-code" title="Link to this heading"></a></h3>
+<p>Three rings: the inner ring is the package, the next ring is the class, and the outer ring is
+the method. The view contains the app, the libraries and the Android framework. A sector
+shows the energy that the methods consumed in their own code.</p>
+</section>
+<section id="packages-app-only">
+<h3>Packages: app only<a class="headerlink" href="#packages-app-only" title="Link to this heading"></a></h3>
+<a class="reference internal image-reference" href="_images/sunburst_app_only.png"><img alt="App only view of the sunburst diagram" src="_images/sunburst_app_only.png" style="width: 100%;" />
+</a>
+<p>The first three rings are the packages, the classes and the methods <strong>of the app only</strong>.
+Below each method are the calls that it makes to other code (libraries and framework). A
+method sector contains the energy of its own code and of the code that it calls.</p>
+<p>A call to a different method of the app is not below the caller. That method has its own
+sector. Thus no energy is counted two times, and the sectors add up to the total.</p>
+<p>The app is the package that you give with <code class="docutils literal notranslate"><span class="pre">-a</span></code>. Use <code class="docutils literal notranslate"><span class="pre">--package</span></code> to select a different
+package prefix.</p>
+</section>
+</section>
+<section id="hot-spots">
+<h2>Hot spots<a class="headerlink" href="#hot-spots" title="Link to this heading"></a></h2>
+<p>A sector is orange, and not blue, when both of these are true:</p>
+<ol class="arabic simple">
+<li><p>It has more than 10 % of the energy of the diagram, <strong>or</strong> more than 20 % of the energy of
+its ring.</p></li>
+<li><p>It ran for more than 10 ms.</p></li>
+</ol>
+<p>In the two colours, a darker sector has more energy (logarithmic scale). The hot spots are
+decided with the values of the full session.</p>
+<p>Change the limits with <code class="docutils literal notranslate"><span class="pre">--hot-total</span></code>, <code class="docutils literal notranslate"><span class="pre">--hot-ring</span></code> and <code class="docutils literal notranslate"><span class="pre">--hot-min-ms</span></code>.</p>
+</section>
+<section id="controls">
+<h2>Controls<a class="headerlink" href="#controls" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 28.0%" />
+<col style="width: 72.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Control</p></th>
+<th class="head"><p>Function</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Click a sector</p></td>
+<td><p>Zoom in. Click the centre to go back.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Pointer on a sector</p></td>
+<td><p>Shows the full name, the energy, the energy in its own code, the number of calls, the
+mean energy of one call, and the execution time.</p></td>
+</tr>
+<tr class="row-even"><td><p>Level buttons</p></td>
+<td><p>Select how many rings are shown.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Search box</p></td>
+<td><p>Finds a method or a package and gives the sectors a thick outline.</p></td>
+</tr>
+<tr class="row-even"><td><p>Bar chart</p></td>
+<td><p>The methods with the most energy in their own code. Click a bar to find the method
+in the diagram.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Slider and Play</p></td>
+<td><p>Show how the energy grows during the session.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="what-the-values-are">
+<h2>What the values are<a class="headerlink" href="#what-the-values-are" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>A value is the <strong>total of all the calls</strong> of the method or of the call path. It is not a
+mean. The hover text gives the mean energy of one call.</p></li>
+<li><p>The energy comes from the CPU rails (see <a class="reference internal" href="how_it_works.html"><span class="doc">How it works</span></a>).</p></li>
+<li><p>Methods that only wait (for example <code class="docutils literal notranslate"><span class="pre">Object.wait</span></code> or an idle <code class="docutils literal notranslate"><span class="pre">Looper</span></code>) get no energy.</p></li>
+<li><p>When methods of different threads run at the same time, the energy is divided between them.</p></li>
+<li><p>Call paths with less than 0.05 % of the energy are not drawn. Their energy stays in their
+caller.</p></li>
+</ul>
+</section>
+<section id="make-the-diagram-from-a-result-file">
+<h2>Make the diagram from a result file<a class="headerlink" href="#make-the-diagram-from-a-result-file" title="Link to this heading"></a></h2>
+<p>You can make the diagram again, with other options, from the JSON file of a session. The
+method trace (<code class="docutils literal notranslate"><span class="pre">*_calls.csv</span></code>) must be in its initial location.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3<span class="w"> </span>-m<span class="w"> </span>manafa.sunburst<span class="w"> </span>results.json<span class="w"> </span>-o<span class="w"> </span>app.html
+</pre></div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 34.0%" />
+<col style="width: 66.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Option</p></th>
+<th class="head"><p>Function</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">-o,</span> <span class="pre">--out</span> <span class="pre">&lt;file&gt;</span></code></p></td>
+<td><p>Name of the HTML file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--focus</span> <span class="pre">&lt;prefixes&gt;</span></code></p></td>
+<td><p>Start the call graph at these package prefixes (separated by commas). The default is
+the app package. <code class="docutils literal notranslate"><span class="pre">all</span></code> keeps the full process.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--package</span> <span class="pre">&lt;prefix&gt;</span></code></p></td>
+<td><p>Package prefix of the “app only” view. The default is the app package.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--max-depth</span> <span class="pre">&lt;n&gt;</span></code></p></td>
+<td><p>Number of call levels below the start points. Default 10.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--hot-total</span> <span class="pre">&lt;pct&gt;</span></code></p></td>
+<td><p>Limit of a hot spot: percentage of the energy of the diagram. Default 10.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--hot-ring</span> <span class="pre">&lt;pct&gt;</span></code></p></td>
+<td><p>Limit of a hot spot: percentage of the energy of its ring. Default 20.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--hot-min-ms</span> <span class="pre">&lt;ms&gt;</span></code></p></td>
+<td><p>A hot spot must also run for more than this time. Default 10.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--frames</span> <span class="pre">&lt;n&gt;</span></code></p></td>
+<td><p>Number of steps of the time slider. Default 40.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--include-blocked</span></code></p></td>
+<td><p>Also give energy to methods that only wait.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Examples:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3<span class="w"> </span>-m<span class="w"> </span>manafa.sunburst<span class="w"> </span>results.json<span class="w"> </span>--focus<span class="w"> </span>com.example.ui,androidx
+<span class="gp">$ </span>python3<span class="w"> </span>-m<span class="w"> </span>manafa.sunburst<span class="w"> </span>results.json<span class="w"> </span>--focus<span class="w"> </span>all<span class="w"> </span>--max-depth<span class="w"> </span><span class="m">20</span>
+<span class="gp">$ </span>python3<span class="w"> </span>-m<span class="w"> </span>manafa.sunburst<span class="w"> </span>results.json<span class="w"> </span>--hot-total<span class="w"> </span><span class="m">5</span><span class="w"> </span>--hot-ring<span class="w"> </span><span class="m">30</span><span class="w"> </span>--hot-min-ms<span class="w"> </span><span class="m">50</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="method_energy.html" class="btn btn-neutral float-left" title="Energy of each method" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="output.html" class="btn btn-neutral float-right" title="Output files" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2026, Rui Rua.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

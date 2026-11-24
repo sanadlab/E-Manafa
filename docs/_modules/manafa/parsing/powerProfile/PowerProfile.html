@@ -1,247 +1,383 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../../">
 <head>
   <meta charset="utf-8" />
-  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <title>manafa.parsing.powerProfile.PowerProfile &mdash; e-manafa 0.3.5 documentation</title>
-  
+  <title>manafa.parsing.powerProfile.PowerProfile &mdash; E-MANAFA 0.4.14</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=c1264a3d" />
 
   
-  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
-  <!--[if lt IE 9]>
-    <script src="../../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
-        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
-        <script src="../../../../_static/jquery.js"></script>
-        <script src="../../../../_static/underscore.js"></script>
-        <script src="../../../../_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
-
-    
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=1f5508e5"></script>
+      <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
 
           
-            <a href="../../../../index.html" class="icon icon-home"> e-manafa
           
-
-          
+          <a href="../../../../index.html" class="icon icon-home">
+            E-MANAFA
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User guide</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../README.html">E-MANAFA: Energy Monitor and ANAlyzer For Android</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../README.html#setup">SETUP</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../README.html#installation">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../README.html#usage">Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../README.html#supported-devices">Supported devices:</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../README.html#todo">TODO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../modules.html">manafa</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../getting_started.html">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../getting_started.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../getting_started.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../getting_started.html#first-measurement">First measurement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../getting_started.html#usb-or-wi-fi">USB or Wi-Fi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../getting_started.html#next-steps">Next steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../how_it_works.html">How it works</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../how_it_works.html#workflow">Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../how_it_works.html#two-sources-of-energy-data">Two sources of energy data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../how_it_works.html#power-rails-default">Power rails (default)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../how_it_works.html#legacy-model">Legacy model</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../how_it_works.html#memory">Memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../how_it_works.html#energy-of-a-method">Energy of a method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../how_it_works.html#clocks">Clocks</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../usage.html">Measurement scenarios</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../usage.html#energy-only">Energy only</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../usage.html#memory-only">Memory only</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../usage.html#energy-and-memory-in-separate-runs-recommended">Energy and memory in separate runs (recommended)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../usage.html#energy-and-memory-in-one-run">Energy and memory in one run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../usage.html#a-device-with-no-power-rails">A device with no power rails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../usage.html#how-long-to-measure">How long to measure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../usage.html#a-repeatable-workload">A repeatable workload</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../usage.html#the-device-only-with-no-app">The device only, with no app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../usage.html#an-app-with-no-method-trace">An app with no method trace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../usage.html#finer-time-resolution">Finer time resolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../usage.html#parse-recorded-files-again">Parse recorded files again</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../method_energy.html">Energy of each method</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../method_energy.html#method-trace-sources">Method trace sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../method_energy.html#the-app-must-permit-profiling">The app must permit profiling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../method_energy.html#how-the-trace-is-recorded">How the trace is recorded</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../method_energy.html#what-a-method-gets">What a method gets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../method_energy.html#result-files">Result files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../sunburst.html">Sunburst diagram</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../sunburst.html#the-three-views">The three views</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../sunburst.html#call-graph">Call graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../sunburst.html#packages-all-code">Packages: all code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../sunburst.html#packages-app-only">Packages: app only</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../sunburst.html#hot-spots">Hot spots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../sunburst.html#controls">Controls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../sunburst.html#what-the-values-are">What the values are</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../sunburst.html#make-the-diagram-from-a-result-file">Make the diagram from a result file</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../output.html">Output files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../output.html#summary-in-the-terminal">Summary in the terminal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../output.html#result-file">Result file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../output.html#fields">Fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../output.html#raw-files">Raw files</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cli.html">Command-line reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../cli.html#session">Session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../cli.html#methods-and-diagram">Methods and diagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../cli.html#sampling">Sampling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../cli.html#device-data">Device data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../cli.html#output">Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../cli.html#recorded-files">Recorded files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../library.html">Python library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../library.html#energy-and-memory-of-a-block-of-code">Energy and memory of a block of code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../library.html#energy-of-an-interval">Energy of an interval</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../library.html#legacy-model">Legacy model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../library.html#energy-of-methods">Energy of methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../library.html#sunburst-diagram">Sunburst diagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../library.html#one-session-for-each-object">One session for each object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../accuracy.html">Accuracy and limits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../accuracy.html#power-rails-are-measurements">Power rails are measurements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../accuracy.html#the-legacy-model-is-an-estimate">The legacy model is an estimate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../accuracy.html#limits-of-method-energy">Limits of method energy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../accuracy.html#limits-of-the-legacy-model">Limits of the legacy model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../accuracy.html#the-connection-to-the-device">The connection to the device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../accuracy.html#good-practice">Good practice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../accuracy.html#accuracy-tests">Accuracy tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development.html">Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../development.html#tests">Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../development.html#structure-of-the-code">Structure of the code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../development.html#build-these-pages">Build these pages</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../modules.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../modules.html#module-manafa.emanafa">Sessions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.emanafa.get_last_boot_time"><code class="docutils literal notranslate"><span class="pre">get_last_boot_time()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.emanafa.EManafa"><code class="docutils literal notranslate"><span class="pre">EManafa</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.am_emanafa.get_monotonic_to_epoch_s"><code class="docutils literal notranslate"><span class="pre">get_monotonic_to_epoch_s()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.am_emanafa.AMEManafa"><code class="docutils literal notranslate"><span class="pre">AMEManafa</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.hunter_emanafa.HunterEManafa"><code class="docutils literal notranslate"><span class="pre">HunterEManafa</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../modules.html#module-manafa.parsing.perfettoEnergyCalculator">Power rails and memory</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.parsing.perfettoEnergyCalculator.count_power_rails"><code class="docutils literal notranslate"><span class="pre">count_power_rails()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.parsing.perfettoEnergyCalculator.PowerRailsTrace"><code class="docutils literal notranslate"><span class="pre">PowerRailsTrace</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.parsing.perfettoEnergyCalculator.calculate_memory_stats"><code class="docutils literal notranslate"><span class="pre">calculate_memory_stats()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../modules.html#module-manafa.sunburst">Sunburst diagram</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.sunburst.load_calls"><code class="docutils literal notranslate"><span class="pre">load_calls()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.sunburst.build_tree"><code class="docutils literal notranslate"><span class="pre">build_tree()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.sunburst.energy_clock"><code class="docutils literal notranslate"><span class="pre">energy_clock()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.sunburst.hot_sectors"><code class="docutils literal notranslate"><span class="pre">hot_sectors()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.sunburst.focus_subtrees"><code class="docutils literal notranslate"><span class="pre">focus_subtrees()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.sunburst.build_sunburst"><code class="docutils literal notranslate"><span class="pre">build_sunburst()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../modules.html#module-manafa.parsing.batteryStats.BatteryStatsParser">Parsers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.parsing.batteryStats.BatteryStatsParser.safe_division"><code class="docutils literal notranslate"><span class="pre">safe_division()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.parsing.batteryStats.BatteryStatsParser.BatteryEvent"><code class="docutils literal notranslate"><span class="pre">BatteryEvent</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.parsing.batteryStats.BatteryStatsParser.BatteryStatsParser"><code class="docutils literal notranslate"><span class="pre">BatteryStatsParser</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.parsing.perfetto.perfettoParser.interpolate"><code class="docutils literal notranslate"><span class="pre">interpolate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.parsing.perfetto.perfettoParser.CPU_STATE"><code class="docutils literal notranslate"><span class="pre">CPU_STATE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.parsing.perfetto.perfettoParser.PerfettoCPUEvent"><code class="docutils literal notranslate"><span class="pre">PerfettoCPUEvent</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.parsing.perfetto.perfettoParser.PerfettoCPUfreqParser"><code class="docutils literal notranslate"><span class="pre">PerfettoCPUfreqParser</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.parsing.perfetto.perfettoParser.parse_dumpsys_output"><code class="docutils literal notranslate"><span class="pre">parse_dumpsys_output()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.parsing.perfetto.perfettoParser.generate_power_profile_xml"><code class="docutils literal notranslate"><span class="pre">generate_power_profile_xml()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.parsing.powerProfile.PowerProfile.PowerProfile"><code class="docutils literal notranslate"><span class="pre">PowerProfile</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.parsing.method_traces.AMParser.AMParser"><code class="docutils literal notranslate"><span class="pre">AMParser</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.parsing.method_traces.HunterParser.HunterParser"><code class="docutils literal notranslate"><span class="pre">HunterParser</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.parsing.method_traces.AppConsumptionStats.AppConsumptionStats"><code class="docutils literal notranslate"><span class="pre">AppConsumptionStats</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../modules.html#module-manafa.services.service">Device services</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.services.service.Service"><code class="docutils literal notranslate"><span class="pre">Service</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.services.perfettoService.wait_for_our_perfetto_to_exit"><code class="docutils literal notranslate"><span class="pre">wait_for_our_perfetto_to_exit()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.services.perfettoService.PerfettoService"><code class="docutils literal notranslate"><span class="pre">PerfettoService</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.services.perfettoServiceEnhanced.device_supports_power_rails"><code class="docutils literal notranslate"><span class="pre">device_supports_power_rails()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.services.perfettoServiceEnhanced.PerfettoServiceEnhanced"><code class="docutils literal notranslate"><span class="pre">PerfettoServiceEnhanced</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.services.batteryStatsService.BatteryStatsService"><code class="docutils literal notranslate"><span class="pre">BatteryStatsService</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.services.AmProfilerService.AmProfilerService"><code class="docutils literal notranslate"><span class="pre">AmProfilerService</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.services.LogcatService.LogcatService"><code class="docutils literal notranslate"><span class="pre">LogcatService</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../modules.html#module-manafa.utils.BatteryDrainCalculator">Utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.utils.BatteryDrainCalculator.BatteryDrainCalculator"><code class="docutils literal notranslate"><span class="pre">BatteryDrainCalculator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.utils.dateUtils.get_tzinfo"><code class="docutils literal notranslate"><span class="pre">get_tzinfo()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.utils.dateUtils.local_time_to_timestamp"><code class="docutils literal notranslate"><span class="pre">local_time_to_timestamp()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../modules.html#module-manafa.main">Command line</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.main.has_connected_devices"><code class="docutils literal notranslate"><span class="pre">has_connected_devices()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.main.export_to_json"><code class="docutils literal notranslate"><span class="pre">export_to_json()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.main.export_to_csv"><code class="docutils literal notranslate"><span class="pre">export_to_csv()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.main.display_new_profiler_results"><code class="docutils literal notranslate"><span class="pre">display_new_profiler_results()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.main.is_rails_trace"><code class="docutils literal notranslate"><span class="pre">is_rails_trace()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.main.parse_rails_trace"><code class="docutils literal notranslate"><span class="pre">parse_rails_trace()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.main.preserve_trace_file"><code class="docutils literal notranslate"><span class="pre">preserve_trace_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../modules.html#manafa.main.generate_sunburst"><code class="docutils literal notranslate"><span class="pre">generate_sunburst()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../../index.html">e-manafa</a>
-        
+          <a href="../../../../index.html">E-MANAFA</a>
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
-        
-          <li><a href="../../../index.html">Module code</a> &raquo;</li>
-        
-      <li>manafa.parsing.powerProfile.PowerProfile</li>
-    
-    
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">manafa.parsing.powerProfile.PowerProfile</li>
       <li class="wy-breadcrumbs-aside">
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   <h1>Source code for manafa.parsing.powerProfile.PowerProfile</h1><div class="highlight"><pre>
 <span></span>
-<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">sys</span>
 
-<span class="kn">import</span> <span class="nn">xml.etree.ElementTree</span> <span class="k">as</span> <span class="nn">ET</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">xml.etree.ElementTree</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ET</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">manafa.utils.Logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">log</span><span class="p">,</span> <span class="n">LogSeverity</span>
 
 
-<div class="viewcode-block" id="PowerProfile"><a class="viewcode-back" href="../../../../manafa.parsing.powerProfile.html#manafa.parsing.powerProfile.PowerProfile.PowerProfile">[docs]</a><span class="k">class</span> <span class="nc">PowerProfile</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-	<span class="sd">&quot;&quot;&quot;Stores information regarding devices&#39; power profile xml file.</span>
+<div class="viewcode-block" id="PowerProfile">
+<a class="viewcode-back" href="../../../../modules.html#manafa.parsing.powerProfile.PowerProfile.PowerProfile">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PowerProfile</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">"""Stores information regarding devices' power profile xml file.</span>
 
 <span class="sd">	Stores information about the file and each  pair component, current contained in the file.</span>
 <span class="sd">	Attributes:</span>
 <span class="sd">		filename(str): path of power profile file.</span>
-<span class="sd">	&quot;&quot;&quot;</span>
-	<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+<span class="sd">	"""</span>
+	<span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">components</span> <span class="o">=</span> <span class="p">{}</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">__read_power_profile</span><span class="p">()</span>
-		<span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">)</span>
+		<span class="c1">#print(self.components)</span>
 
-<div class="viewcode-block" id="PowerProfile.add_component"><a class="viewcode-back" href="../../../../manafa.parsing.powerProfile.html#manafa.parsing.powerProfile.PowerProfile.PowerProfile.add_component">[docs]</a>	<span class="k">def</span> <span class="nf">add_component</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;adds component to current state.</span>
+<div class="viewcode-block" id="PowerProfile.add_component">
+<a class="viewcode-back" href="../../../../modules.html#manafa.parsing.powerProfile.PowerProfile.PowerProfile.add_component">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">add_component</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">"""adds component to current state.</span>
 <span class="sd">		Args:</span>
 <span class="sd">			component (dict): component info.</span>
-<span class="sd">		&quot;&quot;&quot;</span>
+<span class="sd">		"""</span>
 		<span class="k">if</span> <span class="n">component</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">component</span><span class="o">.</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">merge_two_dicts</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">component</span><span class="o">.</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">states</span> <span class="p">,</span> <span class="p">(</span><span class="n">component</span><span class="o">.</span><span class="n">states</span><span class="p">))</span>
 		<span class="k">else</span><span class="p">:</span>
 			<span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">component</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">component</span></div>
 
-<div class="viewcode-block" id="PowerProfile.merge_two_dicts"><a class="viewcode-back" href="../../../../manafa.parsing.powerProfile.html#manafa.parsing.powerProfile.PowerProfile.PowerProfile.merge_two_dicts">[docs]</a>	<span class="nd">@staticmethod</span>
-	<span class="k">def</span> <span class="nf">merge_two_dicts</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">object</span><span class="p">:</span>
+
+	<span class="nd">@staticmethod</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">merge_two_dicts</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">object</span><span class="p">:</span>
 		<span class="n">z</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 		<span class="n">z</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-		<span class="k">return</span> <span class="n">z</span></div>
+		<span class="k">return</span> <span class="n">z</span>
 
-	<span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+	<span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 		<span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">)</span>
 
-	<span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+	<span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 		<span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>				
 
-	<span class="k">def</span> <span class="nf">__read_power_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;parses power profile xml file.</span>
-<span class="sd">		&quot;&quot;&quot;</span>
+	<span class="k">def</span><span class="w"> </span><span class="nf">__read_power_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">"""parses power profile xml file.</span>
+<span class="sd">		"""</span>
 		<span class="k">try</span><span class="p">:</span>
 			<span class="n">tree</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
 			<span class="n">root</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
 		<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-			<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Exception: </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+			<span class="nb">print</span><span class="p">(</span><span class="s2">"Exception: </span><span class="si">{0}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
 			<span class="k">return</span> <span class="kc">None</span>
 		
 		<span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">root</span><span class="p">:</span>
-			<span class="k">if</span> <span class="n">child</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;item&quot;</span><span class="p">:</span>
-				<span class="n">ll</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+			<span class="k">if</span> <span class="n">child</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">"item"</span><span class="p">:</span>
+				<span class="n">ll</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">'name'</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span>
 				<span class="n">begin_d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span>
+				<span class="c1">#print(child.attrib['name'])</span>
 				<span class="k">for</span> <span class="n">at</span> <span class="ow">in</span> <span class="n">ll</span><span class="p">:</span>
-					<span class="n">begin_d</span><span class="p">[</span><span class="n">at</span><span class="p">]</span><span class="o">=</span><span class="p">{}</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">at</span> <span class="ow">in</span> <span class="n">begin_d</span> <span class="k">else</span> <span class="n">begin_d</span><span class="p">[</span><span class="n">at</span><span class="p">]</span>
+					<span class="k">try</span><span class="p">:</span>
+						<span class="n">begin_d</span><span class="p">[</span><span class="n">at</span><span class="p">]</span><span class="o">=</span><span class="p">{}</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">at</span> <span class="ow">in</span> <span class="n">begin_d</span> <span class="k">else</span> <span class="n">begin_d</span><span class="p">[</span><span class="n">at</span><span class="p">]</span>
+					<span class="k">except</span><span class="p">:</span>
+						<span class="k">continue</span>
 					<span class="n">last_b</span> <span class="o">=</span> <span class="n">begin_d</span>
 					<span class="n">begin_d</span> <span class="o">=</span> <span class="n">begin_d</span><span class="p">[</span><span class="n">at</span><span class="p">]</span>
 				<span class="n">last_b</span><span class="p">[</span><span class="n">at</span><span class="p">]</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
-			<span class="k">elif</span> <span class="n">child</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;array&quot;</span><span class="p">:</span>
-				<span class="n">ll</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+			<span class="k">elif</span> <span class="n">child</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">"array"</span><span class="p">:</span>
+				<span class="n">ll</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">'name'</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span>
 				<span class="n">begin_d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span>
 				<span class="k">for</span> <span class="n">at</span> <span class="ow">in</span> <span class="n">ll</span><span class="p">:</span>
-					<span class="n">begin_d</span><span class="p">[</span><span class="n">at</span><span class="p">]</span><span class="o">=</span><span class="p">{}</span> <span class="k">if</span> <span class="n">at</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">begin_d</span> <span class="k">else</span> <span class="n">begin_d</span><span class="p">[</span><span class="n">at</span><span class="p">]</span>
+					<span class="k">try</span><span class="p">:</span>
+						<span class="n">begin_d</span><span class="p">[</span><span class="n">at</span><span class="p">]</span><span class="o">=</span><span class="p">{}</span> <span class="k">if</span> <span class="n">at</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">begin_d</span> <span class="k">else</span> <span class="n">begin_d</span><span class="p">[</span><span class="n">at</span><span class="p">]</span>
+					<span class="k">except</span><span class="p">:</span>
+						<span class="k">continue</span>
 					<span class="n">last_b</span> <span class="o">=</span> <span class="n">begin_d</span>
 					<span class="n">begin_d</span> <span class="o">=</span> <span class="n">begin_d</span><span class="p">[</span><span class="n">at</span><span class="p">]</span>
 				<span class="n">last_b</span><span class="p">[</span><span class="n">at</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span> <span class="nb">map</span><span class="p">(</span> <span class="k">lambda</span> <span class="n">xxz</span> <span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">xxz</span><span class="o">.</span><span class="n">text</span><span class="p">),</span>  <span class="nb">list</span><span class="p">(</span><span class="n">child</span><span class="p">)))</span>
 
-<div class="viewcode-block" id="PowerProfile.get_CPU_state_current"><a class="viewcode-back" href="../../../../manafa.parsing.powerProfile.html#manafa.parsing.powerProfile.PowerProfile.PowerProfile.get_CPU_state_current">[docs]</a>	<span class="k">def</span> <span class="nf">get_CPU_state_current</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;retrieves the current consumed by cpu at a given state.</span>
+<div class="viewcode-block" id="PowerProfile.get_CPU_state_current">
+<a class="viewcode-back" href="../../../../modules.html#manafa.parsing.powerProfile.PowerProfile.PowerProfile.get_CPU_state_current">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">get_CPU_state_current</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">"""retrieves the current consumed by cpu at a given state.</span>
 <span class="sd">		Args:</span>
 <span class="sd">			state: given state.</span>
 
 <span class="sd">		Returns:</span>
 <span class="sd">			current: the current being consumed.</span>
-<span class="sd">		&quot;&quot;&quot;</span>
-		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s2">&quot;cpu&quot;</span><span class="p">][</span><span class="n">state</span><span class="p">]</span> <span class="k">if</span> <span class="n">state</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s2">&quot;cpu&quot;</span><span class="p">][</span><span class="s2">&quot;active&quot;</span><span class="p">]</span></div>
+<span class="sd">		"""</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s2">"cpu"</span><span class="p">][</span><span class="n">state</span><span class="p">]</span> <span class="k">if</span> <span class="n">state</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s2">"cpu"</span><span class="p">]</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s2">"cpu"</span><span class="p">][</span><span class="s2">"active"</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="PowerProfile.get_CPU_cluster_cores">
+<a class="viewcode-back" href="../../../../modules.html#manafa.parsing.powerProfile.PowerProfile.PowerProfile.get_CPU_cluster_cores">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">get_CPU_cluster_cores</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">"""retrieves the number of cores of each cpu cluster. Empty if the profile does not have it."""</span>
+		<span class="n">clusters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"cpu"</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"clusters"</span><span class="p">,</span> <span class="p">{})</span>
+		<span class="k">return</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">clusters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"cores"</span><span class="p">,</span> <span class="p">[])]</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">clusters</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">else</span> <span class="p">[]</span></div>
+
+
+<div class="viewcode-block" id="PowerProfile.get_CPU_core_cluster">
+<a class="viewcode-back" href="../../../../modules.html#manafa.parsing.powerProfile.PowerProfile.PowerProfile.get_CPU_core_cluster">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">get_CPU_core_cluster</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">core_id</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">"""retrieves the index of the cluster of a core."""</span>
+		<span class="n">first_core</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ncores</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_CPU_cluster_cores</span><span class="p">()):</span>
+			<span class="k">if</span> <span class="n">core_id</span> <span class="o">&lt;</span> <span class="n">first_core</span> <span class="o">+</span> <span class="n">ncores</span><span class="p">:</span>
+				<span class="k">return</span> <span class="n">i</span>
+			<span class="n">first_core</span> <span class="o">+=</span> <span class="n">ncores</span>
+		<span class="k">return</span> <span class="mi">0</span></div>
+
+
+<div class="viewcode-block" id="PowerProfile.get_CPU_shared_current">
+<a class="viewcode-back" href="../../../../modules.html#manafa.parsing.powerProfile.PowerProfile.PowerProfile.get_CPU_shared_current">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">get_CPU_shared_current</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clusters</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">"""retrieves the current that does not depend on the number of running cores: cpu.active, which is consumed</span>
+<span class="sd">		when a core of any cluster is running, plus cpu.cluster_power of each cluster that has a running core.</span>
+<span class="sd">		Args:</span>
+<span class="sd">			clusters: indexes of the clusters that have at least one running core.</span>
+<span class="sd">		"""</span>
+		<span class="n">cpu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s2">"cpu"</span><span class="p">]</span>
+		<span class="c1"># in old profiles cpu.active is the per-speed list and not a shared value</span>
+		<span class="n">current</span> <span class="o">=</span> <span class="n">cpu</span><span class="p">[</span><span class="s2">"active"</span><span class="p">]</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cpu</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"active"</span><span class="p">),</span> <span class="nb">float</span><span class="p">)</span> <span class="k">else</span> <span class="mf">0.0</span>
+		<span class="n">cluster_power</span> <span class="o">=</span> <span class="n">cpu</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"cluster_power"</span><span class="p">,</span> <span class="p">{})</span>
+		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">clusters</span><span class="p">:</span>
+			<span class="n">value</span> <span class="o">=</span> <span class="n">cluster_power</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"cluster</span><span class="si">%d</span><span class="s2">"</span> <span class="o">%</span> <span class="n">i</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cluster_power</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">else</span> <span class="mf">0.0</span>
+			<span class="n">current</span> <span class="o">+=</span> <span class="n">value</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="k">else</span> <span class="mf">0.0</span>
+		<span class="k">return</span> <span class="n">current</span></div>
+
 
 	<span class="c1"># returns pair with closest_val_before_freq,closest_val_after_freq</span>
-<div class="viewcode-block" id="PowerProfile.get_CPU_core_speed_pair"><a class="viewcode-back" href="../../../../manafa.parsing.powerProfile.html#manafa.parsing.powerProfile.PowerProfile.PowerProfile.get_CPU_core_speed_pair">[docs]</a>	<span class="k">def</span> <span class="nf">get_CPU_core_speed_pair</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">core_id</span><span class="p">,</span> <span class="n">core_freq</span><span class="p">):</span>
-		<span class="sd">&quot;&quot;&quot;retrieves a pair with the before and after closest frequency values for a core identified by core_id at a given frequency.</span>
+<div class="viewcode-block" id="PowerProfile.get_CPU_core_speed_pair">
+<a class="viewcode-back" href="../../../../modules.html#manafa.parsing.powerProfile.PowerProfile.PowerProfile.get_CPU_core_speed_pair">[docs]</a>
+	<span class="k">def</span><span class="w"> </span><span class="nf">get_CPU_core_speed_pair</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">core_id</span><span class="p">,</span> <span class="n">core_freq</span><span class="p">):</span>
+<span class="w">		</span><span class="sd">"""retrieves a pair with the before and after closest frequency values for a core identified by core_id at a given frequency.</span>
 
 <span class="sd">		Power profile file stores current values measured at specific fixed frequencies. Many times, a given core is running at a frequency</span>
 <span class="sd">		different from the ones recorded in file. In order to estimate the current consumption at core_freq, there is need to  interpolate</span>
@@ -254,81 +390,87 @@
 <span class="sd">		Returns:</span>
 <span class="sd">			fst_pair: before value.</span>
 <span class="sd">			snd_pair: after value.</span>
-<span class="sd">		&quot;&quot;&quot;</span>
-		<span class="n">profile_speeds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s2">&quot;cpu&quot;</span><span class="p">][</span><span class="s2">&quot;speeds&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;speeds&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s2">&quot;cpu&quot;</span><span class="p">]</span><span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s2">&quot;cpu&quot;</span><span class="p">][</span><span class="s2">&quot;core_speeds&quot;</span><span class="p">]</span>
-		<span class="n">profile_currents</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s2">&quot;cpu&quot;</span><span class="p">][</span><span class="s2">&quot;active&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;speeds&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s2">&quot;cpu&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s2">&quot;cpu&quot;</span><span class="p">][</span><span class="s2">&quot;active&quot;</span><span class="p">],</span> <span class="nb">list</span><span class="p">))</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s2">&quot;cpu&quot;</span><span class="p">][</span><span class="s2">&quot;core_power&quot;</span><span class="p">]</span>
+<span class="sd">		"""</span>
+		<span class="n">profile_speeds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s2">"cpu"</span><span class="p">][</span><span class="s2">"speeds"</span><span class="p">]</span> <span class="k">if</span> <span class="s2">"speeds"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s2">"cpu"</span><span class="p">]</span> \
+			<span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s2">"cpu"</span><span class="p">][</span><span class="s2">"core_speeds"</span><span class="p">]</span> <span class="k">if</span> <span class="s1">'core_speeds'</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s2">"cpu"</span><span class="p">]</span> \
+				<span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s2">"cpu"</span><span class="p">][</span><span class="s2">"speeds"</span><span class="p">]</span> <span class="k">if</span> <span class="s1">'speeds'</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s1">'cpu'</span><span class="p">]</span> <span class="k">else</span> <span class="kc">None</span>
 
-		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">profile_speeds</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-			<span class="c1"># select respective cluster of core_id	</span>
+		<span class="n">profile_currents</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s2">"cpu"</span><span class="p">][</span><span class="s2">"active"</span><span class="p">]</span> <span class="k">if</span> <span class="p">(</span><span class="s2">"speeds"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s2">"cpu"</span><span class="p">]</span>
+						<span class="ow">and</span> <span class="s1">'active'</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s1">'cpu'</span><span class="p">]</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s2">"cpu"</span><span class="p">][</span><span class="s2">"active"</span><span class="p">],</span> <span class="nb">list</span><span class="p">))</span>\
+															<span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s2">"cpu"</span><span class="p">][</span><span class="s2">"core_power"</span><span class="p">]</span> \
+																<span class="k">if</span> <span class="s1">'core_power'</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s1">'cpu'</span><span class="p">]</span> <span class="k">else</span> <span class="kc">None</span>
+		<span class="k">if</span> <span class="n">profile_currents</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s2">"cpu"</span><span class="p">][</span><span class="s2">"active"</span><span class="p">],</span> <span class="nb">dict</span><span class="p">):</span>
+			<span class="k">if</span> <span class="sa">f</span><span class="s1">'cluster</span><span class="si">{</span><span class="n">core_id</span><span class="si">}</span><span class="s1">'</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s2">"cpu"</span><span class="p">][</span><span class="s2">"active"</span><span class="p">]:</span>
+				<span class="n">profile_currents</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s2">"cpu"</span><span class="p">][</span><span class="s2">"active"</span><span class="p">][</span><span class="sa">f</span><span class="s1">'cluster</span><span class="si">{</span><span class="n">core_id</span><span class="si">}</span><span class="s1">'</span><span class="p">]</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="c1">#just</span>
+				<span class="n">profile_currents</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s2">"cpu"</span><span class="p">][</span><span class="s2">"active"</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">())[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+		<span class="k">if</span> <span class="n">profile_speeds</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">profile_speeds</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+			<span class="c1"># select respective cluster of core_id</span>
 			<span class="n">core_r</span> <span class="o">=</span> <span class="n">core_id</span> <span class="o">+</span> <span class="mi">1</span>
-			<span class="n">cluster_cores</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s2">&quot;cpu&quot;</span><span class="p">][</span><span class="s2">&quot;clusters&quot;</span><span class="p">][</span><span class="s2">&quot;cores&quot;</span><span class="p">]</span>
+			<span class="n">cluster_cores</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s2">"cpu"</span><span class="p">][</span><span class="s2">"clusters"</span><span class="p">][</span><span class="s2">"cores"</span><span class="p">]</span>
+			<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cluster_cores</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">cluster_cores</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">core_id</span><span class="p">:</span>
+				<span class="n">log</span><span class="p">(</span><span class="s2">"The current power profile is probably incomplete. "</span>
+					<span class="s2">"The reported values for CPU energy might not be accurate"</span><span class="p">,</span>
+					<span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">WARNING</span><span class="p">,</span> <span class="n">just_once</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+				<span class="n">profile_speeds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s2">"cpu"</span><span class="p">][</span><span class="s2">"core_speeds"</span><span class="p">][</span><span class="s2">"cluster0"</span><span class="p">]</span> <span class="k">if</span> <span class="s1">'core_speeds'</span> <span class="ow">in</span> \
+																						   <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s2">"cpu"</span><span class="p">]</span> <span class="k">else</span> \
+				<span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s2">"cpu"</span><span class="p">][</span><span class="s2">"speeds"</span><span class="p">][</span><span class="s2">"cluster0"</span><span class="p">]</span>
 			<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ncores</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cluster_cores</span><span class="p">):</span>
 				<span class="k">if</span> <span class="n">core_r</span> <span class="o">&gt;</span> <span class="n">ncores</span><span class="p">:</span>
 					<span class="n">core_r</span> <span class="o">=</span> <span class="n">core_r</span> <span class="o">-</span> <span class="n">ncores</span>
 				<span class="k">else</span><span class="p">:</span>
-					<span class="n">profile_speeds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s2">&quot;cpu&quot;</span><span class="p">][</span><span class="s2">&quot;core_speeds&quot;</span><span class="p">][</span><span class="s2">&quot;cluster</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">i</span><span class="p">]</span>
-					<span class="n">profile_currents</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s2">&quot;cpu&quot;</span><span class="p">][</span><span class="s2">&quot;core_power&quot;</span><span class="p">][</span><span class="s2">&quot;cluster</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">i</span><span class="p">]</span>
+					<span class="n">profile_speeds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s2">"cpu"</span><span class="p">][</span><span class="s2">"core_speeds"</span><span class="p">][</span><span class="s2">"cluster</span><span class="si">%d</span><span class="s2">"</span> <span class="o">%</span> <span class="n">i</span><span class="p">]</span> \
+						<span class="k">if</span> <span class="s1">'core_speeds'</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s2">"cpu"</span><span class="p">]</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="s2">"cpu"</span><span class="p">][</span><span class="s2">"speeds"</span><span class="p">][</span><span class="s2">"cluster</span><span class="si">%d</span><span class="s2">"</span><span class="o">%</span><span class="n">i</span><span class="p">]</span>
+					<span class="n">profile_currents</span> <span class="o">=</span> <span class="n">profile_currents</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">profile_currents</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> \
+						<span class="k">else</span> <span class="n">profile_currents</span><span class="p">[</span><span class="s2">"cluster</span><span class="si">%d</span><span class="s2">"</span> <span class="o">%</span> <span class="n">i</span><span class="p">]</span>
 					<span class="k">break</span>
 		<span class="n">mini_fr</span> <span class="o">=</span> <span class="mi">0</span>
 		<span class="n">freq</span> <span class="o">=</span> <span class="mi">0</span>
 		<span class="c1"># find adequate freq</span>
 		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">profile_speeds</span><span class="p">):</span>
-			<span class="k">if</span> <span class="n">f</span> <span class="o">&gt;=</span> <span class="n">core_freq</span><span class="p">:</span>
+			<span class="k">if</span> <span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">core_freq</span><span class="p">:</span>
 				<span class="n">freq</span> <span class="o">=</span> <span class="n">i</span>
 				<span class="k">break</span>
 			<span class="n">mini_fr</span> <span class="o">=</span> <span class="n">i</span>
-		<span class="n">fst_pair</span> <span class="o">=</span> <span class="p">(</span><span class="n">profile_speeds</span><span class="p">[</span><span class="n">mini_fr</span><span class="p">],</span> <span class="n">profile_currents</span><span class="p">[</span><span class="n">mini_fr</span><span class="p">])</span>
-		<span class="n">snd_pair</span> <span class="o">=</span> <span class="p">(</span><span class="n">profile_speeds</span><span class="p">[</span><span class="n">freq</span><span class="p">],</span> <span class="n">profile_currents</span><span class="p">[</span><span class="n">freq</span><span class="p">])</span>
-		<span class="k">return</span> <span class="n">fst_pair</span><span class="p">,</span> <span class="n">snd_pair</span></div></div>
+		<span class="n">fst_pair</span> <span class="o">=</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">profile_speeds</span><span class="p">[</span><span class="n">mini_fr</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">profile_currents</span><span class="p">[</span><span class="n">mini_fr</span><span class="p">]))</span>
+		<span class="n">snd_pair</span> <span class="o">=</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">profile_speeds</span><span class="p">[</span><span class="n">freq</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">profile_currents</span><span class="p">[</span><span class="n">freq</span><span class="p">]))</span>
+		<span class="k">return</span> <span class="n">fst_pair</span><span class="p">,</span> <span class="n">snd_pair</span></div>
+</div>
 
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
 	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
 		<span class="n">power_profile</span> <span class="o">=</span> <span class="n">PowerProfile</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 		<span class="nb">print</span><span class="p">(</span><span class="n">power_profile</span><span class="p">)</span>
 </pre></div>
 
            </div>
-           
           </div>
           <footer>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2021, Rui Rua.
-
-    </p>
+    <p>&#169; Copyright 2021-2026, Rui Rua.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

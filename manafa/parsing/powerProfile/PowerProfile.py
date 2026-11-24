@@ -84,7 +84,36 @@ class PowerProfile(object):
 		Returns:
 			current: the current being consumed.
 		"""
-		return self.components["cpu"][state] if state in self.components else self.components["cpu"]["active"]
+		return self.components["cpu"][state] if state in self.components["cpu"] else self.components["cpu"]["active"]
+
+	def get_CPU_cluster_cores(self):
+		"""retrieves the number of cores of each cpu cluster. Empty if the profile does not have it."""
+		clusters = self.components.get("cpu", {}).get("clusters", {})
+		return [int(n) for n in clusters.get("cores", [])] if isinstance(clusters, dict) else []
+
+	def get_CPU_core_cluster(self, core_id):
+		"""retrieves the index of the cluster of a core."""
+		first_core = 0
+		for i, ncores in enumerate(self.get_CPU_cluster_cores()):
+			if core_id < first_core + ncores:
+				return i
+			first_core += ncores
+		return 0
+
+	def get_CPU_shared_current(self, clusters):
+		"""retrieves the current that does not depend on the number of running cores: cpu.active, which is consumed
+		when a core of any cluster is running, plus cpu.cluster_power of each cluster that has a running core.
+		Args:
+			clusters: indexes of the clusters that have at least one running core.
+		"""
+		cpu = self.components["cpu"]
+		# in old profiles cpu.active is the per-speed list and not a shared value
+		current = cpu["active"] if isinstance(cpu.get("active"), float) else 0.0
+		cluster_power = cpu.get("cluster_power", {})
+		for i in clusters:
+			value = cluster_power.get("cluster%d" % i, 0.0) if isinstance(cluster_power, dict) else 0.0
+			current += value if isinstance(value, float) else 0.0
+		return current
 
 	# returns pair with closest_val_before_freq,closest_val_after_freq
 	def get_CPU_core_speed_pair(self, core_id, core_freq):

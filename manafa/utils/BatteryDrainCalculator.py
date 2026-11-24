@@ -32,48 +32,32 @@ class BatteryDrainCalculator:
 
         # Regex patterns to find the required values
         patterns = {
-            'capacity_mah': r'harge counter: (\d+)',  # Design capacity in microampere-hours (µAh)
+            'charge_counter_uah': r'harge counter: (\d+)',  # charge that remains now, in microampere-hours (µAh)
             'voltage_mv': r'voltage: (\d+)',
             'temperature_c': r'temperature: (\d+)',
-            'health_code': r'health: (\d+)',  # e.g. 2 for Good
-            'level': r'level: (\d+)',  # Current battery percentage
+            'level': r'\n\s*level: (\d+)',  # Current battery percentage
         }
-
-        # Some devices report capacity differently
-        alt_capacity_pattern = r'battery capacity: (\d+)'
 
         for key, pattern in patterns.items():
             match = re.findall(pattern, output)
             if match:
                 properties[key] = int(match[-1])
 
-        # Handle capacity specifically
-        if 'capacity_mah' in properties:
-            # The 'charge counter' is typically in microampere-hours (µAh), convert to mAh
-            properties['capacity_mah'] = properties['capacity_mah'] / 1000
-        else:
-            # Try the alternative pattern if the primary one fails
-            match = re.search(alt_capacity_pattern, output)
-            if match:
-                properties['capacity_mah'] = int(match.group(1))
+        # Full charge capacity. The kernel value is the capacity that the fuel gauge learned, so it
+        # already includes battery wear. Not all devices let the shell read it.
+        res, charge_full, _ = execute_shell_command("adb shell cat /sys/class/power_supply/battery/charge_full")
+        if res == 0 and charge_full.strip().isdigit() and int(charge_full) > 0:
+            properties['capacity_mah'] = int(charge_full) / 1000
+        elif properties.get('charge_counter_uah') and properties.get('level'):
+            # estimate: the remaining charge is level % of the full capacity
+            properties['capacity_mah'] = properties['charge_counter_uah'] / 1000 * 100 / properties['level']
 
         # Check if all necessary properties were found
-        required_keys = ['voltage_mv', 'capacity_mah', 'health_code']
+        required_keys = ['voltage_mv', 'capacity_mah']
         if not all(key in properties for key in required_keys):
             log("Could not parse all required battery properties from device", LogSeverity.WARNING)
             log("Battery drain percentage will not be available", LogSeverity.INFO)
             return None
-
-        # Convert health code to a percentage multiplier
-        # Based on Android source constants: 2 corresponds to 'GOOD_HEALTH'
-        if properties['health_code'] == 2:  # HEALTH_GOOD
-            properties['health_multiplier'] = 1.0  # 100%
-        elif properties['health_code'] == 3:  # HEALTH_OVERHEAT
-            properties['health_multiplier'] = 0.8  # Assume degraded
-        elif properties['health_code'] == 4:  # HEALTH_DEAD
-            properties['health_multiplier'] = 0.5  # Assume very degraded
-        else:  # Others like UNKNOWN, COLD, etc.
-            properties['health_multiplier'] = 0.9  # Default assumption
 
         # Convert temperature to proper Celsius
         if 'temperature_c' in properties:
@@ -98,17 +82,13 @@ class BatteryDrainCalculator:
         if self.properties is None:
             return None
 
-        # --- 1. Get Device Battery Capacity (adjusted for health) ---
-        design_capacity_mah = self.properties['capacity_mah']
-        health_multiplier = self.properties['health_multiplier']
+        # --- 1. Get Device Battery Capacity ---
+        full_capacity_mah = self.properties['capacity_mah']
         current_voltage_v = self.properties['voltage_mv'] / 1000.0
-
-        # Effective capacity is the design capacity reduced by the health factor
-        effective_capacity_mah = design_capacity_mah * health_multiplier
 
         # --- 2. Calculate Total Battery Energy in Watt-hours (Wh) ---
         # Formula: Wh = (mAh * V) / 1000
-        total_battery_energy_wh = (effective_capacity_mah * current_voltage_v) / 1000.0
+        total_battery_energy_wh = (full_capacity_mah * current_voltage_v) / 1000.0
 
         # --- 3. Convert Function's Energy Consumption to Watt-hours (Wh) ---
         # 1 Wh = 3600 Joules
@@ -123,10 +103,8 @@ class BatteryDrainCalculator:
 
         # --- 5. Build result dictionary ---
         result = {
-            'design_capacity_mah': design_capacity_mah,
+            'full_capacity_mah': full_capacity_mah,
             'current_voltage_v': current_voltage_v,
-            'health_multiplier': health_multiplier,
-            'effective_capacity_mah': effective_capacity_mah,
             'total_battery_energy_wh': total_battery_energy_wh,
             'consumed_energy_joules': energy_joules,
             'consumed_energy_wh': function_energy_wh,
@@ -161,7 +139,7 @@ class BatteryDrainCalculator:
         report += "="*70 + "\n"
 
         report += f"\nDevice Battery Properties:\n"
-        report += f"  Design Capacity: {drain_info['design_capacity_mah']:.2f} mAh\n"
+        report += f"  Full Capacity:   {drain_info['full_capacity_mah']:.2f} mAh\n"
         report += f"  Current Voltage: {drain_info['current_voltage_v']:.3f} V\n"
 
         if 'temperature_c' in drain_info:
@@ -170,8 +148,6 @@ class BatteryDrainCalculator:
         if 'battery_level_percent' in drain_info:
             report += f"  Battery Level:   {drain_info['battery_level_percent']}%\n"
 
-        report += f"  Est. Health:     {drain_info['health_multiplier']:.2f} ({drain_info['health_multiplier'] * 100:.0f}%)\n"
-        report += f"  Effective Capacity: {drain_info['effective_capacity_mah']:.2f} mAh\n"
         report += f"  Total Battery Energy: {drain_info['total_battery_energy_wh']:.3f} Wh\n"
 
         report += f"\nEnergy Consumption:\n"

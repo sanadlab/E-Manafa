@@ -1,0 +1,558 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>manafa.parsing.perfettoEnergyCalculator &mdash; E-MANAFA 0.4.14</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=c1264a3d" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=1f5508e5"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            E-MANAFA
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting_started.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting_started.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting_started.html#first-measurement">First measurement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting_started.html#usb-or-wi-fi">USB or Wi-Fi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting_started.html#next-steps">Next steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../how_it_works.html">How it works</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../how_it_works.html#workflow">Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../how_it_works.html#two-sources-of-energy-data">Two sources of energy data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../how_it_works.html#power-rails-default">Power rails (default)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../how_it_works.html#legacy-model">Legacy model</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../how_it_works.html#memory">Memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../how_it_works.html#energy-of-a-method">Energy of a method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../how_it_works.html#clocks">Clocks</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">Measurement scenarios</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../usage.html#energy-only">Energy only</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../usage.html#memory-only">Memory only</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../usage.html#energy-and-memory-in-separate-runs-recommended">Energy and memory in separate runs (recommended)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../usage.html#energy-and-memory-in-one-run">Energy and memory in one run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../usage.html#a-device-with-no-power-rails">A device with no power rails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../usage.html#how-long-to-measure">How long to measure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../usage.html#a-repeatable-workload">A repeatable workload</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../usage.html#the-device-only-with-no-app">The device only, with no app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../usage.html#an-app-with-no-method-trace">An app with no method trace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../usage.html#finer-time-resolution">Finer time resolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../usage.html#parse-recorded-files-again">Parse recorded files again</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../method_energy.html">Energy of each method</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../method_energy.html#method-trace-sources">Method trace sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../method_energy.html#the-app-must-permit-profiling">The app must permit profiling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../method_energy.html#how-the-trace-is-recorded">How the trace is recorded</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../method_energy.html#what-a-method-gets">What a method gets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../method_energy.html#result-files">Result files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sunburst.html">Sunburst diagram</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../sunburst.html#the-three-views">The three views</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../sunburst.html#call-graph">Call graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../sunburst.html#packages-all-code">Packages: all code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../sunburst.html#packages-app-only">Packages: app only</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../sunburst.html#hot-spots">Hot spots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../sunburst.html#controls">Controls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../sunburst.html#what-the-values-are">What the values are</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../sunburst.html#make-the-diagram-from-a-result-file">Make the diagram from a result file</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../output.html">Output files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../output.html#summary-in-the-terminal">Summary in the terminal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../output.html#result-file">Result file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../output.html#fields">Fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../output.html#raw-files">Raw files</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command-line reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../cli.html#session">Session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../cli.html#methods-and-diagram">Methods and diagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../cli.html#sampling">Sampling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../cli.html#device-data">Device data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../cli.html#output">Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../cli.html#recorded-files">Recorded files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../library.html">Python library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../library.html#energy-and-memory-of-a-block-of-code">Energy and memory of a block of code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../library.html#energy-of-an-interval">Energy of an interval</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../library.html#legacy-model">Legacy model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../library.html#energy-of-methods">Energy of methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../library.html#sunburst-diagram">Sunburst diagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../library.html#one-session-for-each-object">One session for each object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../accuracy.html">Accuracy and limits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../accuracy.html#power-rails-are-measurements">Power rails are measurements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../accuracy.html#the-legacy-model-is-an-estimate">The legacy model is an estimate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../accuracy.html#limits-of-method-energy">Limits of method energy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../accuracy.html#limits-of-the-legacy-model">Limits of the legacy model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../accuracy.html#the-connection-to-the-device">The connection to the device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../accuracy.html#good-practice">Good practice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../accuracy.html#accuracy-tests">Accuracy tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development.html">Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../development.html#tests">Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../development.html#structure-of-the-code">Structure of the code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../development.html#build-these-pages">Build these pages</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../modules.html#module-manafa.emanafa">Sessions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.emanafa.get_last_boot_time"><code class="docutils literal notranslate"><span class="pre">get_last_boot_time()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.emanafa.EManafa"><code class="docutils literal notranslate"><span class="pre">EManafa</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.am_emanafa.get_monotonic_to_epoch_s"><code class="docutils literal notranslate"><span class="pre">get_monotonic_to_epoch_s()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.am_emanafa.AMEManafa"><code class="docutils literal notranslate"><span class="pre">AMEManafa</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.hunter_emanafa.HunterEManafa"><code class="docutils literal notranslate"><span class="pre">HunterEManafa</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../modules.html#module-manafa.parsing.perfettoEnergyCalculator">Power rails and memory</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.parsing.perfettoEnergyCalculator.count_power_rails"><code class="docutils literal notranslate"><span class="pre">count_power_rails()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.parsing.perfettoEnergyCalculator.PowerRailsTrace"><code class="docutils literal notranslate"><span class="pre">PowerRailsTrace</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.parsing.perfettoEnergyCalculator.calculate_memory_stats"><code class="docutils literal notranslate"><span class="pre">calculate_memory_stats()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../modules.html#module-manafa.sunburst">Sunburst diagram</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.sunburst.load_calls"><code class="docutils literal notranslate"><span class="pre">load_calls()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.sunburst.build_tree"><code class="docutils literal notranslate"><span class="pre">build_tree()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.sunburst.energy_clock"><code class="docutils literal notranslate"><span class="pre">energy_clock()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.sunburst.hot_sectors"><code class="docutils literal notranslate"><span class="pre">hot_sectors()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.sunburst.focus_subtrees"><code class="docutils literal notranslate"><span class="pre">focus_subtrees()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.sunburst.build_sunburst"><code class="docutils literal notranslate"><span class="pre">build_sunburst()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../modules.html#module-manafa.parsing.batteryStats.BatteryStatsParser">Parsers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.parsing.batteryStats.BatteryStatsParser.safe_division"><code class="docutils literal notranslate"><span class="pre">safe_division()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.parsing.batteryStats.BatteryStatsParser.BatteryEvent"><code class="docutils literal notranslate"><span class="pre">BatteryEvent</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.parsing.batteryStats.BatteryStatsParser.BatteryStatsParser"><code class="docutils literal notranslate"><span class="pre">BatteryStatsParser</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.parsing.perfetto.perfettoParser.interpolate"><code class="docutils literal notranslate"><span class="pre">interpolate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.parsing.perfetto.perfettoParser.CPU_STATE"><code class="docutils literal notranslate"><span class="pre">CPU_STATE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.parsing.perfetto.perfettoParser.PerfettoCPUEvent"><code class="docutils literal notranslate"><span class="pre">PerfettoCPUEvent</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.parsing.perfetto.perfettoParser.PerfettoCPUfreqParser"><code class="docutils literal notranslate"><span class="pre">PerfettoCPUfreqParser</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.parsing.perfetto.perfettoParser.parse_dumpsys_output"><code class="docutils literal notranslate"><span class="pre">parse_dumpsys_output()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.parsing.perfetto.perfettoParser.generate_power_profile_xml"><code class="docutils literal notranslate"><span class="pre">generate_power_profile_xml()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.parsing.powerProfile.PowerProfile.PowerProfile"><code class="docutils literal notranslate"><span class="pre">PowerProfile</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.parsing.method_traces.AMParser.AMParser"><code class="docutils literal notranslate"><span class="pre">AMParser</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.parsing.method_traces.HunterParser.HunterParser"><code class="docutils literal notranslate"><span class="pre">HunterParser</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.parsing.method_traces.AppConsumptionStats.AppConsumptionStats"><code class="docutils literal notranslate"><span class="pre">AppConsumptionStats</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../modules.html#module-manafa.services.service">Device services</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.services.service.Service"><code class="docutils literal notranslate"><span class="pre">Service</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.services.perfettoService.wait_for_our_perfetto_to_exit"><code class="docutils literal notranslate"><span class="pre">wait_for_our_perfetto_to_exit()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.services.perfettoService.PerfettoService"><code class="docutils literal notranslate"><span class="pre">PerfettoService</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.services.perfettoServiceEnhanced.device_supports_power_rails"><code class="docutils literal notranslate"><span class="pre">device_supports_power_rails()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.services.perfettoServiceEnhanced.PerfettoServiceEnhanced"><code class="docutils literal notranslate"><span class="pre">PerfettoServiceEnhanced</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.services.batteryStatsService.BatteryStatsService"><code class="docutils literal notranslate"><span class="pre">BatteryStatsService</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.services.AmProfilerService.AmProfilerService"><code class="docutils literal notranslate"><span class="pre">AmProfilerService</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.services.LogcatService.LogcatService"><code class="docutils literal notranslate"><span class="pre">LogcatService</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../modules.html#module-manafa.utils.BatteryDrainCalculator">Utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.utils.BatteryDrainCalculator.BatteryDrainCalculator"><code class="docutils literal notranslate"><span class="pre">BatteryDrainCalculator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.utils.dateUtils.get_tzinfo"><code class="docutils literal notranslate"><span class="pre">get_tzinfo()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.utils.dateUtils.local_time_to_timestamp"><code class="docutils literal notranslate"><span class="pre">local_time_to_timestamp()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../modules.html#module-manafa.main">Command line</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.main.has_connected_devices"><code class="docutils literal notranslate"><span class="pre">has_connected_devices()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.main.export_to_json"><code class="docutils literal notranslate"><span class="pre">export_to_json()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.main.export_to_csv"><code class="docutils literal notranslate"><span class="pre">export_to_csv()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.main.display_new_profiler_results"><code class="docutils literal notranslate"><span class="pre">display_new_profiler_results()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.main.is_rails_trace"><code class="docutils literal notranslate"><span class="pre">is_rails_trace()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.main.parse_rails_trace"><code class="docutils literal notranslate"><span class="pre">parse_rails_trace()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.main.preserve_trace_file"><code class="docutils literal notranslate"><span class="pre">preserve_trace_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.main.generate_sunburst"><code class="docutils literal notranslate"><span class="pre">generate_sunburst()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">E-MANAFA</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">manafa.parsing.perfettoEnergyCalculator</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for manafa.parsing.perfettoEnergyCalculator</h1><div class="highlight"><pre>
+<span></span>
+<span class="sd">"""Energy calculator for power rails data from Perfetto traces."""</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">bisect</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">..utils.Logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">log</span><span class="p">,</span> <span class="n">LogSeverity</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_load_trace_processor</span><span class="p">(</span><span class="n">trace_file</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Opens trace_file with TraceProcessor. Returns None if the file does not exist."""</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">perfetto.trace_processor</span><span class="w"> </span><span class="kn">import</span> <span class="n">TraceProcessor</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">trace_file</span><span class="p">):</span>
+        <span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"ERROR: Trace file does not exist: </span><span class="si">{</span><span class="n">trace_file</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">log</span><span class="p">(</span><span class="s2">"Loading TraceProcessor (this may download the binary on first use)..."</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">TraceProcessor</span><span class="p">(</span><span class="n">trace</span><span class="o">=</span><span class="n">trace_file</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">error_msg</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">"failed to start"</span> <span class="ow">in</span> <span class="n">error_msg</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">or</span> <span class="s2">"download"</span> <span class="ow">in</span> <span class="n">error_msg</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+            <span class="n">log</span><span class="p">(</span><span class="s2">"TraceProcessor binary download may have failed"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+            <span class="n">log</span><span class="p">(</span><span class="s2">"To fix this issue:"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+            <span class="n">log</span><span class="p">(</span><span class="s2">"  1. Check your internet connection"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+            <span class="n">log</span><span class="p">(</span><span class="s2">"  2. Run: python3 download_trace_processor.py"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+            <span class="n">log</span><span class="p">(</span><span class="s2">"  3. Or manually download from: https://get.perfetto.dev/trace_processor"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+        <span class="k">raise</span>
+
+
+<div class="viewcode-block" id="count_power_rails">
+<a class="viewcode-back" href="../../../modules.html#manafa.parsing.perfettoEnergyCalculator.count_power_rails">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">count_power_rails</span><span class="p">(</span><span class="n">trace_file</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Returns the number of power rail counters in trace_file."""</span>
+    <span class="n">tp</span> <span class="o">=</span> <span class="n">_load_trace_processor</span><span class="p">(</span><span class="n">trace_file</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">tp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">tp</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">"SELECT DISTINCT name FROM counter_track WHERE name LIKE 'power.%'"</span><span class="p">)))</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">tp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="PowerRailsTrace">
+<a class="viewcode-back" href="../../../modules.html#manafa.parsing.perfettoEnergyCalculator.PowerRailsTrace">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PowerRailsTrace</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Power rail energy counters of a Perfetto trace, as time series.</span>
+
+<span class="sd">    Power rail counters are cumulative energy values, so the energy of a time</span>
+<span class="sd">    interval is the counter at the end minus the counter at the start. The</span>
+<span class="sd">    counters are sampled every battery_poll_ms. Between two samples the value</span>
+<span class="sd">    is linearly interpolated, which means that an interval shorter than the</span>
+<span class="sd">    sampling period gets the mean power of that period.</span>
+
+<span class="sd">    All times are Unix epoch seconds on the device clock.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        rails (dict): rail name -&gt; (times, joules), two lists of the same length.</span>
+<span class="sd">        monotonic_to_epoch_s (float): seconds to add to a CLOCK_MONOTONIC time</span>
+<span class="sd">            of the device (the clock of ART method traces) to get epoch seconds.</span>
+<span class="sd">    """</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rails</span><span class="p">,</span> <span class="n">monotonic_to_epoch_s</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rails</span> <span class="o">=</span> <span class="n">rails</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">monotonic_to_epoch_s</span> <span class="o">=</span> <span class="n">monotonic_to_epoch_s</span>
+
+<div class="viewcode-block" id="PowerRailsTrace.from_trace">
+<a class="viewcode-back" href="../../../modules.html#manafa.parsing.perfettoEnergyCalculator.PowerRailsTrace.from_trace">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_trace</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">trace_file</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Loads the power rails of trace_file. Returns None if there are none."""</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">tp</span> <span class="o">=</span> <span class="n">_load_trace_processor</span><span class="p">(</span><span class="n">trace_file</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">tp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># trace timestamps are CLOCK_BOOTTIME ns. the clock snapshot gives</span>
+                <span class="c1"># the offsets to the other clocks of the device.</span>
+                <span class="n">offsets</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">tp</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">"SELECT clock_name, clock_value, ts FROM clock_snapshot ORDER BY snapshot_id"</span><span class="p">):</span>
+                    <span class="n">offsets</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">clock_name</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">clock_value</span> <span class="o">-</span> <span class="n">row</span><span class="o">.</span><span class="n">ts</span><span class="p">)</span>
+                <span class="n">rails</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="s2">"""</span>
+<span class="s2">                SELECT t.name AS name, c.ts AS ts, c.value AS value</span>
+<span class="s2">                FROM counter c JOIN counter_track t ON c.track_id = t.id</span>
+<span class="s2">                WHERE t.name LIKE 'power.%'</span>
+<span class="s2">                ORDER BY t.name, c.ts</span>
+<span class="s2">                """</span>
+                <span class="k">if</span> <span class="s1">'REALTIME'</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">offsets</span><span class="p">:</span>
+                    <span class="n">log</span><span class="p">(</span><span class="s2">"Trace has no REALTIME clock snapshot. Power rail times can not be "</span>
+                        <span class="s2">"aligned with other data sources"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+                <span class="n">boot_to_epoch_ns</span> <span class="o">=</span> <span class="n">offsets</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'REALTIME'</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">tp</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">query</span><span class="p">):</span>
+                    <span class="n">times</span><span class="p">,</span> <span class="n">joules</span> <span class="o">=</span> <span class="n">rails</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">([],</span> <span class="p">[]))</span>
+                    <span class="n">times</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">row</span><span class="o">.</span><span class="n">ts</span> <span class="o">+</span> <span class="n">boot_to_epoch_ns</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">)</span>
+                    <span class="c1">#values are in microwatt-seconds (1 µWs = 1e-6 J)</span>
+                    <span class="n">joules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">value</span> <span class="o">*</span> <span class="mf">1e-6</span><span class="p">)</span>
+            <span class="k">finally</span><span class="p">:</span>
+                <span class="n">tp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="n">rails</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">series</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">series</span> <span class="ow">in</span> <span class="n">rails</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">series</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">}</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">rails</span><span class="p">:</span>
+                <span class="n">log</span><span class="p">(</span><span class="s2">"No power rails found in trace"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">None</span>
+            <span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Found </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">rails</span><span class="p">)</span><span class="si">}</span><span class="s2"> power rails"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">rails</span><span class="p">,</span> <span class="p">(</span><span class="n">boot_to_epoch_ns</span> <span class="o">-</span> <span class="n">offsets</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'MONOTONIC'</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">traceback</span>
+            <span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Error calculating energy: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+            <span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Traceback: </span><span class="si">{</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="PowerRailsTrace.window">
+<a class="viewcode-back" href="../../../modules.html#manafa.parsing.perfettoEnergyCalculator.PowerRailsTrace.window">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">window</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Returns (start, end): the interval that all rails cover."""</span>
+        <span class="k">return</span> <span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">times</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">times</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rails</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span>
+                <span class="nb">min</span><span class="p">(</span><span class="n">times</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">times</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rails</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span></div>
+
+
+<div class="viewcode-block" id="PowerRailsTrace.cpu_rails">
+<a class="viewcode-back" href="../../../modules.html#manafa.parsing.perfettoEnergyCalculator.PowerRailsTrace.cpu_rails">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cpu_rails</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Names of the rails that supply CPU clusters (name contains 'cpu')."""</span>
+        <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rails</span> <span class="k">if</span> <span class="s1">'cpu'</span> <span class="ow">in</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span></div>
+
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_counter_at</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">joules</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">t</span> <span class="o">&lt;=</span> <span class="n">times</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="n">joules</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">t</span> <span class="o">&gt;=</span> <span class="n">times</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="n">joules</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">bisect</span><span class="o">.</span><span class="n">bisect_right</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+        <span class="n">fraction</span> <span class="o">=</span> <span class="p">(</span><span class="n">t</span> <span class="o">-</span> <span class="n">times</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">times</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">times</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">joules</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">fraction</span> <span class="o">*</span> <span class="p">(</span><span class="n">joules</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">joules</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+
+<div class="viewcode-block" id="PowerRailsTrace.energy_between">
+<a class="viewcode-back" href="../../../modules.html#manafa.parsing.perfettoEnergyCalculator.PowerRailsTrace.energy_between">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">energy_between</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span><span class="p">,</span> <span class="n">rails</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Energy (Joules) that the rails consumed between two timestamps.</span>
+
+<span class="sd">        Time outside the recorded samples adds no energy.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            start_time: begin timestamp (epoch seconds).</span>
+<span class="sd">            end_time: end timestamp (epoch seconds).</span>
+<span class="sd">            rails: names of the rails to add. Default: all rails.</span>
+<span class="sd">        """</span>
+        <span class="n">total</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rails</span> <span class="k">if</span> <span class="n">rails</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">rails</span><span class="p">):</span>
+            <span class="n">times</span><span class="p">,</span> <span class="n">joules</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rails</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+            <span class="n">total</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_counter_at</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">joules</span><span class="p">,</span> <span class="n">end_time</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_counter_at</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">joules</span><span class="p">,</span> <span class="n">start_time</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">total</span></div>
+
+
+<div class="viewcode-block" id="PowerRailsTrace.method_rails">
+<a class="viewcode-back" href="../../../modules.html#manafa.parsing.perfettoEnergyCalculator.PowerRailsTrace.method_rails">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">method_rails</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Rails used to attribute energy to methods: the CPU rails, or all rails</span>
+<span class="sd">        if the CPU rails can not be identified by name."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cpu_rails</span><span class="p">()</span> <span class="ow">or</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rails</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PowerRailsTrace.summary">
+<a class="viewcode-back" href="../../../modules.html#manafa.parsing.perfettoEnergyCalculator.PowerRailsTrace.summary">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">summary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Session totals, in the format that is written to the results file."""</span>
+        <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">window</span><span class="p">()</span>
+        <span class="n">by_rail</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">joules</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">joules</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">joules</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rails</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="n">method_rails</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">method_rails</span><span class="p">()</span>
+        <span class="c1"># cumulative energy of the method rails on the clock of the ART method</span>
+        <span class="c1"># trace (CLOCK_MONOTONIC ns), so the sunburst can use it directly</span>
+        <span class="n">times</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rails</span><span class="p">[</span><span class="n">method_rails</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">series</span> <span class="o">=</span> <span class="p">[[</span><span class="nb">round</span><span class="p">((</span><span class="n">t</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">monotonic_to_epoch_s</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e9</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">energy_between</span><span class="p">(</span><span class="n">times</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">t</span><span class="p">,</span> <span class="n">method_rails</span><span class="p">)]</span>
+                  <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">times</span><span class="p">]</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">'total'</span><span class="p">:</span> <span class="nb">sum</span><span class="p">(</span><span class="n">by_rail</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span>
+            <span class="s1">'by_rail'</span><span class="p">:</span> <span class="n">by_rail</span><span class="p">,</span>
+            <span class="s1">'start_time'</span><span class="p">:</span> <span class="n">start</span><span class="p">,</span>
+            <span class="s1">'measured_duration_seconds'</span><span class="p">:</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">,</span>
+            <span class="s1">'method_rails'</span><span class="p">:</span> <span class="n">method_rails</span><span class="p">,</span>
+            <span class="s1">'method_energy_series'</span><span class="p">:</span> <span class="n">series</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total Energy: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">'total'</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> Joules in </span><span class="si">{</span><span class="n">end</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> s"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+        <span class="n">log</span><span class="p">(</span><span class="s2">"Top Power Consumers:"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">rail</span><span class="p">,</span> <span class="n">energy</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">by_rail</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)[:</span><span class="mi">5</span><span class="p">]:</span>
+            <span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">rail</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">energy</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> J"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="calculate_memory_stats">
+<a class="viewcode-back" href="../../../modules.html#manafa.parsing.perfettoEnergyCalculator.calculate_memory_stats">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_memory_stats</span><span class="p">(</span><span class="n">trace_file</span><span class="p">,</span> <span class="n">app_package</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Calculate system memory statistics from Perfetto trace.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns min, max, and average for system memory counters.</span>
+<span class="sd">    """</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">perfetto.trace_processor</span><span class="w"> </span><span class="kn">import</span> <span class="n">TraceProcessor</span>
+
+        <span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Attempting to calculate memory stats from: </span><span class="si">{</span><span class="n">trace_file</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+        <span class="c1">#check if file exists</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">trace_file</span><span class="p">):</span>
+            <span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"ERROR: Trace file does not exist: </span><span class="si">{</span><span class="n">trace_file</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"File exists, size: </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">trace_file</span><span class="p">)</span><span class="si">}</span><span class="s2"> bytes"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+        <span class="c1">#try to load TraceProcessor</span>
+        <span class="n">tp</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">log</span><span class="p">(</span><span class="s2">"Loading TraceProcessor for memory stats..."</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+            <span class="n">tp</span> <span class="o">=</span> <span class="n">TraceProcessor</span><span class="p">(</span><span class="n">trace</span><span class="o">=</span><span class="n">trace_file</span><span class="p">)</span>
+            <span class="n">log</span><span class="p">(</span><span class="s2">"TraceProcessor loaded successfully"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">error_msg</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s2">"failed to start"</span> <span class="ow">in</span> <span class="n">error_msg</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">or</span> <span class="s2">"download"</span> <span class="ow">in</span> <span class="n">error_msg</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                <span class="n">log</span><span class="p">(</span><span class="s2">"TraceProcessor binary download may have failed"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+                <span class="n">log</span><span class="p">(</span><span class="s2">"To fix this issue:"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+                <span class="n">log</span><span class="p">(</span><span class="s2">"  1. Check your internet connection"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+                <span class="n">log</span><span class="p">(</span><span class="s2">"  2. Run: python3 download_trace_processor.py"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+                <span class="n">log</span><span class="p">(</span><span class="s2">"  3. Or manually download from: https://get.perfetto.dev/trace_processor"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+            <span class="k">raise</span>
+
+        <span class="k">if</span> <span class="n">tp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">log</span><span class="p">(</span><span class="s2">"Failed to load TraceProcessor"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        
+        <span class="c1">#tp = TraceProcessor(trace=trace_file)</span>
+        <span class="c1">#log("TraceProcessor loaded successfully for memory stats", log_sev=LogSeverity.INFO)</span>
+        
+        <span class="c1">#query for system memory counters</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="s2">"""</span>
+<span class="s2">        SELECT </span>
+<span class="s2">            t.name as counter_name,</span>
+<span class="s2">            c.value as value_bytes</span>
+<span class="s2">        FROM counter c</span>
+<span class="s2">        JOIN counter_track t ON c.track_id = t.id</span>
+<span class="s2">        WHERE t.name IN ('MemTotal', 'MemFree', 'MemAvailable', </span>
+<span class="s2">                         'Buffers', 'Cached', 'Active', 'Inactive')</span>
+<span class="s2">        ORDER BY t.name, c.ts</span>
+<span class="s2">        """</span>
+        
+        <span class="n">result</span> <span class="o">=</span> <span class="n">tp</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        
+        <span class="c1">#organize data by counter name</span>
+        <span class="n">counters_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+            <span class="n">counter_name</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">counter_name</span>
+            <span class="k">if</span> <span class="n">counter_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">counters_data</span><span class="p">:</span>
+                <span class="n">counters_data</span><span class="p">[</span><span class="n">counter_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">counters_data</span><span class="p">[</span><span class="n">counter_name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">value_bytes</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">counters_data</span><span class="p">:</span>
+            <span class="n">log</span><span class="p">(</span><span class="s2">"No system memory data found in trace"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        
+        <span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Found memory data for </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">counters_data</span><span class="p">)</span><span class="si">}</span><span class="s2"> counters"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+        
+        <span class="c1">#calculate statistics for each counter</span>
+        <span class="n">memory_stats</span> <span class="o">=</span> <span class="p">{}</span>
+        
+        <span class="k">for</span> <span class="n">counter_name</span><span class="p">,</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">counters_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">min_bytes</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+                <span class="n">max_bytes</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+                <span class="n">avg_bytes</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+                
+                <span class="n">memory_stats</span><span class="p">[</span><span class="n">counter_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s1">'min_mb'</span><span class="p">:</span> <span class="n">min_bytes</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">),</span>
+                    <span class="s1">'max_mb'</span><span class="p">:</span> <span class="n">max_bytes</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">),</span>
+                    <span class="s1">'avg_mb'</span><span class="p">:</span> <span class="n">avg_bytes</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">),</span>
+                    <span class="s1">'samples'</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+                <span class="p">}</span>
+        
+        <span class="k">return</span> <span class="n">memory_stats</span>
+        
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">traceback</span>
+        <span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Error calculating memory stats: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+        <span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Traceback: </span><span class="si">{</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2026, Rui Rua.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

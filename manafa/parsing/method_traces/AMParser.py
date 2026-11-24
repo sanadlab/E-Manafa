@@ -1,4 +1,5 @@
 import sys
+import zlib
 
 from manafa.utils.Logger import log
 from manafa.utils.Utils import is_float
@@ -59,7 +60,8 @@ class AMParser(object):
             except:
                 continue
             method_name = method_def.split(' ')[0].replace("\"", '').replace("$", ".").replace(":", "")
-            method_hash = str(hash(method_def.split(':')[1] if len(method_def.split(' ')) > 1 else ''))
+            # crc32 and not hash(): hash() of a string changes between runs of python
+            method_hash = format(zlib.crc32((method_def.split(':')[1] if len(method_def.split(' ')) > 1 else '').encode()), '08x')
             function_id = f"{method_name}_{method_hash}"
             duration_secs = float(duration) * pow(10, -9)  # convert from nanoseconds to seconds
             if float(begin_time) >= start_time:

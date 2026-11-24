@@ -249,7 +249,7 @@ class BatteryStatsParser(object):
             lines_list(:obj:`list` of :obj:`str`): list of lines.
         """
         for i, line in enumerate(lines_list):
-            if re.match(r"^Battery History \([0-9]", line):
+            if re.match(r"^Battery History", line):
                 # header, ignore
                 continue
             if re.match(r"^Per-PID Stats", line) or len(line) == 0:
@@ -295,8 +295,11 @@ class BatteryStatsParser(object):
             self.events.append(bt)
         else:
             last_added = self.events[-1]
+            # the android 16 history has some lines with a time before the previous line. keep the events in order
+            time = max(time, last_added.time)
             if last_added.time == time:
                 self.events[-1].add_events(bat_events)
+                self.estimate_current_consumption(self.events[-1])
 
             else:
                 # TODO try to replace with shallow copy
@@ -346,25 +349,35 @@ class BatteryStatsParser(object):
         if (end_time - start_time) <= 0:
             return metrics
         c_beg_bef, c_beg_aft = self.get_closest_pair(start_time)
+        if len(self.events) > 0 and self.events[c_beg_bef].time <= start_time:
+            # the last event before the interval gives the state at start_time
+            c_beg_aft = c_beg_bef
         # {'health: [(event_state,start,end, pctage_duration)], ..}
         prev_time = self.events[c_beg_aft].time if len(self.events) > 0 else start_time
         fst_time = prev_time
         for ev in self.events[c_beg_aft:]:
             if ev.time > end_time:
                 break
+            def close(entries):
+                # the state ends at this event
+                duration_pctage = 100 * ((ev.time - entries[-1][1]) / (end_time - start_time))
+                entries[-1] = (entries[-1][0], entries[-1][1], ev.time, duration_pctage)
+
             for kup, upval in ev.updates.items():
                 metrics[kup] = [] if kup not in metrics else metrics[kup]
-                contains_update_val = metrics[kup][-1][0] == upval if len(
-                    metrics[kup]) > 0 else None  # next(filter(lambda x: x[0] == upval, metrics[kup]), None)
-                if not contains_update_val:
-                    if len(metrics[kup]) > 0:
-                        # update previous state
-                        duration_pctage = 100 * ((ev.time - metrics[kup][-1][1]) / (end_time - start_time))
-                        metrics[kup][-1] = (
-                            metrics[kup][-1][0], metrics[kup][-1][1], ev.time, duration_pctage)  # last_time?
-                    init_time = start_time if fst_time == ev.time else ev.time
-                    duration_pctage = 100 * ((end_time - init_time) / (end_time - start_time))
-                    metrics[kup].append((upval, init_time, end_time, duration_pctage))
+                is_open = len(metrics[kup]) > 0 and metrics[kup][-1][2] == end_time
+                if is_open and metrics[kup][-1][0] == upval:
+                    continue
+                if is_open:
+                    close(metrics[kup])
+                init_time = start_time if fst_time == ev.time else ev.time
+                duration_pctage = 100 * ((end_time - init_time) / (end_time - start_time))
+                metrics[kup].append((upval, init_time, end_time, duration_pctage))
+            # a state that is set to off has no key in the event
+            for kup, entries in metrics.items():
+                if kup not in ev.updates and kup not in ev.concurrentUpdates and len(entries) > 0 \
+                        and entries[-1][2] == end_time:
+                    close(entries)
             # concs
             for cup, cupval in ev.concurrentUpdates.items():
                 metrics[cup] = [] if cup not in metrics else metrics[cup]
@@ -408,6 +421,8 @@ class BatteryStatsParser(object):
         last_ev = self.events[0] if len(self.events) > 0 else None
         last_time = start_time
         for x in self.events:
+            if x.time >= end_time:
+                break
             if x.time > start_time and x.time < end_time:
                 delta = x.time - last_time
                 state = last_ev.get_cpu_value()
@@ -441,7 +456,8 @@ class BatteryStatsParser(object):
         # screen
         if comp_name == "screen" and "screen" in bt_event.updates:
             on_current = possible_states["on"]  if not isinstance(possible_states['on'], dict) else first([x for x in possible_states["on"].values() if isinstance(x, float)])
-            brightness_level = bt_event.updates["brightness"] if "brightness" in bt_event.updates else 1
+            # the history does not print a brightness of 0 (dark) in its first line
+            brightness_level = bt_event.updates["brightness"] if "brightness" in bt_event.updates else 0
             relative_full_current = (brightness_level * (possible_states["full"] if not isinstance(possible_states["full"], dict) else first([x for x in possible_states["full"].values() if isinstance(x, float)])  ) / (
                         len(self.definitions["nominal"]["brightness"]) - 1))
             current += on_current + relative_full_current
@@ -501,26 +517,23 @@ class BatteryStatsParser(object):
                         avg_ct += 1
                     current += safe_division(curravg, avg_ct)
             elif "wifi_radio" in bt_event.updates:
+                # idle, rx and tx are exclusive states of the controller. the history does not have the time
+                # spent in rx and in tx, so an active radio is counted as receiving. the result is a lower
+                # bound when the device transmits.
                 if "controller" in possible_states:
-                    curravg = 0
-                    avg_ct = 0
-                    if "tx" in possible_states["controller"]:
-                        curravg += possible_states["controller"]["tx"]
-                        avg_ct += 1
                     if "rx" in possible_states["controller"]:
-                        curravg += possible_states["controller"]["rx"]
-                        avg_ct += 1
-                    current += safe_division(curravg, avg_ct)
-                else:
-                    current = old_current + possible_states["active"] if "active" in possible_states else 0
+                        current = old_current + (possible_states["on"] if "on" in possible_states else 0) \
+                                  + possible_states["controller"]["rx"]
+                elif "active" in possible_states:
+                    current = old_current + possible_states["active"]
         # gps
-        elif comp_name == "gps":
-            if "signalqualitybased" in possible_states:  # and "gps_signal_quality" in bt_event.updates:
+        elif comp_name == "gps" and "gps" in bt_event.updates:
+            # the signal quality stays in the state after the gps stops, so the gps must be on
+            if "signalqualitybased" in possible_states and "gps_signal_quality" in bt_event.updates:
                 # considerate gps signal quality
-                if "gps_signal_quality" in bt_event.updates:
-                    val = 1 if bt_event.updates["gps_signal_quality"] == "good" else 0
-                    current += possible_states["signalqualitybased"][val]
-            if "on" in possible_states and "gps" in bt_event.updates:
+                val = 1 if bt_event.updates["gps_signal_quality"] == "good" else 0
+                current += possible_states["signalqualitybased"][val]
+            elif "on" in possible_states:
                 current += possible_states["on"]
 
         # bluetooth
@@ -532,7 +545,7 @@ class BatteryStatsParser(object):
                     current += possible_states["on"] if "on" in possible_states else 0
                 elif "bluetooth" in bt_event.updates:
                     current += possible_states["on"] if "on" in possible_states else 0
-            elif "controller" in possible_states:
+            elif "bluetooth" in bt_event.updates or "ble_scan" in bt_event.updates:
                 current += possible_states["controller"]["idle"] if ("idle" in possible_states["controller"]) else 0
                 if "ble_scan" in bt_event.updates:
                     if "tx" in possible_states["controller"]:
@@ -579,7 +592,9 @@ class BatteryStatsParser(object):
                     avg_ct += 1
                 current += safe_division(curravg, avg_ct)
             elif "mobile_radio" in bt_event.updates:
-                current += possible_states["idle"] if "idle" in possible_states else 0
+                # active radio: counted as receiving, for the same reason as the wifi radio
+                controller = possible_states["controller"] if "controller" in possible_states else {}
+                current += controller["rx"] if "rx" in controller else controller["idle"] if "idle" in controller else 0
         # cpu
         elif comp_name == "cpu":
             # retrieve just the component state

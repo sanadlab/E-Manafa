@@ -1,8 +1,15 @@
-docutils==0.16
-incremental==21.3.0
-pytest==6.2.2
+# runtime (the same as setup.py)
+more-itertools>=8.0.0
+perfetto>=0.58.2
 python-textops3>=3.2.1
-pytz==2021.1
-termcolor==1.1.0
-twine==3.4.1
-perfetto==0.58.2
+pytz>=2024.1
+termcolor>=1.1.0
+# sunburst diagram (optional)
+plotly>=5.0.0
+# tests, release and documentation
+build>=1.2.0
+incremental>=24.7.0
+pytest>=9.0.3
+sphinx>=7.0.0
+sphinx_rtd_theme>=2.0.0
+twine>=6.0.0

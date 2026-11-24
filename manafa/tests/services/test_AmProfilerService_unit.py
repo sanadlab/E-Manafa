@@ -54,7 +54,7 @@ class StartCommandTests(TestCase):
         ok = (0, "ok", "")
 
         with patch("manafa.services.AmProfilerService.execute_shell_command",
-                   side_effect=[ok, ok, resolve, ok, ok, ok]) as mock_exec, \
+                   side_effect=[ok, ok, ok, resolve, ok, ok, ok]) as mock_exec, \
              patch("manafa.services.AmProfilerService.time.sleep"):
             self.assertTrue(svc.start(run_id="42"))
 
@@ -71,7 +71,7 @@ class StartCommandTests(TestCase):
         ok = (0, "ok", "")
 
         with patch("manafa.services.AmProfilerService.execute_shell_command",
-                   side_effect=[ok, ok, resolve, ok, ok, ok]) as mock_exec, \
+                   side_effect=[ok, ok, ok, resolve, ok, ok, ok]) as mock_exec, \
              patch("manafa.services.AmProfilerService.time.sleep"):
             svc.start(run_id="42")
 
@@ -86,7 +86,7 @@ class StartCommandTests(TestCase):
         ok = (0, "ok", "")
 
         with patch("manafa.services.AmProfilerService.execute_shell_command",
-                   side_effect=[ok, ok, empty_resolve]) as mock_exec, \
+                   side_effect=[ok, ok, ok, empty_resolve]) as mock_exec, \
              patch("manafa.services.AmProfilerService.time.sleep"):
             self.assertFalse(svc.start(run_id="42"))
 

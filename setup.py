@@ -17,14 +17,13 @@ setup(
     packages=setuptools.find_packages(exclude=['manafa.tests', 'manafa.tests.*']),
     use_incremental=True,
     install_requires=[
-    'pytz==2021.1',
-    'termcolor==1.1.0',
-    'python-textops3>=3.2.1',  # Updated to allow 3.2.1+
-    'python-dateutil==2.8.1',
-    'perfetto',
-    "setuptools>=42",
-    "wheel",
+    'pytz>=2024.1',  # no upper limit: a new release has the current timezone rules
+    'termcolor>=1.1.0',
+    'python-textops3>=3.2.1',
+    'more-itertools>=8.0.0',
+    'perfetto>=0.58.2',
 ],
+    extras_require={'sunburst': ['plotly>=5.0.0']},
     setup_requires=['incremental'],
     include_package_data=True,
     scripts=['bin/emanafa'],

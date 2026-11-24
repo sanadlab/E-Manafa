@@ -91,7 +91,7 @@ class HunterEManafa(EManafa):
                     end = time['end_time']
                 else:
                     end = begin
-                consumption, per_component_consumption, m = self.get_consumption_in_between(begin, end)
+                consumption, per_component_consumption, m = self.get_method_consumption(begin, end)
                 if consumption <= 0 or per_component_consumption['cpu'] <= 0:
                     consumption = 0.0
                     per_component_consumption.update({'cpu': 0.0})
@@ -122,7 +122,7 @@ class HunterEManafa(EManafa):
         #pf_file = pf_file if pf_file is not None else self.pft_out_file
         #run_id = self.perfetto.get_run_id_from_perfetto_file(pf_file)
         a, b = None, None
-        if len(self.bat_events.events) > 0:
+        if self.power_rails is not None or len(self.bat_events.events) > 0:
             self.hunter_out_file = self.hunter_out_file if htr_file is None else htr_file
             a, b = self.calculate_function_consumption()
         return a, b

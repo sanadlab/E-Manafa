@@ -1,0 +1,459 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>manafa.services.AmProfilerService &mdash; E-MANAFA 0.4.14</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=c1264a3d" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=1f5508e5"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            E-MANAFA
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting_started.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting_started.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting_started.html#first-measurement">First measurement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting_started.html#usb-or-wi-fi">USB or Wi-Fi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../getting_started.html#next-steps">Next steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../how_it_works.html">How it works</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../how_it_works.html#workflow">Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../how_it_works.html#two-sources-of-energy-data">Two sources of energy data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../how_it_works.html#power-rails-default">Power rails (default)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../how_it_works.html#legacy-model">Legacy model</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../how_it_works.html#memory">Memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../how_it_works.html#energy-of-a-method">Energy of a method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../how_it_works.html#clocks">Clocks</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage.html">Measurement scenarios</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../usage.html#energy-only">Energy only</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../usage.html#memory-only">Memory only</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../usage.html#energy-and-memory-in-separate-runs-recommended">Energy and memory in separate runs (recommended)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../usage.html#energy-and-memory-in-one-run">Energy and memory in one run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../usage.html#a-device-with-no-power-rails">A device with no power rails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../usage.html#how-long-to-measure">How long to measure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../usage.html#a-repeatable-workload">A repeatable workload</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../usage.html#the-device-only-with-no-app">The device only, with no app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../usage.html#an-app-with-no-method-trace">An app with no method trace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../usage.html#finer-time-resolution">Finer time resolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../usage.html#parse-recorded-files-again">Parse recorded files again</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../method_energy.html">Energy of each method</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../method_energy.html#method-trace-sources">Method trace sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../method_energy.html#the-app-must-permit-profiling">The app must permit profiling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../method_energy.html#how-the-trace-is-recorded">How the trace is recorded</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../method_energy.html#what-a-method-gets">What a method gets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../method_energy.html#result-files">Result files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sunburst.html">Sunburst diagram</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../sunburst.html#the-three-views">The three views</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../sunburst.html#call-graph">Call graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../sunburst.html#packages-all-code">Packages: all code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../sunburst.html#packages-app-only">Packages: app only</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../sunburst.html#hot-spots">Hot spots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../sunburst.html#controls">Controls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../sunburst.html#what-the-values-are">What the values are</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../sunburst.html#make-the-diagram-from-a-result-file">Make the diagram from a result file</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../output.html">Output files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../output.html#summary-in-the-terminal">Summary in the terminal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../output.html#result-file">Result file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../output.html#fields">Fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../output.html#raw-files">Raw files</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command-line reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../cli.html#session">Session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../cli.html#methods-and-diagram">Methods and diagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../cli.html#sampling">Sampling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../cli.html#device-data">Device data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../cli.html#output">Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../cli.html#recorded-files">Recorded files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../library.html">Python library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../library.html#energy-and-memory-of-a-block-of-code">Energy and memory of a block of code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../library.html#energy-of-an-interval">Energy of an interval</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../library.html#legacy-model">Legacy model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../library.html#energy-of-methods">Energy of methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../library.html#sunburst-diagram">Sunburst diagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../library.html#one-session-for-each-object">One session for each object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../accuracy.html">Accuracy and limits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../accuracy.html#power-rails-are-measurements">Power rails are measurements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../accuracy.html#the-legacy-model-is-an-estimate">The legacy model is an estimate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../accuracy.html#limits-of-method-energy">Limits of method energy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../accuracy.html#limits-of-the-legacy-model">Limits of the legacy model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../accuracy.html#the-connection-to-the-device">The connection to the device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../accuracy.html#good-practice">Good practice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../accuracy.html#accuracy-tests">Accuracy tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development.html">Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../development.html#tests">Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../development.html#structure-of-the-code">Structure of the code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../development.html#build-these-pages">Build these pages</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../modules.html#module-manafa.emanafa">Sessions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.emanafa.get_last_boot_time"><code class="docutils literal notranslate"><span class="pre">get_last_boot_time()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.emanafa.EManafa"><code class="docutils literal notranslate"><span class="pre">EManafa</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.am_emanafa.get_monotonic_to_epoch_s"><code class="docutils literal notranslate"><span class="pre">get_monotonic_to_epoch_s()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.am_emanafa.AMEManafa"><code class="docutils literal notranslate"><span class="pre">AMEManafa</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.hunter_emanafa.HunterEManafa"><code class="docutils literal notranslate"><span class="pre">HunterEManafa</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../modules.html#module-manafa.parsing.perfettoEnergyCalculator">Power rails and memory</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.parsing.perfettoEnergyCalculator.count_power_rails"><code class="docutils literal notranslate"><span class="pre">count_power_rails()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.parsing.perfettoEnergyCalculator.PowerRailsTrace"><code class="docutils literal notranslate"><span class="pre">PowerRailsTrace</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.parsing.perfettoEnergyCalculator.calculate_memory_stats"><code class="docutils literal notranslate"><span class="pre">calculate_memory_stats()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../modules.html#module-manafa.sunburst">Sunburst diagram</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.sunburst.load_calls"><code class="docutils literal notranslate"><span class="pre">load_calls()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.sunburst.build_tree"><code class="docutils literal notranslate"><span class="pre">build_tree()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.sunburst.energy_clock"><code class="docutils literal notranslate"><span class="pre">energy_clock()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.sunburst.hot_sectors"><code class="docutils literal notranslate"><span class="pre">hot_sectors()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.sunburst.focus_subtrees"><code class="docutils literal notranslate"><span class="pre">focus_subtrees()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.sunburst.build_sunburst"><code class="docutils literal notranslate"><span class="pre">build_sunburst()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../modules.html#module-manafa.parsing.batteryStats.BatteryStatsParser">Parsers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.parsing.batteryStats.BatteryStatsParser.safe_division"><code class="docutils literal notranslate"><span class="pre">safe_division()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.parsing.batteryStats.BatteryStatsParser.BatteryEvent"><code class="docutils literal notranslate"><span class="pre">BatteryEvent</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.parsing.batteryStats.BatteryStatsParser.BatteryStatsParser"><code class="docutils literal notranslate"><span class="pre">BatteryStatsParser</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.parsing.perfetto.perfettoParser.interpolate"><code class="docutils literal notranslate"><span class="pre">interpolate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.parsing.perfetto.perfettoParser.CPU_STATE"><code class="docutils literal notranslate"><span class="pre">CPU_STATE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.parsing.perfetto.perfettoParser.PerfettoCPUEvent"><code class="docutils literal notranslate"><span class="pre">PerfettoCPUEvent</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.parsing.perfetto.perfettoParser.PerfettoCPUfreqParser"><code class="docutils literal notranslate"><span class="pre">PerfettoCPUfreqParser</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.parsing.perfetto.perfettoParser.parse_dumpsys_output"><code class="docutils literal notranslate"><span class="pre">parse_dumpsys_output()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.parsing.perfetto.perfettoParser.generate_power_profile_xml"><code class="docutils literal notranslate"><span class="pre">generate_power_profile_xml()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.parsing.powerProfile.PowerProfile.PowerProfile"><code class="docutils literal notranslate"><span class="pre">PowerProfile</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.parsing.method_traces.AMParser.AMParser"><code class="docutils literal notranslate"><span class="pre">AMParser</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.parsing.method_traces.HunterParser.HunterParser"><code class="docutils literal notranslate"><span class="pre">HunterParser</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.parsing.method_traces.AppConsumptionStats.AppConsumptionStats"><code class="docutils literal notranslate"><span class="pre">AppConsumptionStats</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../modules.html#module-manafa.services.service">Device services</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.services.service.Service"><code class="docutils literal notranslate"><span class="pre">Service</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.services.perfettoService.wait_for_our_perfetto_to_exit"><code class="docutils literal notranslate"><span class="pre">wait_for_our_perfetto_to_exit()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.services.perfettoService.PerfettoService"><code class="docutils literal notranslate"><span class="pre">PerfettoService</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.services.perfettoServiceEnhanced.device_supports_power_rails"><code class="docutils literal notranslate"><span class="pre">device_supports_power_rails()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.services.perfettoServiceEnhanced.PerfettoServiceEnhanced"><code class="docutils literal notranslate"><span class="pre">PerfettoServiceEnhanced</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.services.batteryStatsService.BatteryStatsService"><code class="docutils literal notranslate"><span class="pre">BatteryStatsService</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.services.AmProfilerService.AmProfilerService"><code class="docutils literal notranslate"><span class="pre">AmProfilerService</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.services.LogcatService.LogcatService"><code class="docutils literal notranslate"><span class="pre">LogcatService</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../modules.html#module-manafa.utils.BatteryDrainCalculator">Utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.utils.BatteryDrainCalculator.BatteryDrainCalculator"><code class="docutils literal notranslate"><span class="pre">BatteryDrainCalculator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.utils.dateUtils.get_tzinfo"><code class="docutils literal notranslate"><span class="pre">get_tzinfo()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.utils.dateUtils.local_time_to_timestamp"><code class="docutils literal notranslate"><span class="pre">local_time_to_timestamp()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../modules.html#module-manafa.main">Command line</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.main.has_connected_devices"><code class="docutils literal notranslate"><span class="pre">has_connected_devices()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.main.export_to_json"><code class="docutils literal notranslate"><span class="pre">export_to_json()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.main.export_to_csv"><code class="docutils literal notranslate"><span class="pre">export_to_csv()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.main.display_new_profiler_results"><code class="docutils literal notranslate"><span class="pre">display_new_profiler_results()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.main.is_rails_trace"><code class="docutils literal notranslate"><span class="pre">is_rails_trace()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.main.parse_rails_trace"><code class="docutils literal notranslate"><span class="pre">parse_rails_trace()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.main.preserve_trace_file"><code class="docutils literal notranslate"><span class="pre">preserve_trace_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.main.generate_sunburst"><code class="docutils literal notranslate"><span class="pre">generate_sunburst()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">E-MANAFA</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">manafa.services.AmProfilerService</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for manafa.services.AmProfilerService</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.service</span><span class="w"> </span><span class="kn">import</span> <span class="n">Service</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..utils.Utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">execute_shell_command</span><span class="p">,</span> <span class="n">get_resources_dir</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">manafa.utils.Logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">log</span>
+
+<span class="n">DEVICE_RESULTS_DIR</span> <span class="o">=</span> <span class="s2">"/data/local/tmp/"</span>
+<span class="n">TRACE_PROCESSOR_PATH</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">get_resources_dir</span><span class="p">()</span> <span class="p">,</span> <span class="s2">"trace_processor"</span><span class="p">)</span>
+<span class="n">PROFILING_SAMPLE_RATE</span> <span class="o">=</span> <span class="mi">750</span>  <span class="c1"># in nanosecs, default sampling rate for am profiler</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_to_csv</span><span class="p">(</span><span class="n">file_to_convert</span><span class="p">,</span> <span class="n">results_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="c1">#  ~/repos/research/perfetto/tools/trace_processor tracefile -Q "SELECT name, ts, dur, depth FROM slice ORDER BY ts"</span>
+    <span class="n">results_dir</span> <span class="o">=</span> <span class="n">results_dir</span> <span class="k">if</span> <span class="n">results_dir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">file_to_convert</span><span class="p">)</span>
+    <span class="n">filepath</span> <span class="o">=</span> <span class="n">file_to_convert</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">".trace"</span><span class="p">,</span> <span class="s2">".csv"</span><span class="p">)</span>
+    <span class="n">target_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">results_dir</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filepath</span><span class="p">))</span>
+    <span class="n">cmd</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">TRACE_PROCESSOR_PATH</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">results_dir</span><span class="p">,</span><span class="w"> </span><span class="n">file_to_convert</span><span class="p">)</span><span class="si">}</span><span class="s2"> -Q </span><span class="se">\"</span><span class="s2">SELECT name, ts, dur, depth FROM slice ORDER BY ts</span><span class="se">\"</span><span class="s2"> &gt; </span><span class="si">{</span><span class="n">target_file</span><span class="si">}</span><span class="s2">"</span>
+    <span class="n">log</span><span class="p">(</span><span class="s2">"Converting </span><span class="si">%s</span><span class="s2"> to CSV: "</span> <span class="o">%</span> <span class="n">cmd</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">execute_shell_command</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+    <span class="n">corresp_exec_file</span> <span class="o">=</span> <span class="n">file_to_convert</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">".trace"</span><span class="p">,</span> <span class="s2">"_exec.trace"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">corresp_exec_file</span><span class="p">):</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">TRACE_PROCESSOR_PATH</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">results_dir</span><span class="p">,</span><span class="w"> </span><span class="n">corresp_exec_file</span><span class="p">)</span><span class="si">}</span><span class="s2"> -Q </span><span class="se">\"</span><span class="s2">SELECT name, ts, dur, depth FROM slice ORDER BY ts</span><span class="se">\"</span><span class="s2"> &gt;&gt; </span><span class="si">{</span><span class="n">target_file</span><span class="si">}</span><span class="s2">"</span>
+        <span class="n">log</span><span class="p">(</span><span class="s2">"Converting exec file </span><span class="si">%s</span><span class="s2"> to CSV: "</span> <span class="o">%</span> <span class="n">cmd</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">execute_shell_command</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">target_file</span>
+
+
+<div class="viewcode-block" id="AmProfilerService">
+<a class="viewcode-back" href="../../../modules.html#manafa.services.AmProfilerService.AmProfilerService">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">AmProfilerService</span><span class="p">(</span><span class="n">Service</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Class that manages the am profiler.</span>
+
+<span class="sd">    This class is responsible by managing the Android Activity Manager (am) profiler, which is used to collect</span>
+<span class="sd">    method execution traces from the Android system and applications</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        boot_time (float): timestamp of the device's last boot.</span>
+<span class="sd">        output_res_folder (float): folder where the logs will be stored after each profiling session.</span>
+<span class="sd">    """</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">package_name</span><span class="p">,</span> <span class="n">boot_time</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">output_res_folder</span><span class="o">=</span><span class="s2">"am"</span><span class="p">):</span>
+        <span class="n">Service</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_res_folder</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trace</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">package_name</span> <span class="o">=</span> <span class="n">package_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">boot_time</span> <span class="o">=</span> <span class="n">boot_time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">end_time</span> <span class="o">=</span> <span class="n">boot_time</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+<div class="viewcode-block" id="AmProfilerService.init">
+<a class="viewcode-back" href="../../../modules.html#manafa.services.AmProfilerService.AmProfilerService.init">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">boot_time</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""init the class.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            boot_time: device boot timestamp.</span>
+<span class="sd">            **kwargs:</span>
+<span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">boot_time</span> <span class="o">=</span> <span class="n">boot_time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trace</span> <span class="o">=</span> <span class="p">{}</span></div>
+
+
+<div class="viewcode-block" id="AmProfilerService.start">
+<a class="viewcode-back" href="../../../modules.html#manafa.services.AmProfilerService.AmProfilerService.start">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""starts the profiling session.</span>
+
+<span class="sd">        Calls clean() to discard logs prior to the start of the session.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            run_id(str): current session/run id.  Considered only for API compat purposes.</span>
+<span class="sd">        """</span>
+        <span class="c1">#self.clean()</span>
+        <span class="n">execute_shell_command</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"find </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">results_dir</span><span class="si">}</span><span class="s2"> -type f -name </span><span class="se">\"</span><span class="s2">*.trace</span><span class="se">\"</span><span class="s2">  | xargs rm "</span><span class="p">)</span>
+        <span class="n">execute_shell_command</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"find </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">results_dir</span><span class="si">}</span><span class="s2"> -type f -name </span><span class="se">\"</span><span class="s2">*.csv</span><span class="se">\"</span><span class="s2">  | xargs rm "</span><span class="p">)</span>
+        <span class="c1"># each run has its own file name, so remove the traces that older runs left on the device</span>
+        <span class="n">execute_shell_command</span><span class="p">(</span><span class="sa">f</span><span class="s2">"adb shell rm -f </span><span class="si">{</span><span class="n">DEVICE_RESULTS_DIR</span><span class="si">}</span><span class="s2">app_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">package_name</span><span class="si">}</span><span class="s2">_*.trace"</span><span class="p">)</span>
+        <span class="n">startup_output_filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_results_filename</span><span class="p">(</span><span class="n">run_id</span><span class="p">)</span>
+        <span class="n">log</span><span class="p">(</span><span class="s2">"Am Profiler run id:  </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">run_id</span><span class="p">)</span>
+        <span class="n">activity_package</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_main_activity</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">activity_package</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">log</span><span class="p">(</span><span class="s2">"Could not resolve a launchable activity for </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">package_name</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="c1"># `--sampling` is required for apps using &lt;profileable android:shell="true"/&gt;:</span>
+        <span class="c1"># without it, `am start -P` falls back to method tracing, which the framework</span>
+        <span class="c1"># rejects on profileable apps (even when android:debuggable="true" is also set),</span>
+        <span class="c1"># so no methods get recorded.</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="s2">" adb shell am start -S --start-profiler </span><span class="si">%s</span><span class="s2"> --sampling </span><span class="si">%d</span><span class="s2"> -n </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="n">startup_output_filename</span><span class="p">,</span> <span class="n">PROFILING_SAMPLE_RATE</span><span class="p">,</span> <span class="n">activity_package</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">execute_shell_command</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+        <span class="n">log</span><span class="p">(</span><span class="s2">"Profiling startup with Am Profiler: "</span> <span class="o">+</span> <span class="n">cmd</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">execute_shell_command</span><span class="p">(</span><span class="s2">"adb shell am profile stop </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">package_name</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">output_filename_exec</span> <span class="o">=</span> <span class="n">startup_output_filename</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">".trace"</span><span class="p">,</span> <span class="s2">"_exec.trace"</span><span class="p">)</span>
+        <span class="c1"># adb shell am profile start --sampling 1000 com.sanad.gpt4o.myapplication /data/local/tmp/manual_startup.trace</span>
+        <span class="c1"># --streaming: without it, ART keeps the trace in a fixed buffer and writes an empty file when the buffer</span>
+        <span class="c1"># overflows (after about 15 s on a Pixel 9 Pro XL)</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"adb shell am profile start --streaming --sampling </span><span class="si">{</span><span class="n">PROFILING_SAMPLE_RATE</span><span class="si">}</span><span class="s2"> %s %s"</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">package_name</span><span class="p">,</span> <span class="n">output_filename_exec</span><span class="p">)</span>
+        <span class="n">log</span><span class="p">(</span><span class="s2">"Profiling exec with Am Profiler: "</span> <span class="o">+</span> <span class="n">cmd</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">execute_shell_command</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_resolve_main_activity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Return the launcher activity (`pkg/.Activity`) or None if it can't be found.</span>
+
+<span class="sd">        `cmd package resolve-activity --brief` prints a header line followed by the</span>
+<span class="sd">        activity. Greping for the package name can also catch the header on devices</span>
+<span class="sd">        whose preferred-activity entry includes the package, so pick the first line</span>
+<span class="sd">        that matches the `pkg/component` shape.</span>
+<span class="sd">        """</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">execute_shell_command</span><span class="p">(</span>
+            <span class="s2">"adb shell cmd package resolve-activity --brief </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">package_name</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">splitlines</span><span class="p">():</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"</span><span class="si">%s</span><span class="s2">/"</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">package_name</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">line</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="AmProfilerService.get_results_filename">
+<a class="viewcode-back" href="../../../modules.html#manafa.services.AmProfilerService.AmProfilerService.get_results_filename">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_results_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run_id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""returns the name of the output file.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            output_name: the name of the output file.</span>
+<span class="sd">        """</span>
+        <span class="c1"># something like /data/local/tmp/app.trac</span>
+        <span class="k">if</span> <span class="n">run_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">run_id</span> <span class="o">=</span> <span class="n">execute_shell_command</span><span class="p">(</span><span class="s2">"date +</span><span class="si">%s</span><span class="s2">"</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DEVICE_RESULTS_DIR</span><span class="p">,</span> <span class="s2">"app_</span><span class="si">%s</span><span class="s2">_</span><span class="si">%s</span><span class="s2">_</span><span class="si">%s</span><span class="s2">.trace"</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">package_name</span><span class="p">,</span> <span class="n">run_id</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">boot_time</span><span class="p">)))</span></div>
+
+
+<div class="viewcode-block" id="AmProfilerService.stop">
+<a class="viewcode-back" href="../../../modules.html#manafa.services.AmProfilerService.AmProfilerService.stop">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">run_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""stops the profiling session.</span>
+
+<span class="sd">        Dump the logs in output file.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            filename: the name of the output file.</span>
+<span class="sd">        """</span>
+        <span class="n">log</span><span class="p">(</span><span class="s2">"Stopping Am Profiler for package: </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">package_name</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">execute_shell_command</span><span class="p">(</span><span class="s2">"adb shell am profile stop </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">package_name</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">execute_shell_command</span><span class="p">(</span><span class="s2">"adb shell find </span><span class="si">%s</span><span class="s2"> -type f | grep app_</span><span class="si">%s</span><span class="s2"> | xargs -I</span><span class="si">{}</span><span class="s2"> adb pull </span><span class="si">{}</span><span class="s2"> </span><span class="si">%s</span><span class="s2">"</span>
+                                         <span class="o">%</span> <span class="p">(</span><span class="n">DEVICE_RESULTS_DIR</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">package_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">results_dir</span><span class="p">))</span>
+        <span class="c1">#res, o, e = execute_shell_command(f"adb pull {DEVICE_RESULTS_DIR}/{filename}  {self.results_dir}")</span>
+        <span class="c1">#print(f"Pulling trace file {filename} from device: {res}, {o}, {e}")</span>
+        <span class="k">if</span> <span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">"unable to pull trace file. Attempted to pull files"</span><span class="p">)</span>
+        <span class="n">exported_filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">export</span><span class="p">()</span>
+        <span class="n">log</span><span class="p">(</span><span class="s2">"Exported Am Profiler file:  </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">exported_filename</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">exported_filename</span></div>
+
+
+<div class="viewcode-block" id="AmProfilerService.clean">
+<a class="viewcode-back" href="../../../modules.html#manafa.services.AmProfilerService.AmProfilerService.clean">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""cleans device log state and removes files from previous runs.</span>
+<span class="sd">        """</span>
+        <span class="n">execute_shell_command</span><span class="p">(</span><span class="sa">f</span><span class="s2">"adb shell rm </span><span class="si">{</span><span class="n">DEVICE_RESULTS_DIR</span><span class="si">}</span><span class="s2">/*.trace"</span><span class="p">)</span></div>
+
+        <span class="c1">#execute_shell_command(</span>
+        <span class="c1">#    f"find {self.results_dir} -type f -name \"*.trace\"  | xargs rm ")</span>
+        <span class="c1">#execute_shell_command(</span>
+        <span class="c1">#    f"find {self.results_dir} -type f -name \"*.csv\"  | xargs rm ")</span>
+
+<div class="viewcode-block" id="AmProfilerService.export">
+<a class="viewcode-back" href="../../../modules.html#manafa.services.AmProfilerService.AmProfilerService.export">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">export</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Exports results from previous runs.</span>
+<span class="sd">            last_exported: path of last exported file.</span>
+<span class="sd">        """</span>
+        <span class="n">log</span><span class="p">(</span><span class="s2">"Exporting Am Profiler results to CSV: </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">results_dir</span><span class="p">)</span>
+        <span class="n">target_file</span> <span class="o">=</span> <span class="s2">""</span>
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">'app_*'</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="s1">'exec.trace'</span> <span class="ow">in</span> <span class="n">x</span> <span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">results_dir</span><span class="p">)):</span>
+            <span class="n">log</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="n">f_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">results_dir</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">f_file</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">"trace file not found (</span><span class="si">{</span><span class="n">f_file</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
+            <span class="n">last_exported</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">results_dir</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+            <span class="c1">#log("Converting %s to CSV: " % last_exported)</span>
+            <span class="n">target_file</span> <span class="o">=</span> <span class="n">convert_to_csv</span><span class="p">(</span><span class="n">f_file</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">results_dir</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">target_file</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2026, Rui Rua.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

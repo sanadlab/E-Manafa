@@ -37,4 +37,4 @@ data_sources: {
     }
 }
 
-duration_ms: 300000
+# no duration_ms: the trace runs until the profiler stops it

@@ -4,6 +4,7 @@ import argparse
 
 from manafa.am_emanafa import AMEManafa
 from manafa.services.perfettoService import convert_to_systrace
+from manafa.services.perfettoServiceEnhanced import PerfettoServiceEnhanced
 from manafa.utils.Utils import execute_shell_command, mega_find, get_resources_dir
 from manafa.emanafa import EManafa
 from manafa.hunter_emanafa import HunterEManafa
@@ -31,7 +32,8 @@ def has_connected_devices():
 def export_to_json(data, filepath):
     """Export profiling data to JSON file."""
     with open(filepath, 'w') as f:
-        json.dump(data, f, indent=2)
+        # a session with method tracing has many thousands of calls: no indentation, to keep the file small
+        json.dump(data, f, indent=None if 'method_invocations' in data else 2)
     log(f"Detailed results exported to: {filepath}", log_sev=LogSeverity.INFO)
 
 
@@ -70,14 +72,12 @@ def export_to_csv(data, filepath):
             writer.writerow(['BATTERY DRAIN ANALYSIS'])
             drain = data['battery_drain']
             writer.writerow(['Metric', 'Value'])
-            writer.writerow(['Design Capacity (mAh)', f"{drain['design_capacity_mah']:.2f}"])
+            writer.writerow(['Full Capacity (mAh)', f"{drain['full_capacity_mah']:.2f}"])
             writer.writerow(['Current Voltage (V)', f"{drain['current_voltage_v']:.3f}"])
             if 'temperature_c' in drain:
                 writer.writerow(['Temperature (°C)', f"{drain['temperature_c']:.1f}"])
             if 'battery_level_percent' in drain:
                 writer.writerow(['Battery Level (%)', drain['battery_level_percent']])
-            writer.writerow(['Health Multiplier', f"{drain['health_multiplier']:.2f}"])
-            writer.writerow(['Effective Capacity (mAh)', f"{drain['effective_capacity_mah']:.2f}"])
             writer.writerow(['Total Battery Energy (Wh)', f"{drain['total_battery_energy_wh']:.3f}"])
             writer.writerow(['Consumed Energy (J)', f"{drain['consumed_energy_joules']:.2f}"])
             writer.writerow(['Consumed Energy (Wh)', f"{drain['consumed_energy_wh']:.6f}"])
@@ -210,17 +210,55 @@ def parse_results(args, manafa):
                     shutil.copyfile(fc, os.path.basename(fc))
             else:
                 manafa.parse_results(b_file, matching_pft_files[0])
-            begin = manafa.perf_events.events[0].time if len(manafa.perf_events.events) > 1 else manafa.bat_events.events[0].time
-            out_file = manafa.save_final_report(begin, output_filepath=args.output_file)
-            log(f"Output file: {out_file}. You can inspect it with E-MANAFA Inspector in {MANAFA_INSPECTOR_URL}",
-                log_sev=LogSeverity.SUCCESS)
+            save_legacy_report(args, manafa)
 
+    elif is_rails_trace(args):
+        parse_rails_trace(args, manafa)
     elif args.hunterfile:
         manafa.parse_results(args.batstatsfile, args.perfettofile, args.hunterfile)
         manafa.calculate_function_consumption()
+        save_legacy_report(args, manafa)
     else:
         manafa.parse_results(args.batstatsfile, args.perfettofile)
-    manafa.clean()
+        save_legacy_report(args, manafa)
+
+
+def save_legacy_report(args, manafa):
+    begin = manafa.perf_events.events[0].time if len(manafa.perf_events.events) > 1 else manafa.bat_events.events[0].time
+    out_file = manafa.save_final_report(begin, output_filepath=args.output_file)
+    log(f"Output file: {out_file}. You can inspect it with E-MANAFA Inspector in {MANAFA_INSPECTOR_URL}",
+        log_sev=LogSeverity.SUCCESS)
+
+
+def is_rails_trace(args):
+    """True if -pft gives a trace of the energy, memory or both mode, to parse with the power rails."""
+    return (args.perfettofile is not None and args.perfettofile.endswith('.perfetto-trace')
+            and args.profile_mode != 'legacy')
+
+
+def parse_rails_trace(args, manafa):
+    """Parses a recorded trace of the energy, memory or both mode again."""
+    from manafa.parsing.perfettoEnergyCalculator import PowerRailsTrace, calculate_memory_stats
+    rails = PowerRailsTrace.from_trace(args.perfettofile)
+    manafa.power_rails_energy = rails.summary() if rails is not None else None
+    manafa.memory_stats = calculate_memory_stats(args.perfettofile)
+    results = {'mode': args.profile_mode, 'app': args.app_package, 'timestamp': time.time()}
+    if manafa.power_rails_energy:
+        results['energy'] = manafa.power_rails_energy
+    if manafa.memory_stats:
+        results['memory'] = manafa.memory_stats
+    if 'energy' not in results and 'memory' not in results:
+        log(f"No power rails and no memory data in {args.perfettofile}", log_sev=LogSeverity.ERROR)
+        return
+    results['mode'] = 'both' if 'energy' in results and 'memory' in results else 'energy' if 'energy' in results else 'memory'
+    display_new_profiler_results(manafa, results['mode'])
+    if not args.output_file:
+        args.output_file = f"emanafa_{results['mode']}_{int(time.time())}.{args.output_format}"
+    if args.output_format == 'json':
+        export_to_json(results, args.output_file)
+    else:
+        export_to_csv(results, args.output_file)
+    print(f"\nDetailed results saved to: {args.output_file}\n")
 
 
 def print_profiled_stats(el_time, total_consumption, per_comp_consumption, event_timeline, battery_drain_info=None):
@@ -298,7 +336,7 @@ Examples:
     # Existing arguments
     parser.add_argument("-ht", "--hunter", help="parse method_traces logs", action='store_true', default=False)
     parser.add_argument("-p", "--profile", help="power profile file", default=None, type=str)
-    parser.add_argument("-t", "--timezone", help="device timezone", default=None, type=str)
+    parser.add_argument("-t", "--timezone", help="device timezone: IANA name (Europe/Lisbon) or UTC offset (+0100)", default=None, type=str)
     parser.add_argument("-pft", "--perfettofile", help="perfetto file", default=None, type=str)
     parser.add_argument("-bts", "--batstatsfile", help="batterystats file", default=None, type=str)
     parser.add_argument("-htf", "--hunterfile", help="method_traces file", default=None, type=str)
@@ -365,13 +403,15 @@ Examples:
         log("Using legacy profiler", log_sev=LogSeverity.INFO)
     
     has_device_conn = has_connected_devices()
-    invalid_file_args = (args.perfettofile is None or args.batstatsfile is None) and args.directory is None
+    invalid_file_args = ((args.perfettofile is None or args.batstatsfile is None) and args.directory is None
+                         and not is_rails_trace(args))
     
     if not has_device_conn and invalid_file_args:
         log("Fatal error. No connected devices or result files submitted for analysis", LogSeverity.FATAL)
         exit(-1)
     
-    validate_start()
+    if has_device_conn:
+        validate_start()
     manafa = create_manafa(args)
     
     if has_device_conn and invalid_file_args:
@@ -405,8 +445,9 @@ Examples:
         #create battery drain calculator
         battery_calculator = BatteryDrainCalculator()
 
-        #display results based on profiler type
-        if args.profile_mode == 'legacy' or args.force_legacy:
+        #display results based on profiler type. energy mode falls back to the legacy
+        #profiler on devices without power rails, so check the service that ran
+        if not isinstance(manafa.perfetto, PerfettoServiceEnhanced):
             #legacy output
             if len(manafa.perf_events.events) > 1 or len(manafa.bat_events.events) > 0:
                 begin = manafa.perf_events.events[0].time if len(manafa.perf_events.events) > 1 else manafa.bat_events.events[0].time
@@ -427,6 +468,9 @@ Examples:
             else:
                 log("No profiling events captured. Legacy profiler requires perfetto events.", log_sev=LogSeverity.WARNING)
                 log("The trace files were saved but could not be parsed.", log_sev=LogSeverity.INFO)
+            if args.sunburst:
+                log("--sunburst needs the power rails. No diagram is written with the legacy model.",
+                    log_sev=LogSeverity.WARNING)
         else:
             #new enhanced profiler output
             #calculate battery drain if we have energy data
@@ -475,7 +519,7 @@ Examples:
                       f"calls across {results['method_invocations']['distinct']} distinct methods")
                 if results['method_invocations']['trace_file']:
                     print(f"  AM trace file: {results['method_invocations']['trace_file']}")
-            elif args.app_package:
+            elif args.app_package and args.trace_methods != 'none':
                 log("No method invocations captured. Verify the app declares "
                     "`<profileable android:shell=\"true\"/>` or `android:debuggable=\"true\"` "
                     "and is launchable.", log_sev=LogSeverity.WARNING)

@@ -117,6 +117,9 @@ class PerfettoService(Service):
         """
         # execute_shell_command(f"adb shell perfetto -o {self.output_filename} freq  -t 1h --background ")´
         execute_shell_command("adb shell setprop persist.traced.enable 1")
+        # the trace file has a fixed name. remove the one from the last session, so
+        # that a failed start can not make stop() return old data.
+        execute_shell_command(f"adb shell rm -f {self.output_filename}")
         cmd = f"cat {os.path.join(RESOURCES_DIR, self.cfg_file)} | adb shell perfetto " \
               f"{self.get_switch('background', '-b')} -o {self.output_filename} {self.get_switch('config', '-c')} -"
         #print(f"executing perfetto: {cmd}")

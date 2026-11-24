@@ -8,40 +8,61 @@
 
 # E-MANAFA: Energy Monitor and ANAlyzer For Android
 
-E-MANAFA is a plug-and-play, model-based tool for fine-grained estimation of energy and memory consumption on Android devices. It records system-level and per-component data from a running device and produces both summary reports and detailed traces that can be replayed offline.
+E-MANAFA measures the energy and the memory that an Android device consumes while an app runs. It needs only an `adb` connection to the device (USB or Wi-Fi): no root access and no external power meter. It gives:
 
-It pulls data from four sources, depending on the device and the chosen mode:
+- the energy of the session, for each hardware component (CPU, display, radios, and others);
+- the system memory during the session;
+- the energy of each method of the app, and a call-graph diagram (sunburst) of this energy.
 
-- **`power_profile.xml`** — vendor-supplied current draw per component state. When unavailable, E-MANAFA can derive it dynamically from `batterystats`.
-- **`batterystats`** — Android framework log of every power-related event since the last full charge.
-- **Perfetto** — system-wide tracing for Linux/Android. Used both for legacy CPU-frequency tracing and for the newer **`android.power` power-rail counters** (Pixel 6+ ODPM and equivalent hardware) and **`linux.sys_stats` meminfo counters**.
-- **ActivityManager / logcat** — optional method-level traces, either via `am profile` (sampled) or via the Hunter logcat instrumentation.
+## How it works
 
-> Manufacturers do not always publish accurate per-component current draws. Validate the values in your `power_profile.xml` against an external apparatus (e.g. Monsoon) before trusting absolute numbers. Google's guidelines: <https://source.android.com/devices/tech/power/component>.
+```
+        Host (Python + adb)                         Android device
+ +-----------------------------+   start    +-------------------------------+
+ | 1. init                     | ---------> | Perfetto trace:               |
+ |    detect power rails,      |            |   power rails (energy)        |
+ |    read the power profile   |            |   /proc/meminfo (memory)      |
+ | 2. start                    |            |   CPU frequency and idle      |
+ | 3. your workload runs       |            | batterystats history          |
+ |    (time, key or command)   |            | method trace of the app       |
+ | 4. stop                     | <--------- |   (am profile or Hunter)      |
+ +--------------+--------------+ pull files +-------------------------------+
+                |
+                v
+ +-----------------------------+      +-----------------------------------+
+ | 5. parse                    |      | 6. results                        |
+ |    energy for each rail,    | ---> |    summary in the terminal        |
+ |    memory statistics,       |      |    JSON or CSV file               |
+ |    energy for each method   |      |    sunburst diagram (HTML)        |
+ +-----------------------------+      +-----------------------------------+
+```
 
-## Documentation
+E-MANAFA has two sources of energy data. It selects one automatically.
 
-<https://greensoftwarelab.github.io/E-MANAFA/modules.html>
+| Source | How | Accuracy |
+|---|---|---|
+| **Power rails** (default) | The device has power sensors on its supply rails (Pixel 6 and later, and other recent devices). Perfetto records their energy counters. | Measured by hardware. |
+| **Legacy model** | `batterystats` gives the state of each component. Perfetto gives the CPU frequencies. `power_profile.xml` gives the current of each state. E-MANAFA multiplies them. | An estimate. It is only as good as the power profile of the manufacturer. See [Accuracy](#accuracy-and-limits). |
+
+If the device has no power rails, E-MANAFA uses the legacy model. The power profile comes from the device (`dumpsys batterystats --power-profile`), or from the file that you give with `-p`.
+
+Full documentation: <https://greensoftwarelab.github.io/E-MANAFA/>
 
 ## Setup
 
-Required:
-- Android device running **Android 9 or above** (rooted not required for the new modes; sampled `am profile` only requires `<profileable android:shell="true"/>` or `android:debuggable="true"` on the target app).
-- *nix-based host (macOS, Linux).
-- Python **3.6+**.
-- Android platform-tools — <https://developer.android.com/studio/releases/platform-tools>.
+You need:
 
-For **power-rail energy** mode you also need a device whose Perfetto build advertises the `android.power` data source (Pixel 6 / Tensor SoCs and most flagships from 2022 onward). E-MANAFA detects this automatically and falls back to the legacy profiler otherwise.
+- a device with Android 9 or later, with USB debugging or wireless debugging on;
+- macOS or Linux, with Python 3.8 or later;
+- the [Android platform-tools](https://developer.android.com/studio/releases/platform-tools) (`adb`) in your `PATH`.
 
-## Installation
-
-### Via pip
+Install from PyPI:
 
 ```
 pip install manafa
 ```
 
-### From sources
+Or install from the sources:
 
 ```
 git clone https://github.com/greensoftwarelab/E-MANAFA.git
@@ -50,121 +71,209 @@ python -m venv env && source env/bin/activate
 pip install -r requirements.txt
 ```
 
-In either case, point the shell at your Android SDK (typically in `~/.bashrc` / `~/.zshrc`):
+The sunburst diagram also needs plotly: `pip install "manafa[sunburst]"` or `pip install plotly`.
 
-```
-export ANDROID_HOME=$HOME/<android-install-folder>/
-export PATH=$ANDROID_HOME/platform-tools:$PATH
-```
+The examples below use `emanafa`, the command that `pip install manafa` gives. From the sources, use `python3 manafa/main.py`.
 
-## Profiling modes
-
-E-MANAFA exposes four mutually exclusive **profiling modes** via `-pm` / `--profile-mode`:
-
-| Mode      | Energy source                                | Memory                | Notes                                                            |
-|-----------|----------------------------------------------|-----------------------|------------------------------------------------------------------|
-| `legacy`  | `batterystats` + Perfetto CPU-freq           | —                     | Original E-MANAFA pipeline. Always available.                    |
-| `energy`  | Perfetto power-rail counters (`android.power`) | —                   | Default. Auto-falls-back to `legacy` when rails aren't supported.|
-| `memory`  | —                                            | `linux.sys_stats` meminfo counters | System-wide RAM stats from `/proc/meminfo` polled by Perfetto.   |
-| `both`    | power rails                                  | meminfo               | Single trace, both pipelines. Adds some overhead.                |
-
-`--force-legacy` bypasses auto-detection entirely and pins the run to the legacy pipeline regardless of `-pm`.
-
-## Method tracing
-
-Independent of the profiling mode, you can capture method-level invocations of the target app via `--trace-methods`:
-
-| Value     | Mechanism                                    | Requires `-a`? |
-|-----------|----------------------------------------------|----------------|
-| `none`    | No method tracing.                           | no             |
-| `am`      | `am profile start --sampling …` (sampled). Works on apps declaring `<profileable android:shell="true"/>` (Android 10+) **or** `android:debuggable="true"`. | yes |
-| `hunter`  | LogCat-based tracing via the Hunter instrumentation. | no       |
-
-**Defaults:** `am` if `-a <package>` is given, `hunter` if `-ht` is given, otherwise `none`. Pass the flag explicitly to override (e.g. `-a com.foo --trace-methods none` profiles energy on a package without method tracing).
-
-When method tracing is on, the JSON/CSV output gains a `method_invocations` block with the total invocation count, distinct method count, the path to the AM/Hunter trace file, and per-method data (with energy attribution when batterystats samples are available, invocation counts only when not).
-
-## Command-line reference
-
-```
-$ python3 manafa/main.py --help
-```
-
-### Live profiling
-
-| Flag | Description |
-|------|-------------|
-| `-a, --app_package <pkg>`        | App to profile. Enables `am` method tracing by default. |
-| `-s, --time_in_secs <n>`         | Profile for *n* seconds. Omit to stop on keypress. |
-| `-cmd, --command "<shell cmd>"`  | Run the given command on the host while profiling, then stop. |
-| `-pm, --profile-mode {legacy,energy,memory,both}` | Profiling mode. Default `energy`. |
-| `--force-legacy`                 | Force the legacy profiler regardless of device capability. |
-| `--trace-methods {none,am,hunter}` | Method tracing strategy. See table above. |
-| `-ht, --hunter`                  | Shortcut for `--trace-methods hunter`. |
-| `--meminfo-period-ms <n>`        | `/proc/meminfo` polling period in ms. Default **50**. |
-| `--battery-poll-ms <n>`          | `android.power` battery + power-rail polling period in ms. Default **250**. Power rails are cumulative, so this only affects per-window granularity, not total-energy accuracy. |
-| `-p, --profile <file>`           | Override `power_profile.xml`. Falls back to dynamic inference. |
-| `-t, --timezone <tz>`            | Override device timezone (auto-detected otherwise). |
-| `-o, --output_file <path>`       | Output file path (auto-named under `emanafa_<mode>_<ts>.<fmt>` if omitted). |
-| `-of, --output-format {json,csv}` | Detailed-results format. Default `json`. |
-
-### Offline parsing
-
-| Flag | Description |
-|------|-------------|
-| `-bts, --batstatsfile <file>` | Pre-recorded batterystats log. |
-| `-pft, --perfettofile <file>` | Pre-recorded Perfetto trace. |
-| `-htf, --hunterfile <file>`   | Pre-recorded Hunter logcat dump (implies `--trace-methods hunter`). |
-| `-d, --directory <dir>`       | Batch-parse a directory of `bstats-*` / `trace-*` / `hunter-*` files. |
-
-## Examples
+## Quick start
 
 ```bash
-# Default (energy via power rails) for an app, with sampled method tracing
-python3 manafa/main.py -a com.android.chrome -s 30
+# measure the energy of the device for 30 seconds
+emanafa -s 30
 
-# Memory-only profile, polling /proc/meminfo every 50 ms (default)
-python3 manafa/main.py -a com.android.chrome -s 30 -pm memory
+# measure an app for 30 seconds, with the energy of each method
+emanafa -a com.example.app -s 30
+```
 
-# Energy + memory in one trace, finer power-rail polling for sub-second attribution
-python3 manafa/main.py -a com.android.chrome -s 30 -pm both --battery-poll-ms 50
+E-MANAFA starts the app again when you give `-a`. It prints a summary and writes a JSON file with the details.
 
-# Energy on a specific app, no method tracing
-python3 manafa/main.py -a com.example -s 30 --trace-methods none
+## What to measure
 
-# Hunter-based method tracing without a specific package (system-wide)
-python3 manafa/main.py -s 30 --trace-methods hunter
+Select the measurement with `-pm` (`--profile-mode`):
 
-# Force the legacy pipeline (e.g. for a device without power rails)
-python3 manafa/main.py -a com.example -s 30 --force-legacy
+| Mode | Energy | Memory | Use it when |
+|---|---|---|---|
+| `energy` (default) | power rails | no | you want energy with the smallest overhead |
+| `memory` | no | `/proc/meminfo` | you want memory only |
+| `both` | power rails | `/proc/meminfo` | you want the two results from the same run |
+| `legacy` | legacy model | no | the device has no power rails |
 
-# Profile a host-side command and save CSV
-python3 manafa/main.py -a com.example -cmd "./run-test.sh" -of csv -o results.csv
+### Energy only
 
-# Replay an existing trace pair offline
-python3 manafa/main.py -bts bstats-1762864000.log -pft trace-1762864000.perfetto-trace
+```bash
+emanafa -a com.example.app -s 30 -pm energy
+```
+
+### Memory only
+
+```bash
+emanafa -a com.example.app -s 30 -pm memory
+```
+
+Memory is polled each 50 ms. Change this with `--meminfo-period-ms`.
+
+### Energy and memory, in separate runs (recommended)
+
+Memory polling uses CPU time, and this adds energy. For the most accurate energy result, measure the two in separate runs of the same workload:
+
+```bash
+emanafa -a com.example.app -cmd "./run-test.sh" -pm energy -o energy.json
+emanafa -a com.example.app -cmd "./run-test.sh" -pm memory -o memory.json
+```
+
+### Energy and memory, in one run
+
+```bash
+emanafa -a com.example.app -s 30 -pm both
+```
+
+This is quicker, and the two results are from exactly the same execution. The energy result includes the cost of memory polling.
+
+### A device with no power rails
+
+E-MANAFA changes to the legacy model automatically. To use the legacy model on a device that has power rails:
+
+```bash
+emanafa -a com.example.app -s 30 --force-legacy
+```
+
+### How long to measure
+
+| Option | The session stops |
+|---|---|
+| `-s 30` | after 30 seconds |
+| `-cmd "./run-test.sh"` | when the command on the host is complete |
+| none | when you press a key |
+
+## Energy of each method
+
+With `-a <package>`, E-MANAFA records the methods of the app with `am profile` (sampling). The app must be `debuggable`, or must have `<profileable android:shell="true"/>` in its manifest.
+
+| `--trace-methods` | How | Needs |
+|---|---|---|
+| `am` (default with `-a`) | sampled method trace of `am profile` | `-a`, a debuggable or profileable app |
+| `hunter` (or `-ht`) | log lines of the Hunter instrumentation | an instrumented app |
+| `none` | no method trace | nothing |
+
+```bash
+# energy of an app, without the method trace
+emanafa -a com.example.app -s 30 --trace-methods none
+```
+
+How the energy of a method is calculated:
+
+- With power rails, a method gets the energy that the **CPU rails** measured while the method was on the call stack. Other rails (display, radios) are not attributed, because a method does not control them directly.
+- With the legacy model, a method gets the estimate of the model for the same time interval.
+- The interval contains the work of all threads and processes, not only of the method. A caller includes the energy of its callees.
+
+## Sunburst diagram
+
+The sunburst shows where the app consumes energy in its call graph.
+
+```bash
+pip install plotly
+emanafa -a com.example.app -s 30 --sunburst app.html
+```
+
+Open `app.html` in a browser.
+
+The diagram needs the power rails. With the legacy model, E-MANAFA writes no diagram.
+
+The page has three views. Select one with the buttons above the diagram:
+
+- **Call graph.** The graph starts at the methods of the app and contains all that they call. Each ring is one call level. A sector is one call path (a method with its callers). The size and the colour of a sector show its energy.
+- **Packages: all code.** Three rings: the inner ring is the package, the next ring is the class, and the outer ring is the method. It contains the app, the libraries and the Android framework. A sector shows the energy that the methods consumed in their own code.
+- **Packages: app only.** The first three rings are the packages, the classes and the methods of the app only. Below each method are the calls that it makes to other code (libraries, framework), so a method sector contains the energy of its own code and of the code that it calls. A call to a different method of the app is not below the caller: that method has its own sector. The app is the package that you give with `-a`. `--package` of `manafa.sunburst` selects a different package prefix.
+
+**Hot spots.** A sector is orange, not blue, if it has more than 10 % of the energy of the diagram or more than 20 % of the energy of its ring, and if it also ran for more than 10 ms. Change the limits with `--hot-total`, `--hot-ring` and `--hot-min-ms` of `manafa.sunburst`.
+
+**Values.** A value is the total of all the calls of the method (or of the call path). The hover text also gives the number of calls, the mean energy of one call and the execution time.
+
+In all the views:
+
+- Click a sector to zoom in. Click the centre to go back.
+- The level buttons select how many call levels are shown.
+- The search box finds a method or a package and gives it a thick outline.
+- The bar chart shows the methods that consume the most energy in their own code. Click a bar to find the method in the call graph.
+- The slider and the Play button show how the energy grows during the session.
+
+Methods that only wait (for example `Object.wait` or an idle `Looper`) get no energy. Call paths with less than 0.05 % of the energy are not drawn.
+
+You can also make the diagram later, from a result file. The method trace (`*_calls.csv`) must be in its initial location.
+
+```bash
+python3 -m manafa.sunburst results.json -o app.html
+python3 -m manafa.sunburst results.json --focus com.example.ui,androidx  # start the graph at these packages
+python3 -m manafa.sunburst results.json --focus all --max-depth 20       # all the process, more levels
+python3 -m manafa.sunburst results.json --package com.example.ui         # "app only" view for this package
+python3 -m manafa.sunburst results.json --hot-total 5 --hot-ring 30 --hot-min-ms 50  # other hot spot limits
+python3 -m manafa.sunburst results.json --include-blocked              # also give energy to methods that wait
 ```
 
 ## Output
 
-Every live run prints a summary table covering total energy (Joules + Wh), the top power-rail consumers, system memory used (min/avg/max), and an estimated battery drain (% of effective capacity, accounting for battery health and temperature). The same data is written to JSON or CSV via `-of`/`-o`:
+Each run prints a summary: total energy (J and Wh), the rails that consume the most, memory statistics, and the estimated battery drain (percentage of the full capacity that the device reports).
+
+`-o <file>` sets the result file, and `-of csv` writes CSV. The default is a JSON file with the name `emanafa_<mode>_<time>.json`.
 
 ```jsonc
 {
   "mode": "energy",
-  "app": "com.android.chrome",
+  "app": "com.example.app",
   "duration_seconds": 30,
-  "timestamp": 1762864000.0,
-  "energy": { "total": 14.12, "by_rail": { "power.VPH_PWR_S5C_uA": 4.81, "...": 0.0 } },
-  "memory":  { "MemAvailable": { "min_mb": 3201.4, "avg_mb": 3320.1, "max_mb": 3450.0, "samples": 600 } },
+  "energy": {
+    "total": 14.12,                                // joules, all rails
+    "by_rail": { "power.rails.cpu.big": 4.81, "...": 0.0 },
+    "measured_duration_seconds": 29.75,            // time that the rail samples cover
+    "method_rails": ["power.rails.cpu.big", "..."] // rails that are attributed to methods
+  },
+  "memory": { "MemAvailable": { "min_mb": 3201.4, "avg_mb": 3320.1, "max_mb": 3450.0, "samples": 600 } },
   "method_invocations": {
     "total": 1842, "distinct": 217,
-    "trace_file": "/Users/.../app_com.android.chrome_42_1762864000.csv",
-    "methods": { "com.android.chrome.MainActivity_<hash>": 14, "...": 1 }
+    "trace_file": ".../results_calls.csv",
+    "methods": { "<method>_<id>": { "0": { "begin_time": 0, "end_time": 0, "consumption": 0.01 } } }
   },
   "battery_drain": { "consumed_energy_joules": 14.12, "battery_drain_percentage": 0.083 }
 }
 ```
+
+With method tracing, the JSON file has one record for each method call, so it can be some tens of MB. To keep it small, the signature of a method (`method_def`) is only in its first call, and a call has no fields for components with no energy.
+
+The raw files (Perfetto trace, batterystats log, method trace) and the power profile of the device are in `manafa/results/`. Each new run deletes the files of the previous run.
+
+## Parse recorded files again
+
+```bash
+# session of the energy, memory or both mode (power rails): only the trace is necessary
+emanafa -pft trace-<id>.perfetto-trace -o again.json
+
+# session of the legacy model
+emanafa -bts bstats-<id>.log -pft trace-<id>.systrace -o again.json
+emanafa -d <directory with bstats-*, trace-* and method_traces-* files>
+```
+
+This mode needs no device. With no device, give the power profile of the legacy model with `-p`.
+The recorded files are in `manafa/results` until the next measurement starts.
+
+## Command-line reference
+
+| Option | Description |
+|---|---|
+| `-a, --app_package <pkg>` | App to measure. Starts the method trace (`am`). |
+| `-s, --time_in_secs <n>` | Measure for *n* seconds. |
+| `-cmd, --command "<cmd>"` | Run this command on the host, and stop when it is complete. |
+| `-pm, --profile-mode` | `energy` (default), `memory`, `both` or `legacy`. |
+| `--force-legacy` | Use the legacy model. |
+| `--trace-methods` | `am`, `hunter` or `none`. |
+| `-ht, --hunter` | Same as `--trace-methods hunter`. |
+| `--sunburst [FILE]` | Write the sunburst diagram. Needs `-a` and `plotly`. |
+| `--meminfo-period-ms <n>` | Period of memory polling. Default 50. |
+| `--battery-poll-ms <n>` | Period of power rail polling. Default 250. A smaller value gives a better time resolution for method energy. It does not change the total. |
+| `-p, --profile <file>` | `power_profile.xml` for the legacy model. |
+| `-t, --timezone <tz>` | Timezone of the device, if detection fails. IANA name (`Europe/Lisbon`) or UTC offset (`+0100`). |
+| `-o, --output_file <file>` | Result file. |
+| `-of, --output-format` | `json` (default) or `csv`. |
+| `-bts`, `-pft`, `-htf`, `-d` | Recorded files to parse again. |
 
 ## Library API
 
@@ -172,30 +281,65 @@ Every live run prints a summary table covering total energy (Joules + Wh), the t
 from manafa.emanafa import EManafa
 
 em = EManafa()
-em.profiler_mode = "energy"        # legacy / energy / memory / both
-em.meminfo_period_ms = 50          # optional override
+em.profiler_mode = "both"          # energy / memory / both / legacy
 em.init(clean=True)
 em.start()
 
-# ... do_work_to_profile()
+# ... run the workload ...
 
-em.stop()                          # parses results internally
-begin = em.perf_events.events[0].time
-end   = em.perf_events.events[-1].time
-total, per_component, timeline = em.get_consumption_in_between(begin, end)
-out  = em.save_final_report(begin)
-print(f"TOTAL: {total} Joules ({total / 3600:.4f} Wh)")
+em.stop()                          # pulls the files and parses them
+print(em.power_rails_energy["total"], "J")        # energy and both modes
+print(em.power_rails_energy["by_rail"])
+print(em.memory_stats)                            # memory and both modes
 ```
 
-For per-app method tracing use `manafa.am_emanafa.AMEManafa(app_package_name=...)`; for logcat-based tracing use `manafa.hunter_emanafa.HunterEManafa()`. Both subclass `EManafa` and accept the same `profiler_mode` / sampling-period overrides.
+With the legacy model, use the time interval of the session:
+
+```python
+begin, end = em.perf_events.events[0].time, em.perf_events.events[-1].time
+total, per_component, timeline = em.get_consumption_in_between(begin, end)
+```
+
+For method energy, use `manafa.am_emanafa.AMEManafa(app_package_name=...)` or `manafa.hunter_emanafa.HunterEManafa()`. They have the same interface.
+
+## Accuracy and limits
+
+- **Power rails are measurements.** Use them when the device has them. The total is the sum of all the rails that the device reports.
+- **The legacy model is an estimate.** On a Pixel 9 Pro XL (Android 16), with the power profile of the device, the legacy model gave these errors against the power rails: CPU -46 % to -75 % with a CPU load (the profile gives about 1 W for a core that consumes 4.7 W), and screen +230 % at low brightness. Use legacy results to compare runs on the same device, not as absolute values.
+- **Method energy is energy of the device during the method.** It is not only the energy of the method. Do the measurement with no other apps in use.
+- **A USB cable charges the device.** E-MANAFA tells Android to behave as unplugged during the session, so that batterystats records data. The cable still supplies power, and the charging circuit and the heat can change the result. For the most accurate measurements, connect `adb` through Wi-Fi (`adb pair` and `adb connect`, or `adb tcpip 5555`) and disconnect the cable. E-MANAFA uses `adb` only before and after the session, but the Wi-Fi radio stays on during the session.
+- A session that stops abnormally can leave the unplugged state on. `adb shell dumpsys battery reset` removes it.
+- **The method trace has an overhead.** Sampling makes the app slower and adds CPU energy. Compare runs that use the same options.
 
 ## Testing
 
-```
+```bash
+# tests that need no device
+python3 -m pytest manafa/tests/test_energy_model.py manafa/tests/test_main_cli.py manafa/tests/accuracy
+
+# all tests (some need a connected device)
 python3 -m pytest manafa/tests
 ```
 
-Device-free unit tests live under `manafa/tests/test_main_cli.py` and `manafa/tests/services/test_*_unit.py`. The remaining tests are integration tests that require a connected device.
+### Accuracy against power rails
+
+`manafa/tests/accuracy` compares E-MANAFA results with the power rails. It checks the session total, the energy of methods, and the estimate of the legacy model.
+
+```bash
+# synthetic session with a known result, no device needed
+python3 -m pytest manafa/tests/accuracy -s
+
+# measure the connected device for 30 s, then compare the legacy model with the rails
+EMANAFA_LIVE_ACCURACY=30 python3 -m pytest manafa/tests/accuracy -s
+
+# a session that was recorded in energy mode
+EMANAFA_TRACE_FILE=manafa/results/perfetto/trace-<id>.perfetto-trace \
+EMANAFA_BTS_FILE=manafa/results/batterystats/bstats-<id>.log \
+EMANAFA_POWER_PROFILE=<power_profile.xml> EMANAFA_TIMEZONE=Europe/Lisbon \
+python3 -m pytest manafa/tests/accuracy -s
+```
+
+The report gives the rails energy, the legacy estimate and the relative error for the total, the CPU and the screen. Set `EMANAFA_MAX_REL_ERROR` (for example `0.3`) to make the test fail above an error limit.
 
 ## Associated publications
 

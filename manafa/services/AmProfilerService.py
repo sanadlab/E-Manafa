@@ -23,7 +23,6 @@ def convert_to_csv(file_to_convert, results_dir=None):
         cmd = f"{TRACE_PROCESSOR_PATH} {os.path.join(results_dir, corresp_exec_file)} -Q \"SELECT name, ts, dur, depth FROM slice ORDER BY ts\" >> {target_file}"
         log("Converting exec file %s to CSV: " % cmd)
         res = execute_shell_command(cmd)
-    print(res)
     return target_file
 
 
@@ -68,6 +67,8 @@ class AmProfilerService(Service):
             f"find {self.results_dir} -type f -name \"*.trace\"  | xargs rm ")
         execute_shell_command(
             f"find {self.results_dir} -type f -name \"*.csv\"  | xargs rm ")
+        # each run has its own file name, so remove the traces that older runs left on the device
+        execute_shell_command(f"adb shell rm -f {DEVICE_RESULTS_DIR}app_{self.package_name}_*.trace")
         startup_output_filename = self.get_results_filename(run_id)
         log("Am Profiler run id:  %s" % run_id)
         activity_package = self._resolve_main_activity()
@@ -81,17 +82,17 @@ class AmProfilerService(Service):
         cmd = " adb shell am start -S --start-profiler %s --sampling %d -n %s" % (
             startup_output_filename, PROFILING_SAMPLE_RATE, activity_package)
         res = execute_shell_command(cmd)
-        print(res)
         log("Profiling startup with Am Profiler: " + cmd)
         time.sleep(1)
         execute_shell_command("adb shell am profile stop %s" % self.package_name)
         time.sleep(1)
         output_filename_exec = startup_output_filename.replace(".trace", "_exec.trace")
         # adb shell am profile start --sampling 1000 com.sanad.gpt4o.myapplication /data/local/tmp/manual_startup.trace
-        cmd = f"adb shell am profile start --sampling {PROFILING_SAMPLE_RATE} %s %s" % (self.package_name, output_filename_exec)
+        # --streaming: without it, ART keeps the trace in a fixed buffer and writes an empty file when the buffer
+        # overflows (after about 15 s on a Pixel 9 Pro XL)
+        cmd = f"adb shell am profile start --streaming --sampling {PROFILING_SAMPLE_RATE} %s %s" % (self.package_name, output_filename_exec)
         log("Profiling exec with Am Profiler: " + cmd)
         res = execute_shell_command(cmd)
-        print(res)
         return res[0] == 0
 
     def _resolve_main_activity(self):
@@ -129,13 +130,10 @@ class AmProfilerService(Service):
         """
         log("Stopping Am Profiler for package: %s" % self.package_name)
         res = execute_shell_command("adb shell am profile stop %s" % self.package_name)
-        print(res)
-        print('lula')
         res = execute_shell_command("adb shell find %s -type f | grep app_%s | xargs -I{} adb pull {} %s"
                                          % (DEVICE_RESULTS_DIR, self.package_name, self.results_dir))
         #res, o, e = execute_shell_command(f"adb pull {DEVICE_RESULTS_DIR}/{filename}  {self.results_dir}")
         #print(f"Pulling trace file {filename} from device: {res}, {o}, {e}")
-        print(res)
         if res[0] != 0:
             print(res)
             raise Exception(f"unable to pull trace file. Attempted to pull files")

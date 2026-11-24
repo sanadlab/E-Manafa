@@ -1,0 +1,985 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>manafa.sunburst &mdash; E-MANAFA 0.4.14</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=c1264a3d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=1f5508e5"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            E-MANAFA
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started.html#first-measurement">First measurement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started.html#usb-or-wi-fi">USB or Wi-Fi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started.html#next-steps">Next steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../how_it_works.html">How it works</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../how_it_works.html#workflow">Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how_it_works.html#two-sources-of-energy-data">Two sources of energy data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../how_it_works.html#power-rails-default">Power rails (default)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../how_it_works.html#legacy-model">Legacy model</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../how_it_works.html#memory">Memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how_it_works.html#energy-of-a-method">Energy of a method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how_it_works.html#clocks">Clocks</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Measurement scenarios</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#energy-only">Energy only</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#memory-only">Memory only</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#energy-and-memory-in-separate-runs-recommended">Energy and memory in separate runs (recommended)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#energy-and-memory-in-one-run">Energy and memory in one run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#a-device-with-no-power-rails">A device with no power rails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#how-long-to-measure">How long to measure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#a-repeatable-workload">A repeatable workload</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#the-device-only-with-no-app">The device only, with no app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#an-app-with-no-method-trace">An app with no method trace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#finer-time-resolution">Finer time resolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../usage.html#parse-recorded-files-again">Parse recorded files again</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../method_energy.html">Energy of each method</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../method_energy.html#method-trace-sources">Method trace sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../method_energy.html#the-app-must-permit-profiling">The app must permit profiling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../method_energy.html#how-the-trace-is-recorded">How the trace is recorded</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../method_energy.html#what-a-method-gets">What a method gets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../method_energy.html#result-files">Result files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../sunburst.html">Sunburst diagram</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../sunburst.html#the-three-views">The three views</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../sunburst.html#call-graph">Call graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sunburst.html#packages-all-code">Packages: all code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../sunburst.html#packages-app-only">Packages: app only</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../sunburst.html#hot-spots">Hot spots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../sunburst.html#controls">Controls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../sunburst.html#what-the-values-are">What the values are</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../sunburst.html#make-the-diagram-from-a-result-file">Make the diagram from a result file</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../output.html">Output files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../output.html#summary-in-the-terminal">Summary in the terminal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../output.html#result-file">Result file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../output.html#fields">Fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../output.html#raw-files">Raw files</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command-line reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../cli.html#session">Session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cli.html#methods-and-diagram">Methods and diagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cli.html#sampling">Sampling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cli.html#device-data">Device data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cli.html#output">Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cli.html#recorded-files">Recorded files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../library.html">Python library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../library.html#energy-and-memory-of-a-block-of-code">Energy and memory of a block of code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../library.html#energy-of-an-interval">Energy of an interval</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../library.html#legacy-model">Legacy model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../library.html#energy-of-methods">Energy of methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../library.html#sunburst-diagram">Sunburst diagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../library.html#one-session-for-each-object">One session for each object</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../accuracy.html">Accuracy and limits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../accuracy.html#power-rails-are-measurements">Power rails are measurements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../accuracy.html#the-legacy-model-is-an-estimate">The legacy model is an estimate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../accuracy.html#limits-of-method-energy">Limits of method energy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../accuracy.html#limits-of-the-legacy-model">Limits of the legacy model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../accuracy.html#the-connection-to-the-device">The connection to the device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../accuracy.html#good-practice">Good practice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../accuracy.html#accuracy-tests">Accuracy tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development.html">Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../development.html#tests">Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../development.html#structure-of-the-code">Structure of the code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../development.html#build-these-pages">Build these pages</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#module-manafa.emanafa">Sessions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.emanafa.get_last_boot_time"><code class="docutils literal notranslate"><span class="pre">get_last_boot_time()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.emanafa.EManafa"><code class="docutils literal notranslate"><span class="pre">EManafa</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.am_emanafa.get_monotonic_to_epoch_s"><code class="docutils literal notranslate"><span class="pre">get_monotonic_to_epoch_s()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.am_emanafa.AMEManafa"><code class="docutils literal notranslate"><span class="pre">AMEManafa</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.hunter_emanafa.HunterEManafa"><code class="docutils literal notranslate"><span class="pre">HunterEManafa</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#module-manafa.parsing.perfettoEnergyCalculator">Power rails and memory</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.perfettoEnergyCalculator.count_power_rails"><code class="docutils literal notranslate"><span class="pre">count_power_rails()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.perfettoEnergyCalculator.PowerRailsTrace"><code class="docutils literal notranslate"><span class="pre">PowerRailsTrace</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.perfettoEnergyCalculator.calculate_memory_stats"><code class="docutils literal notranslate"><span class="pre">calculate_memory_stats()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#module-manafa.sunburst">Sunburst diagram</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.sunburst.load_calls"><code class="docutils literal notranslate"><span class="pre">load_calls()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.sunburst.build_tree"><code class="docutils literal notranslate"><span class="pre">build_tree()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.sunburst.energy_clock"><code class="docutils literal notranslate"><span class="pre">energy_clock()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.sunburst.hot_sectors"><code class="docutils literal notranslate"><span class="pre">hot_sectors()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.sunburst.focus_subtrees"><code class="docutils literal notranslate"><span class="pre">focus_subtrees()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.sunburst.build_sunburst"><code class="docutils literal notranslate"><span class="pre">build_sunburst()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#module-manafa.parsing.batteryStats.BatteryStatsParser">Parsers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.batteryStats.BatteryStatsParser.safe_division"><code class="docutils literal notranslate"><span class="pre">safe_division()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.batteryStats.BatteryStatsParser.BatteryEvent"><code class="docutils literal notranslate"><span class="pre">BatteryEvent</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.batteryStats.BatteryStatsParser.BatteryStatsParser"><code class="docutils literal notranslate"><span class="pre">BatteryStatsParser</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.perfetto.perfettoParser.interpolate"><code class="docutils literal notranslate"><span class="pre">interpolate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.perfetto.perfettoParser.CPU_STATE"><code class="docutils literal notranslate"><span class="pre">CPU_STATE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.perfetto.perfettoParser.PerfettoCPUEvent"><code class="docutils literal notranslate"><span class="pre">PerfettoCPUEvent</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.perfetto.perfettoParser.PerfettoCPUfreqParser"><code class="docutils literal notranslate"><span class="pre">PerfettoCPUfreqParser</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.perfetto.perfettoParser.parse_dumpsys_output"><code class="docutils literal notranslate"><span class="pre">parse_dumpsys_output()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.perfetto.perfettoParser.generate_power_profile_xml"><code class="docutils literal notranslate"><span class="pre">generate_power_profile_xml()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.powerProfile.PowerProfile.PowerProfile"><code class="docutils literal notranslate"><span class="pre">PowerProfile</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.method_traces.AMParser.AMParser"><code class="docutils literal notranslate"><span class="pre">AMParser</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.method_traces.HunterParser.HunterParser"><code class="docutils literal notranslate"><span class="pre">HunterParser</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.parsing.method_traces.AppConsumptionStats.AppConsumptionStats"><code class="docutils literal notranslate"><span class="pre">AppConsumptionStats</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#module-manafa.services.service">Device services</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.services.service.Service"><code class="docutils literal notranslate"><span class="pre">Service</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.services.perfettoService.wait_for_our_perfetto_to_exit"><code class="docutils literal notranslate"><span class="pre">wait_for_our_perfetto_to_exit()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.services.perfettoService.PerfettoService"><code class="docutils literal notranslate"><span class="pre">PerfettoService</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.services.perfettoServiceEnhanced.device_supports_power_rails"><code class="docutils literal notranslate"><span class="pre">device_supports_power_rails()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.services.perfettoServiceEnhanced.PerfettoServiceEnhanced"><code class="docutils literal notranslate"><span class="pre">PerfettoServiceEnhanced</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.services.batteryStatsService.BatteryStatsService"><code class="docutils literal notranslate"><span class="pre">BatteryStatsService</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.services.AmProfilerService.AmProfilerService"><code class="docutils literal notranslate"><span class="pre">AmProfilerService</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.services.LogcatService.LogcatService"><code class="docutils literal notranslate"><span class="pre">LogcatService</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#module-manafa.utils.BatteryDrainCalculator">Utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.utils.BatteryDrainCalculator.BatteryDrainCalculator"><code class="docutils literal notranslate"><span class="pre">BatteryDrainCalculator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.utils.dateUtils.get_tzinfo"><code class="docutils literal notranslate"><span class="pre">get_tzinfo()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.utils.dateUtils.local_time_to_timestamp"><code class="docutils literal notranslate"><span class="pre">local_time_to_timestamp()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../modules.html#module-manafa.main">Command line</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.main.has_connected_devices"><code class="docutils literal notranslate"><span class="pre">has_connected_devices()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.main.export_to_json"><code class="docutils literal notranslate"><span class="pre">export_to_json()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.main.export_to_csv"><code class="docutils literal notranslate"><span class="pre">export_to_csv()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.main.display_new_profiler_results"><code class="docutils literal notranslate"><span class="pre">display_new_profiler_results()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.main.is_rails_trace"><code class="docutils literal notranslate"><span class="pre">is_rails_trace()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.main.parse_rails_trace"><code class="docutils literal notranslate"><span class="pre">parse_rails_trace()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.main.preserve_trace_file"><code class="docutils literal notranslate"><span class="pre">preserve_trace_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../modules.html#manafa.main.generate_sunburst"><code class="docutils literal notranslate"><span class="pre">generate_sunburst()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">E-MANAFA</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">manafa.sunburst</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for manafa.sunburst</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""Animated sunburst of an app's call graph, coloured by energy.</span>
+
+<span class="sd">Each ring is one call level, so a method that calls x and y contains x and y.</span>
+<span class="sd">A sector is one call path: all the invocations of a method that have the same</span>
+<span class="sd">callers. Two more views have 3 levels (package, class and method): one for all</span>
+<span class="sd">the code, and one for the app only, with the calls of each method below it. The page also</span>
+<span class="sd">has a search box, buttons for the number of levels and a ranked list of the</span>
+<span class="sd">methods that consume the most energy in their own code.</span>
+<span class="sd">A node's value is its inclusive energy, which means a caller always covers at</span>
+<span class="sd">least the sum of its callees, and the colour scale follows that value: the</span>
+<span class="sd">darker the sector, the more energy the call and everything below it consumed.</span>
+
+<span class="sd">The call graph comes from the AM trace CSV (name, ts, dur, depth) recorded with</span>
+<span class="sd">--trace-methods am. The energy comes from the power rails that the session</span>
+<span class="sd">attributes to methods (the CPU rails): a frame gets the energy that these rails</span>
+<span class="sd">consumed while it was running. Sessions without that time series fall back to</span>
+<span class="sd">the session total, attributed in proportion to time on the stack.</span>
+<span class="sd">"""</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">absolute_import</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">bisect</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">csv</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">manafa.utils.Logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">log</span><span class="p">,</span> <span class="n">LogSeverity</span>
+
+<span class="n">DEFAULT_FRAMES</span> <span class="o">=</span> <span class="mi">40</span>
+<span class="n">DEFAULT_MAX_DEPTH</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="c1"># one hue, light -&gt; dark as energy grows (log scale)</span>
+<span class="n">COLORSCALE</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="s2">"#cde2fb"</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.25</span><span class="p">,</span> <span class="s2">"#86b6ef"</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="s2">"#3987e5"</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.75</span><span class="p">,</span> <span class="s2">"#1c5cab"</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="s2">"#0d366b"</span><span class="p">]]</span>
+<span class="c1"># hot spots have a second hue, with the same light -&gt; dark rule</span>
+<span class="n">HOT_COLORSCALE</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="s2">"#fbd9c8"</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="s2">"#eb6834"</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="s2">"#8f3410"</span><span class="p">]]</span>
+<span class="n">HOT_COLOR</span> <span class="o">=</span> <span class="s2">"#eb6834"</span>
+<span class="c1"># a sector is a hot spot if it has more than HOT_TOTAL_PCT of the energy of the diagram, or more</span>
+<span class="c1"># than HOT_RING_PCT of the energy of its ring, and if it also ran for more than HOT_MIN_MS</span>
+<span class="n">HOT_TOTAL_PCT</span> <span class="o">=</span> <span class="mf">10.0</span>
+<span class="n">HOT_RING_PCT</span> <span class="o">=</span> <span class="mf">20.0</span>
+<span class="n">HOT_MIN_MS</span> <span class="o">=</span> <span class="mf">10.0</span>
+<span class="n">BAR_COLOR</span> <span class="o">=</span> <span class="s2">"#2a78d6"</span>
+<span class="n">SURFACE</span> <span class="o">=</span> <span class="s2">"#fcfcfb"</span>
+<span class="n">TEXT</span> <span class="o">=</span> <span class="s2">"#0b0b0b"</span>
+<span class="n">MIN_SHARE</span> <span class="o">=</span> <span class="mf">0.0005</span>  <span class="c1"># a call path with a smaller part of the attributed energy is not drawn</span>
+<span class="n">TOP_METHODS</span> <span class="o">=</span> <span class="mi">15</span>
+
+<span class="c1"># search box, link from the bars to the call graph, and colours for a dark browser theme</span>
+<span class="n">PAGE_SCRIPT</span> <span class="o">=</span> <span class="s2">"""</span>
+<span class="s2">var gd = document.getElementById('sunburst');</span>
+<span class="s2">var dark = window.matchMedia('(prefers-color-scheme: dark)').matches;</span>
+<span class="s2">var surface = dark ? '#1a1a19' : '#fcfcfb';</span>
+<span class="s2">var ink = dark ? '#f0efec' : '#0b0b0b';</span>
+<span class="s2">document.body.style.background = surface;</span>
+<span class="s2">document.body.style.margin = '0';</span>
+<span class="s2">if (dark) {</span>
+<span class="s2">    Plotly.relayout(gd, {paper_bgcolor: surface, plot_bgcolor: surface, 'font.color': ink,</span>
+<span class="s2">        'updatemenus[0].font.color': '#0b0b0b', 'updatemenus[1].font.color': '#0b0b0b',</span>
+<span class="s2">        'updatemenus[2].font.color': '#0b0b0b', 'updatemenus[2].bgcolor': '#e8e7e2',</span>
+<span class="s2">        'updatemenus[0].bgcolor': '#e8e7e2', 'updatemenus[1].bgcolor': '#e8e7e2'});</span>
+<span class="s2">    Plotly.restyle(gd, {'marker.line.color': surface}, [0, 2, 3]);</span>
+<span class="s2">}</span>
+<span class="s2">var row = document.createElement('div');</span>
+<span class="s2">row.style.cssText = 'font: 14px system-ui, sans-serif; padding: 10px 12px 0; color: ' + ink;</span>
+<span class="s2">var input = document.createElement('input');</span>
+<span class="s2">input.type = 'search';</span>
+<span class="s2">input.placeholder = 'Find a method or a package';</span>
+<span class="s2">input.setAttribute('aria-label', 'Find a method or a package in the call graph');</span>
+<span class="s2">input.style.cssText = 'font: inherit; width: 340px; padding: 6px 8px; border: 1px solid #8a8985; ' +</span>
+<span class="s2">    'border-radius: 6px; background: ' + surface + '; color: ' + ink;</span>
+<span class="s2">var info = document.createElement('span');</span>
+<span class="s2">info.style.marginLeft = '12px';</span>
+<span class="s2">row.appendChild(input);</span>
+<span class="s2">row.appendChild(info);</span>
+<span class="s2">gd.parentNode.insertBefore(row, gd);</span>
+<span class="s2">function highlight() {</span>
+<span class="s2">    var q = input.value.trim().toLowerCase();</span>
+<span class="s2">    var found = 0, joules = 0;</span>
+<span class="s2">    [0, 2, 3].forEach(function (trace) {  // the call graph and the two package views</span>
+<span class="s2">        var paths = gd.data[trace].customdata;</span>
+<span class="s2">        var widths = [], lines = [];</span>
+<span class="s2">        for (var i = 0; i &lt; paths.length; i++) {</span>
+<span class="s2">            var match = q !== '' &amp;&amp; i &gt; 0 &amp;&amp; paths[i][0].toLowerCase().indexOf(q) &gt;= 0;</span>
+<span class="s2">            if (match &amp;&amp; trace === 0) { found++; joules += paths[i][1]; }</span>
+<span class="s2">            widths.push(match ? 3 : 0.5);</span>
+<span class="s2">            lines.push(match ? ink : surface);</span>
+<span class="s2">        }</span>
+<span class="s2">        Plotly.restyle(gd, {'marker.line.width': [widths], 'marker.line.color': [lines]}, [trace]);</span>
+<span class="s2">    });</span>
+<span class="s2">    info.textContent = q === '' ? '' : found + ' call paths found, ' + joules.toPrecision(3) +</span>
+<span class="s2">        ' J in their own code. They have a thick outline. Select "all levels" to see the deep ones';</span>
+<span class="s2">}</span>
+<span class="s2">var timer = null;</span>
+<span class="s2">input.addEventListener('input', function () { clearTimeout(timer); timer = setTimeout(highlight, 200); });</span>
+<span class="s2">gd.on('plotly_click', function (ev) {</span>
+<span class="s2">    var point = ev.points[0];</span>
+<span class="s2">    if (point.curveNumber === 1) { input.value = point.customdata; highlight(); }</span>
+<span class="s2">});</span>
+<span class="s2">"""</span>
+
+<span class="c1"># Frames that sit on the stack without running. Their wall-clock time is real</span>
+<span class="c1"># but it is idle waiting, not work the app performed, so it earns no energy.</span>
+<span class="n">BLOCKING_METHODS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">"MessageQueue.nativePollOnce"</span><span class="p">,</span>
+    <span class="s2">"Object.wait"</span><span class="p">,</span>
+    <span class="s2">"Thread.sleep"</span><span class="p">,</span>
+    <span class="s2">"LockSupport.park"</span><span class="p">,</span>
+    <span class="s2">"Unsafe.park"</span><span class="p">,</span>
+    <span class="s2">"VMRuntime.runHeapTasks"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="c1"># Packages to start the graph at when the trace has no method of the app.</span>
+<span class="n">DEFAULT_FOCUS</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"android.app"</span><span class="p">,</span> <span class="s2">"androidx"</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="load_calls">
+<a class="viewcode-back" href="../../modules.html#manafa.sunburst.load_calls">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_calls</span><span class="p">(</span><span class="n">csv_path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Reads the AM trace CSV into invocation records ordered by start time.</span>
+
+<span class="sd">    The file holds one section per trace capture, each introduced by its own</span>
+<span class="sd">    header line and carrying an independent call stack, so every row is tagged</span>
+<span class="sd">    with the section it came from.</span>
+<span class="sd">    """</span>
+    <span class="n">calls</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">section</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">csv_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">row</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"name"</span><span class="p">:</span>  <span class="c1"># a new capture starts here</span>
+                <span class="n">section</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">continue</span>
+            <span class="n">calls</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                <span class="s2">"name"</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">":"</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="s2">"ts"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                <span class="s2">"dur"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span>  <span class="c1"># -1 while the frame never returned</span>
+                <span class="s2">"depth"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span>
+                <span class="s2">"section"</span><span class="p">:</span> <span class="n">section</span><span class="p">,</span>
+            <span class="p">})</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">calls</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"no invocations found in </span><span class="si">{</span><span class="n">csv_path</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">calls</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="s2">"section"</span><span class="p">],</span> <span class="n">c</span><span class="p">[</span><span class="s2">"ts"</span><span class="p">],</span> <span class="n">c</span><span class="p">[</span><span class="s2">"depth"</span><span class="p">]))</span>
+    <span class="c1"># a frame that never returned stays open until the end of its capture</span>
+    <span class="n">ends</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">calls</span><span class="p">:</span>
+        <span class="n">ends</span><span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="s2">"section"</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ends</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="s2">"section"</span><span class="p">],</span> <span class="mi">0</span><span class="p">),</span> <span class="n">c</span><span class="p">[</span><span class="s2">"ts"</span><span class="p">]</span> <span class="o">+</span> <span class="nb">max</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="s2">"dur"</span><span class="p">],</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">calls</span><span class="p">:</span>
+        <span class="n">c</span><span class="p">[</span><span class="s2">"end"</span><span class="p">]</span> <span class="o">=</span> <span class="n">ends</span><span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="s2">"section"</span><span class="p">]]</span> <span class="k">if</span> <span class="n">c</span><span class="p">[</span><span class="s2">"dur"</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">c</span><span class="p">[</span><span class="s2">"ts"</span><span class="p">]</span> <span class="o">+</span> <span class="n">c</span><span class="p">[</span><span class="s2">"dur"</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">calls</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="s2">"ts"</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">calls</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">ends</span><span class="o">.</span><span class="n">values</span><span class="p">())</span></div>
+
+
+
+<div class="viewcode-block" id="build_tree">
+<a class="viewcode-back" href="../../modules.html#manafa.sunburst.build_tree">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">build_tree</span><span class="p">(</span><span class="n">calls</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Links each invocation to its caller using stack depth within a capture."""</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">stack</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">current</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">calls</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">c</span><span class="p">[</span><span class="s2">"section"</span><span class="p">]</span> <span class="o">!=</span> <span class="n">current</span><span class="p">:</span>  <span class="c1"># each capture starts a fresh stack</span>
+            <span class="n">current</span><span class="p">,</span> <span class="n">stack</span> <span class="o">=</span> <span class="n">c</span><span class="p">[</span><span class="s2">"section"</span><span class="p">],</span> <span class="p">[]</span>
+        <span class="c1"># drop callers that already returned (concurrent threads share the depth</span>
+        <span class="c1"># numbering, so containment is what separates them) and any frame that is</span>
+        <span class="c1"># not strictly shallower than this one</span>
+        <span class="k">while</span> <span class="n">stack</span> <span class="ow">and</span> <span class="p">(</span><span class="n">calls</span><span class="p">[</span><span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]][</span><span class="s2">"end"</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">c</span><span class="p">[</span><span class="s2">"ts"</span><span class="p">]</span>
+                         <span class="ow">or</span> <span class="n">calls</span><span class="p">[</span><span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]][</span><span class="s2">"depth"</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">c</span><span class="p">[</span><span class="s2">"depth"</span><span class="p">]):</span>
+            <span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+        <span class="n">parent</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">stack</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">children</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">child</span><span class="p">,</span> <span class="n">par</span> <span class="ow">in</span> <span class="n">parent</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">par</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">children</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">par</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">parent</span><span class="p">,</span> <span class="n">children</span></div>
+
+
+
+<div class="viewcode-block" id="energy_clock">
+<a class="viewcode-back" href="../../modules.html#manafa.sunburst.energy_clock">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">energy_clock</span><span class="p">(</span><span class="n">series</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">total_energy</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Returns a function that gives the cumulative energy (J) at a trace time.</span>
+
+<span class="sd">    series is [[ts, joules], ...] on the clock of the call trace. Without it,</span>
+<span class="sd">    the session total is spread evenly over [t0, t1].</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">series</span><span class="p">:</span>
+        <span class="k">return</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">total_energy</span> <span class="o">*</span> <span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">t0</span><span class="p">),</span> <span class="n">t1</span><span class="p">)</span> <span class="o">-</span> <span class="n">t0</span><span class="p">)</span> <span class="o">/</span> <span class="p">((</span><span class="n">t1</span> <span class="o">-</span> <span class="n">t0</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">times</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">series</span><span class="p">]</span>
+    <span class="n">joules</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">series</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">at</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">t</span> <span class="o">&lt;=</span> <span class="n">times</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="n">joules</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">t</span> <span class="o">&gt;=</span> <span class="n">times</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="n">joules</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">bisect</span><span class="o">.</span><span class="n">bisect_right</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">joules</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">joules</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">joules</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">t</span> <span class="o">-</span> <span class="n">times</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">times</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">times</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">at</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">ramp_color</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Colour at position x (0 to 1) of a colour scale [[position, '#rrggbb'], ...]."""</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">c0</span><span class="p">),</span> <span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">c1</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="n">scale</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="n">x1</span><span class="p">:</span>
+            <span class="n">k</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">x0</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="n">x0</span><span class="p">)</span>
+            <span class="k">return</span> <span class="s2">"#"</span> <span class="o">+</span> <span class="s2">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">"</span><span class="si">%02x</span><span class="s2">"</span> <span class="o">%</span> <span class="nb">round</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">c0</span><span class="p">[</span><span class="n">j</span><span class="p">:</span><span class="n">j</span> <span class="o">+</span> <span class="mi">2</span><span class="p">],</span> <span class="mi">16</span><span class="p">)</span> <span class="o">+</span> <span class="n">k</span> <span class="o">*</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">c1</span><span class="p">[</span><span class="n">j</span><span class="p">:</span><span class="n">j</span> <span class="o">+</span> <span class="mi">2</span><span class="p">],</span> <span class="mi">16</span><span class="p">)</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="n">c0</span><span class="p">[</span><span class="n">j</span><span class="p">:</span><span class="n">j</span> <span class="o">+</span> <span class="mi">2</span><span class="p">],</span> <span class="mi">16</span><span class="p">)))</span>
+                                 <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">scale</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="hot_sectors">
+<a class="viewcode-back" href="../../modules.html#manafa.sunburst.hot_sectors">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">hot_sectors</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">parents</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">times_ms</span><span class="p">,</span> <span class="n">total_pct</span><span class="p">,</span> <span class="n">ring_pct</span><span class="p">,</span> <span class="n">min_ms</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Tells which sectors of a sunburst are hot spots. The first sector is the root.</span>
+
+<span class="sd">    A sector is a hot spot if it has more than total_pct of the energy of the root, or more</span>
+<span class="sd">    than ring_pct of the energy of its ring, and if it also ran for more than min_ms.</span>
+<span class="sd">    """</span>
+    <span class="n">depth</span> <span class="o">=</span> <span class="p">{</span><span class="n">ids</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="mi">0</span><span class="p">}</span>
+    <span class="n">ring_total</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">)):</span>  <span class="c1"># a parent is always before its children</span>
+        <span class="n">depth</span><span class="p">[</span><span class="n">ids</span><span class="p">[</span><span class="n">k</span><span class="p">]]</span> <span class="o">=</span> <span class="n">depth</span><span class="p">[</span><span class="n">parents</span><span class="p">[</span><span class="n">k</span><span class="p">]]</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">ring_total</span><span class="p">[</span><span class="n">depth</span><span class="p">[</span><span class="n">ids</span><span class="p">[</span><span class="n">k</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">ring_total</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">depth</span><span class="p">[</span><span class="n">ids</span><span class="p">[</span><span class="n">k</span><span class="p">]],</span> <span class="mf">0.0</span><span class="p">)</span> <span class="o">+</span> <span class="n">values</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+    <span class="n">hot</span> <span class="o">=</span> <span class="p">[</span><span class="kc">False</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">)):</span>
+        <span class="n">large</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">total_pct</span> <span class="o">/</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="n">values</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">ring_pct</span> <span class="o">/</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">ring_total</span><span class="p">[</span><span class="n">depth</span><span class="p">[</span><span class="n">ids</span><span class="p">[</span><span class="n">k</span><span class="p">]]]</span>
+        <span class="n">hot</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">large</span> <span class="ow">and</span> <span class="n">times_ms</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">min_ms</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">hot</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">is_blocked</span><span class="p">(</span><span class="n">call</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""True when the frame was waiting rather than running.</span>
+
+<span class="sd">    A frame that never returned (dur -1) was still parked when the trace ended,</span>
+<span class="sd">    which is what daemon threads and idle loopers do for a whole session.</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="n">call</span><span class="p">[</span><span class="s2">"dur"</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span><span class="n">b</span> <span class="ow">in</span> <span class="n">call</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">BLOCKING_METHODS</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="focus_subtrees">
+<a class="viewcode-back" href="../../modules.html#manafa.sunburst.focus_subtrees">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">focus_subtrees</span><span class="p">(</span><span class="n">calls</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">prefixes</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Picks the topmost frames matching prefixes, and everything under them.</span>
+
+<span class="sd">    Re-rooting this way keeps the framework work an app frame triggers (that</span>
+<span class="sd">    energy is the app's doing) while dropping the process scaffolding above it,</span>
+<span class="sd">    such as ZygoteInit -&gt; RuntimeInit -&gt; Method.invoke -&gt; ActivityThread.main.</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">prefixes</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">matches</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">calls</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">"name"</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">prefixes</span><span class="p">))</span>
+    <span class="n">entry</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">calls</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">matches</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="n">p</span><span class="p">,</span> <span class="n">outer</span> <span class="o">=</span> <span class="n">parent</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="kc">False</span>
+        <span class="k">while</span> <span class="n">p</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">matches</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+                <span class="n">outer</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">break</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">parent</span><span class="p">[</span><span class="n">p</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">outer</span><span class="p">:</span>
+            <span class="n">entry</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">keep</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">calls</span><span class="p">)):</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">i</span>
+        <span class="k">while</span> <span class="n">node</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">entry</span><span class="p">:</span>
+                <span class="n">keep</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                <span class="k">break</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">parent</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">keep</span><span class="p">,</span> <span class="n">entry</span></div>
+
+
+
+<div class="viewcode-block" id="build_sunburst">
+<a class="viewcode-back" href="../../modules.html#manafa.sunburst.build_sunburst">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">build_sunburst</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">out_file</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="n">DEFAULT_MAX_DEPTH</span><span class="p">,</span>
+                   <span class="n">frames</span><span class="o">=</span><span class="n">DEFAULT_FRAMES</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">focus</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                   <span class="n">include_blocked</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">package</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">hot_total_pct</span><span class="o">=</span><span class="n">HOT_TOTAL_PCT</span><span class="p">,</span>
+                   <span class="n">hot_ring_pct</span><span class="o">=</span><span class="n">HOT_RING_PCT</span><span class="p">,</span> <span class="n">hot_min_ms</span><span class="o">=</span><span class="n">HOT_MIN_MS</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Writes the animated sunburst for a profiling session to out_file.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        session: results dict (or parsed emanafa_*.json) with 'energy' and</span>
+<span class="sd">            'method_invocations'.</span>
+<span class="sd">        out_file: path of the html file to write.</span>
+<span class="sd">        max_depth: deepest call level to include.</span>
+<span class="sd">        frames: number of animation steps.</span>
+<span class="sd">        title: chart title. Defaults to the app name and energy total.</span>
+<span class="sd">        focus: package prefixes to re-root on. Defaults to the app package (or to</span>
+<span class="sd">            the app package plus DEFAULT_FOCUS, if the trace has no method of the</span>
+<span class="sd">            app); pass ['all'] to keep the whole process tree.</span>
+<span class="sd">        include_blocked: charge energy to frames that were only waiting.</span>
+<span class="sd">        package: package prefix of the "app only" view. Defaults to the app package.</span>
+<span class="sd">        hot_total_pct, hot_ring_pct, hot_min_ms: limits of a hot spot. See hot_sectors.</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        path of the file written.</span>
+<span class="sd">    """</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">plotly.graph_objects</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">go</span>  <span class="c1"># optional dependency, only needed here</span>
+
+    <span class="n">invocations</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"method_invocations"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">invocations</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">invocations</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"trace_file"</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"session has no method trace; profile with "</span>
+                         <span class="s2">"-a &lt;package&gt; --trace-methods am"</span><span class="p">)</span>
+    <span class="n">energy</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"energy"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+    <span class="n">total_energy</span> <span class="o">=</span> <span class="n">energy</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"total"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">total_energy</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"session has no energy total to colour the call graph with"</span><span class="p">)</span>
+    <span class="n">csv_path</span> <span class="o">=</span> <span class="n">invocations</span><span class="p">[</span><span class="s2">"trace_file"</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">csv_path</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"call trace </span><span class="si">{</span><span class="n">csv_path</span><span class="si">}</span><span class="s2"> is gone (each run wipes manafa/results)"</span><span class="p">)</span>
+
+    <span class="n">calls</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="n">t1</span> <span class="o">=</span> <span class="n">load_calls</span><span class="p">(</span><span class="n">csv_path</span><span class="p">)</span>
+    <span class="n">parent</span><span class="p">,</span> <span class="n">children</span> <span class="o">=</span> <span class="n">build_tree</span><span class="p">(</span><span class="n">calls</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">focus</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># the methods of the app and all that they call. if the trace has no method</span>
+        <span class="c1"># of the app, the android packages are used</span>
+        <span class="n">focus</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"app"</span><span class="p">),)</span> <span class="k">if</span> <span class="n">p</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">focus</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">focus_subtrees</span><span class="p">(</span><span class="n">calls</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">focus</span><span class="p">)[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="n">focus</span> <span class="o">=</span> <span class="n">focus</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">DEFAULT_FOCUS</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">list</span><span class="p">(</span><span class="n">focus</span><span class="p">)</span> <span class="o">==</span> <span class="p">[</span><span class="s2">"all"</span><span class="p">]:</span>
+        <span class="n">focus</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">kept</span> <span class="o">=</span> <span class="n">focus_subtrees</span><span class="p">(</span><span class="n">calls</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">focus</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">kept</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">keep</span><span class="p">,</span> <span class="n">entry</span> <span class="o">=</span> <span class="n">kept</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">keep</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"no calls matched </span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">focus</span><span class="p">)</span><span class="si">}</span><span class="s2">; "</span>
+                             <span class="s2">"widen --focus or pass --focus all"</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">parent</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">keep</span><span class="p">:</span>
+                <span class="n">parent</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">entry</span><span class="p">:</span>
+                <span class="n">parent</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># entry points hang off the session root</span>
+        <span class="n">children</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">child</span><span class="p">,</span> <span class="n">par</span> <span class="ow">in</span> <span class="n">parent</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">par</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">children</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">par</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
+    <span class="c1"># depth is counted from the entry point, not from process start, so the cap</span>
+    <span class="c1"># trims the deep tail of app work rather than the framework frames above it</span>
+    <span class="n">rel</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="n">calls</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">"depth"</span><span class="p">]):</span>
+        <span class="n">rel</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">parent</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">rel</span><span class="p">[</span><span class="n">parent</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">rel</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">d</span> <span class="o">&gt;</span> <span class="n">max_depth</span><span class="p">]:</span>
+        <span class="n">parent</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">children</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">child</span><span class="p">,</span> <span class="n">par</span> <span class="ow">in</span> <span class="n">parent</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">par</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">par</span> <span class="ow">in</span> <span class="n">parent</span><span class="p">:</span>
+            <span class="n">children</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">par</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+
+    <span class="c1"># A frame gets the energy that was consumed while it ran. A caller's share is</span>
+    <span class="c1"># the sum of its own share and its callees', so a caller always covers its</span>
+    <span class="c1"># callees. Blocked frames contribute nothing, which keeps parked daemons and</span>
+    <span class="c1"># idle loopers from soaking up the session.</span>
+    <span class="n">energy_at</span> <span class="o">=</span> <span class="n">energy_clock</span><span class="p">(</span><span class="n">energy</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"method_energy_series"</span><span class="p">),</span> <span class="n">t0</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">total_energy</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">consumed_at</span><span class="p">(</span><span class="n">call</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Energy consumed while the invocation was on the stack, as of t."""</span>
+        <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">energy_at</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">call</span><span class="p">[</span><span class="s2">"end"</span><span class="p">]))</span> <span class="o">-</span> <span class="n">energy_at</span><span class="p">(</span><span class="n">call</span><span class="p">[</span><span class="s2">"ts"</span><span class="p">]))</span>
+
+    <span class="n">active</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="p">(</span><span class="n">include_blocked</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">is_blocked</span><span class="p">(</span><span class="n">calls</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">index</span><span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">own_at</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Energy consumed while the invocation ran outside its callees, as of t."""</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">active</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="mf">0.0</span>
+        <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">consumed_at</span><span class="p">(</span><span class="n">calls</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">t</span><span class="p">)</span> <span class="o">-</span> <span class="nb">sum</span><span class="p">(</span><span class="n">consumed_at</span><span class="p">(</span><span class="n">calls</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">t</span><span class="p">)</span>
+                                                       <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">children</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="p">[])))</span>
+
+    <span class="n">span</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">own_at</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">t1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">index</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">span</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"the call trace and the energy samples do not overlap in time"</span><span class="p">)</span>
+    <span class="c1"># frames of different threads run at the same time. scale down so that the</span>
+    <span class="c1"># same energy is not given to more than one of them.</span>
+    <span class="n">share</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="n">energy_at</span><span class="p">(</span><span class="n">t1</span><span class="p">)</span> <span class="o">-</span> <span class="n">energy_at</span><span class="p">(</span><span class="n">t0</span><span class="p">))</span> <span class="o">/</span> <span class="n">span</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">short</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">"."</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:])</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">name</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">clip</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">34</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">label</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">label</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">size</span> <span class="k">else</span> <span class="n">label</span><span class="p">[:</span><span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s2">"…"</span>
+
+    <span class="c1"># one node for each call path: all the invocations of a method that have the</span>
+    <span class="c1"># same callers are added together. One node for each invocation gives a file</span>
+    <span class="c1"># of hundreds of MB for a session of 20 s.</span>
+    <span class="n">nodes</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># (node of the caller, method name) -&gt; node</span>
+    <span class="n">node_of</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">index</span><span class="p">:</span>  <span class="c1"># a caller is always before its callees</span>
+        <span class="n">caller</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">parent</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">node_of</span><span class="p">[</span><span class="n">parent</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+        <span class="n">node_of</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">nodes</span><span class="o">.</span><span class="n">setdefault</span><span class="p">((</span><span class="n">caller</span><span class="p">,</span> <span class="n">calls</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">"name"</span><span class="p">]),</span> <span class="nb">len</span><span class="p">(</span><span class="n">nodes</span><span class="p">))</span>
+    <span class="n">node_keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span>
+    <span class="n">calls_of</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">node_keys</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">index</span><span class="p">:</span>
+        <span class="n">calls_of</span><span class="p">[</span><span class="n">node_of</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">self_at</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Energy that each call path consumed in its own code, as of t."""</span>
+        <span class="n">selfs</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">node_keys</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">index</span><span class="p">:</span>
+            <span class="n">selfs</span><span class="p">[</span><span class="n">node_of</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">+=</span> <span class="n">own_at</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="o">*</span> <span class="n">share</span>
+        <span class="k">return</span> <span class="n">selfs</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">inclusive</span><span class="p">(</span><span class="n">selfs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Energy of each call path with its callees, and the total."""</span>
+        <span class="n">vals</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">selfs</span><span class="p">)</span>
+        <span class="n">total</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">node_keys</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>  <span class="c1"># callees are after their caller</span>
+            <span class="n">caller</span> <span class="o">=</span> <span class="n">node_keys</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">caller</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">total</span> <span class="o">+=</span> <span class="n">vals</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">vals</span><span class="p">[</span><span class="n">caller</span><span class="p">]</span> <span class="o">+=</span> <span class="n">vals</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">vals</span><span class="p">,</span> <span class="n">total</span>
+
+    <span class="n">selfs_end</span> <span class="o">=</span> <span class="n">self_at</span><span class="p">(</span><span class="n">t1</span><span class="p">)</span>
+    <span class="n">vals_end</span><span class="p">,</span> <span class="n">attributed</span> <span class="o">=</span> <span class="n">inclusive</span><span class="p">(</span><span class="n">selfs_end</span><span class="p">)</span>
+    <span class="c1"># call paths with almost no energy are not drawn. their energy stays in their caller</span>
+    <span class="n">shown</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">node_keys</span><span class="p">))</span> <span class="k">if</span> <span class="n">vals_end</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">MIN_SHARE</span> <span class="o">*</span> <span class="n">attributed</span><span class="p">]</span>
+
+    <span class="c1"># time (ms) that each call path ran in its own code. a method that waits has no time</span>
+    <span class="n">times_self</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">node_keys</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">index</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">active</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+            <span class="n">own</span> <span class="o">=</span> <span class="n">calls</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">"end"</span><span class="p">]</span> <span class="o">-</span> <span class="n">calls</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">"ts"</span><span class="p">]</span> <span class="o">-</span> <span class="nb">sum</span><span class="p">(</span><span class="n">calls</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s2">"end"</span><span class="p">]</span> <span class="o">-</span> <span class="n">calls</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s2">"ts"</span><span class="p">]</span>
+                                                         <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">children</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="p">[]))</span>
+            <span class="n">times_self</span><span class="p">[</span><span class="n">node_of</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">+=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">own</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1e6</span>
+    <span class="n">times_end</span><span class="p">,</span> <span class="n">time_total</span> <span class="o">=</span> <span class="n">inclusive</span><span class="p">(</span><span class="n">times_self</span><span class="p">)</span>
+
+    <span class="n">final</span> <span class="o">=</span> <span class="p">[</span><span class="n">attributed</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">vals_end</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">shown</span><span class="p">]</span>
+    <span class="n">scale</span> <span class="o">=</span> <span class="p">[</span><span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">final</span> <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">lo</span><span class="p">,</span> <span class="n">hi</span> <span class="o">=</span> <span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">scale</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">scale</span><span class="p">))</span> <span class="k">if</span> <span class="n">scale</span> <span class="k">else</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">decades</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">lo</span><span class="p">),</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">hi</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="ow">or</span> <span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="n">hi</span><span class="p">)]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">colors</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="n">hot</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Blue for a usual sector and orange for a hot spot. Darker with more energy (log scale)."""</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">ramp_color</span><span class="p">(</span><span class="n">HOT_COLORSCALE</span> <span class="k">if</span> <span class="n">is_hot</span> <span class="k">else</span> <span class="n">COLORSCALE</span><span class="p">,</span>
+                           <span class="mf">0.0</span> <span class="k">if</span> <span class="n">v</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="k">else</span> <span class="nb">min</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">-</span> <span class="n">lo</span><span class="p">)</span> <span class="o">/</span> <span class="p">((</span><span class="n">hi</span> <span class="o">-</span> <span class="n">lo</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">1</span><span class="p">))))</span>
+                <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">is_hot</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="n">hot</span><span class="p">)]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">paint</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="n">hot</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Colour of the sectors, and a text colour that can be read on each of them."""</span>
+        <span class="n">fills</span> <span class="o">=</span> <span class="n">colors</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="n">hot</span><span class="p">)</span>
+        <span class="n">inks</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"#0b0b0b"</span> <span class="k">if</span> <span class="mf">0.299</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">],</span> <span class="mi">16</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.587</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">5</span><span class="p">],</span> <span class="mi">16</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.114</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">5</span><span class="p">:</span><span class="mi">7</span><span class="p">],</span> <span class="mi">16</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">150</span>
+                <span class="k">else</span> <span class="s2">"#ffffff"</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">fills</span><span class="p">]</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">marker</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">colors</span><span class="o">=</span><span class="n">fills</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">SURFACE</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)),</span> <span class="n">insidetextfont</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">inks</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">hot</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">parents</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">times_ms</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">hot_sectors</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">parents</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">times_ms</span><span class="p">,</span> <span class="n">hot_total_pct</span><span class="p">,</span> <span class="n">hot_ring_pct</span><span class="p">,</span> <span class="n">hot_min_ms</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">details</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">own</span><span class="p">,</span> <span class="n">counts</span><span class="p">,</span> <span class="n">times_ms</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Hover data of each sector: name, own energy, calls, time, mean energy of a call."""</span>
+        <span class="k">return</span> <span class="p">[[</span><span class="n">name</span><span class="p">,</span> <span class="n">joules</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">ms</span><span class="p">,</span> <span class="n">value</span> <span class="o">/</span> <span class="n">count</span> <span class="k">if</span> <span class="n">count</span> <span class="k">else</span> <span class="mf">0.0</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">joules</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">ms</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">own</span><span class="p">,</span> <span class="n">counts</span><span class="p">,</span> <span class="n">times_ms</span><span class="p">,</span> <span class="n">values</span><span class="p">)]</span>
+
+    <span class="n">HOVER_END</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"%</span><span class="si">{customdata[2]}</span><span class="s2"> calls, mean %</span><span class="si">{customdata[4]:.3g}</span><span class="s2"> J for each call, %</span><span class="si">{customdata[3]:.4g}</span><span class="s2"> ms&lt;br&gt;"</span>
+                 <span class="s2">"%</span><span class="si">{customdata[0]}</span><span class="s2">&lt;extra&gt;&lt;/extra&gt;"</span><span class="p">)</span>
+
+    <span class="n">call_ids</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"session"</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">shown</span><span class="p">]</span>
+    <span class="n">call_parents</span> <span class="o">=</span> <span class="p">[</span><span class="s2">""</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="s2">"session"</span> <span class="k">if</span> <span class="n">node_keys</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">node_keys</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">shown</span><span class="p">]</span>
+    <span class="n">call_times</span> <span class="o">=</span> <span class="p">[</span><span class="n">time_total</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">times_end</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">shown</span><span class="p">]</span>
+    <span class="n">call_hot</span> <span class="o">=</span> <span class="n">hot</span><span class="p">(</span><span class="n">call_ids</span><span class="p">,</span> <span class="n">call_parents</span><span class="p">,</span> <span class="n">final</span><span class="p">,</span> <span class="n">call_times</span><span class="p">)</span>
+    <span class="n">sunburst</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Sunburst</span><span class="p">(</span>
+        <span class="n">ids</span><span class="o">=</span><span class="n">call_ids</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">"session"</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">short</span><span class="p">(</span><span class="n">node_keys</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">shown</span><span class="p">],</span> <span class="n">parents</span><span class="o">=</span><span class="n">call_parents</span><span class="p">,</span>
+        <span class="n">values</span><span class="o">=</span><span class="n">final</span><span class="p">,</span> <span class="n">branchvalues</span><span class="o">=</span><span class="s2">"total"</span><span class="p">,</span> <span class="n">maxdepth</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="p">[</span><span class="mf">0.06</span><span class="p">,</span> <span class="mf">0.66</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="p">[</span><span class="mf">0.13</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span>
+        <span class="n">customdata</span><span class="o">=</span><span class="n">details</span><span class="p">([</span><span class="s2">"all traced methods"</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">node_keys</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">shown</span><span class="p">],</span>
+                           <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">selfs_end</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">shown</span><span class="p">],</span>
+                           <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">index</span><span class="p">)]</span> <span class="o">+</span> <span class="p">[</span><span class="n">calls_of</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">shown</span><span class="p">],</span> <span class="n">call_times</span><span class="p">,</span> <span class="n">final</span><span class="p">),</span>
+        <span class="n">texttemplate</span><span class="o">=</span><span class="s2">"%</span><span class="si">{label}</span><span class="s2">&lt;br&gt;%</span><span class="si">{percentRoot:.0%}</span><span class="s2">"</span><span class="p">,</span> <span class="n">insidetextorientation</span><span class="o">=</span><span class="s2">"radial"</span><span class="p">,</span>
+        <span class="n">hovertemplate</span><span class="o">=</span><span class="s2">"&lt;b&gt;%</span><span class="si">{value:.3g}</span><span class="s2"> J&lt;/b&gt; with its callees (%</span><span class="si">{percentRoot:.1%}</span><span class="s2"> of the attributed energy)&lt;br&gt;"</span>
+                      <span class="s2">"%</span><span class="si">{customdata[1]:.3g}</span><span class="s2"> J in its own code&lt;br&gt;"</span> <span class="o">+</span> <span class="n">HOVER_END</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">paint</span><span class="p">(</span><span class="n">final</span><span class="p">,</span> <span class="n">call_hot</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="c1"># the sectors have explicit colours, so this empty trace gives the colour bar</span>
+    <span class="n">colorbar</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
+        <span class="n">x</span><span class="o">=</span><span class="p">[</span><span class="kc">None</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="p">[</span><span class="kc">None</span><span class="p">],</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"markers"</span><span class="p">,</span> <span class="n">hoverinfo</span><span class="o">=</span><span class="s2">"skip"</span><span class="p">,</span>
+        <span class="n">marker</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="n">lo</span><span class="p">],</span> <span class="n">colorscale</span><span class="o">=</span><span class="n">COLORSCALE</span><span class="p">,</span> <span class="n">cmin</span><span class="o">=</span><span class="n">lo</span><span class="p">,</span> <span class="n">cmax</span><span class="o">=</span><span class="n">hi</span><span class="p">,</span> <span class="n">showscale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">colorbar</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"energy"</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">xanchor</span><span class="o">=</span><span class="s2">"left"</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="nb">len</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">outlinewidth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                  <span class="n">tickvals</span><span class="o">=</span><span class="n">decades</span><span class="p">,</span> <span class="n">ticktext</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="mf">10.0</span><span class="w"> </span><span class="o">**</span><span class="w"> </span><span class="n">d</span><span class="si">:</span><span class="s2">g</span><span class="si">}</span><span class="s2"> J"</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">decades</span><span class="p">])))</span>
+
+    <span class="c1"># second view, 3 levels: package, class, method. a sector is the energy that the</span>
+    <span class="c1"># methods consumed in their own code</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">split</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">"."</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span> <span class="ow">or</span> <span class="s2">"(no package)"</span><span class="p">,</span> <span class="n">parts</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="s2">"(no class)"</span><span class="p">,</span> <span class="n">parts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">groups</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># id of the sector -&gt; (label, id of the parent, full name)</span>
+    <span class="n">group_of</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># call path -&gt; id of its method sector</span>
+    <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">node_keys</span><span class="p">:</span>
+        <span class="n">pkg</span><span class="p">,</span> <span class="bp">cls</span><span class="p">,</span> <span class="n">method</span> <span class="o">=</span> <span class="n">split</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">groups</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">"p:"</span> <span class="o">+</span> <span class="n">pkg</span><span class="p">,</span> <span class="p">(</span><span class="n">pkg</span><span class="p">,</span> <span class="s2">"session"</span><span class="p">,</span> <span class="n">pkg</span><span class="p">))</span>
+        <span class="n">groups</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">"c:"</span> <span class="o">+</span> <span class="n">pkg</span> <span class="o">+</span> <span class="s2">"."</span> <span class="o">+</span> <span class="bp">cls</span><span class="p">,</span> <span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s2">"p:"</span> <span class="o">+</span> <span class="n">pkg</span><span class="p">,</span> <span class="n">pkg</span> <span class="o">+</span> <span class="s2">"."</span> <span class="o">+</span> <span class="bp">cls</span><span class="p">))</span>
+        <span class="n">groups</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">"m:"</span> <span class="o">+</span> <span class="n">name</span><span class="p">,</span> <span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="s2">"c:"</span> <span class="o">+</span> <span class="n">pkg</span> <span class="o">+</span> <span class="s2">"."</span> <span class="o">+</span> <span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
+        <span class="n">group_of</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"m:"</span> <span class="o">+</span> <span class="n">name</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">group_values</span><span class="p">(</span><span class="n">selfs</span><span class="p">,</span> <span class="n">counts</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">vals</span> <span class="o">=</span> <span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">groups</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">joules</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">selfs</span> <span class="k">if</span> <span class="n">counts</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">counts</span><span class="p">):</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">group_of</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+            <span class="k">while</span> <span class="n">key</span> <span class="o">!=</span> <span class="s2">"session"</span><span class="p">:</span>
+                <span class="n">vals</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">+=</span> <span class="n">joules</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="n">groups</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">vals</span>
+
+    <span class="n">group_end</span> <span class="o">=</span> <span class="n">group_values</span><span class="p">(</span><span class="n">selfs_end</span><span class="p">)</span>
+    <span class="n">group_calls</span> <span class="o">=</span> <span class="n">group_values</span><span class="p">(</span><span class="n">selfs_end</span><span class="p">,</span> <span class="n">calls_of</span><span class="p">)</span>
+    <span class="n">group_shown</span> <span class="o">=</span> <span class="p">[</span><span class="n">g</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">groups</span> <span class="k">if</span> <span class="n">group_end</span><span class="p">[</span><span class="n">g</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">MIN_SHARE</span> <span class="o">*</span> <span class="n">attributed</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">group_values_at</span><span class="p">(</span><span class="n">selfs</span><span class="p">):</span>
+        <span class="n">vals</span> <span class="o">=</span> <span class="n">group_values</span><span class="p">(</span><span class="n">selfs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="nb">sum</span><span class="p">(</span><span class="n">v</span> <span class="k">for</span> <span class="n">g</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vals</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"p:"</span><span class="p">))]</span> <span class="o">+</span> <span class="p">[</span><span class="n">vals</span><span class="p">[</span><span class="n">g</span><span class="p">]</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">group_shown</span><span class="p">]</span>
+
+    <span class="n">group_final</span> <span class="o">=</span> <span class="n">group_values_at</span><span class="p">(</span><span class="n">selfs_end</span><span class="p">)</span>
+    <span class="n">group_ids</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"session"</span><span class="p">]</span> <span class="o">+</span> <span class="n">group_shown</span>
+    <span class="n">group_parents</span> <span class="o">=</span> <span class="p">[</span><span class="s2">""</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">groups</span><span class="p">[</span><span class="n">g</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">group_shown</span><span class="p">]</span>
+    <span class="n">group_times</span> <span class="o">=</span> <span class="n">group_values_at</span><span class="p">(</span><span class="n">times_self</span><span class="p">)</span>
+    <span class="n">group_hot</span> <span class="o">=</span> <span class="n">hot</span><span class="p">(</span><span class="n">group_ids</span><span class="p">,</span> <span class="n">group_parents</span><span class="p">,</span> <span class="n">group_final</span><span class="p">,</span> <span class="n">group_times</span><span class="p">)</span>
+    <span class="n">packages</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Sunburst</span><span class="p">(</span>
+        <span class="n">ids</span><span class="o">=</span><span class="n">group_ids</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">"session"</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">groups</span><span class="p">[</span><span class="n">g</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">group_shown</span><span class="p">],</span> <span class="n">parents</span><span class="o">=</span><span class="n">group_parents</span><span class="p">,</span>
+        <span class="n">values</span><span class="o">=</span><span class="n">group_final</span><span class="p">,</span> <span class="n">branchvalues</span><span class="o">=</span><span class="s2">"total"</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="p">[</span><span class="mf">0.06</span><span class="p">,</span> <span class="mf">0.66</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="p">[</span><span class="mf">0.13</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">visible</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">customdata</span><span class="o">=</span><span class="n">details</span><span class="p">([</span><span class="s2">"all traced methods"</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">groups</span><span class="p">[</span><span class="n">g</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">group_shown</span><span class="p">],</span> <span class="n">group_final</span><span class="p">,</span>
+                           <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">index</span><span class="p">)]</span> <span class="o">+</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">group_calls</span><span class="p">[</span><span class="n">g</span><span class="p">])</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">group_shown</span><span class="p">],</span> <span class="n">group_times</span><span class="p">,</span> <span class="n">group_final</span><span class="p">),</span>
+        <span class="n">texttemplate</span><span class="o">=</span><span class="s2">"%</span><span class="si">{label}</span><span class="s2">&lt;br&gt;%</span><span class="si">{percentRoot:.0%}</span><span class="s2">"</span><span class="p">,</span> <span class="n">insidetextorientation</span><span class="o">=</span><span class="s2">"radial"</span><span class="p">,</span>
+        <span class="n">hovertemplate</span><span class="o">=</span><span class="s2">"&lt;b&gt;%</span><span class="si">{value:.3g}</span><span class="s2"> J&lt;/b&gt; in its own code (%</span><span class="si">{percentRoot:.1%}</span><span class="s2"> of the attributed energy)&lt;br&gt;"</span> <span class="o">+</span>
+                      <span class="n">HOVER_END</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">paint</span><span class="p">(</span><span class="n">group_final</span><span class="p">,</span> <span class="n">group_hot</span><span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="c1"># third view: only the packages, classes and methods of the app (3 levels). below a</span>
+    <span class="c1"># method are the calls that it makes to other code, with their energy. a call to</span>
+    <span class="c1"># another method of the app is not below it: that method has its own sector</span>
+    <span class="n">prefix</span> <span class="o">=</span> <span class="n">package</span> <span class="ow">or</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"app"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span>
+    <span class="n">app_ids</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># key -&gt; position in app_info</span>
+    <span class="n">app_info</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># (label, position of the parent, full name)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">app_node</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">above</span><span class="p">,</span> <span class="n">full_name</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">app_ids</span><span class="p">:</span>
+            <span class="n">app_ids</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">app_info</span><span class="p">)</span>
+            <span class="n">app_info</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">label</span><span class="p">,</span> <span class="n">above</span><span class="p">,</span> <span class="n">full_name</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">app_ids</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+    <span class="n">app_of</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># call path -&gt; position in app_info. None if it is not below a method of the app</span>
+    <span class="k">for</span> <span class="n">caller</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">node_keys</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">prefix</span> <span class="ow">and</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">prefix</span><span class="p">):</span>
+            <span class="n">pkg</span><span class="p">,</span> <span class="bp">cls</span><span class="p">,</span> <span class="n">method</span> <span class="o">=</span> <span class="n">split</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">above</span> <span class="o">=</span> <span class="n">app_node</span><span class="p">((</span><span class="s2">"p"</span><span class="p">,</span> <span class="n">pkg</span><span class="p">),</span> <span class="n">pkg</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">pkg</span><span class="p">)</span>
+            <span class="n">above</span> <span class="o">=</span> <span class="n">app_node</span><span class="p">((</span><span class="s2">"c"</span><span class="p">,</span> <span class="n">pkg</span><span class="p">,</span> <span class="bp">cls</span><span class="p">),</span> <span class="bp">cls</span><span class="p">,</span> <span class="n">above</span><span class="p">,</span> <span class="n">pkg</span> <span class="o">+</span> <span class="s2">"."</span> <span class="o">+</span> <span class="bp">cls</span><span class="p">)</span>
+            <span class="n">app_of</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">app_node</span><span class="p">((</span><span class="s2">"m"</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span> <span class="n">method</span><span class="p">,</span> <span class="n">above</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">above</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">caller</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">app_of</span><span class="p">[</span><span class="n">caller</span><span class="p">]</span>
+            <span class="n">app_of</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span> <span class="k">if</span> <span class="n">above</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">app_node</span><span class="p">((</span><span class="n">above</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span> <span class="n">short</span><span class="p">(</span><span class="n">name</span><span class="p">),</span> <span class="n">above</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">app_values</span><span class="p">(</span><span class="n">selfs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Own value and value with callees of each sector of the app view, and the total."""</span>
+        <span class="n">own</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">app_info</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">joules</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">selfs</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">app_of</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">own</span><span class="p">[</span><span class="n">app_of</span><span class="p">[</span><span class="n">n</span><span class="p">]]</span> <span class="o">+=</span> <span class="n">joules</span>
+        <span class="n">vals</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">own</span><span class="p">)</span>
+        <span class="n">total</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">app_info</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>  <span class="c1"># a parent is always before its children</span>
+            <span class="n">above</span> <span class="o">=</span> <span class="n">app_info</span><span class="p">[</span><span class="n">pos</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">above</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">total</span> <span class="o">+=</span> <span class="n">vals</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">vals</span><span class="p">[</span><span class="n">above</span><span class="p">]</span> <span class="o">+=</span> <span class="n">vals</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">own</span><span class="p">,</span> <span class="n">vals</span><span class="p">,</span> <span class="n">total</span>
+
+    <span class="n">app_own</span><span class="p">,</span> <span class="n">app_end</span><span class="p">,</span> <span class="n">app_total</span> <span class="o">=</span> <span class="n">app_values</span><span class="p">(</span><span class="n">selfs_end</span><span class="p">)</span>
+    <span class="n">app_calls</span> <span class="o">=</span> <span class="n">app_values</span><span class="p">(</span><span class="n">calls_of</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">app_shown</span> <span class="o">=</span> <span class="p">[</span><span class="n">pos</span> <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">app_info</span><span class="p">))</span> <span class="k">if</span> <span class="n">app_end</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">MIN_SHARE</span> <span class="o">*</span> <span class="n">attributed</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">app_values_at</span><span class="p">(</span><span class="n">selfs</span><span class="p">):</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">vals</span><span class="p">,</span> <span class="n">total</span> <span class="o">=</span> <span class="n">app_values</span><span class="p">(</span><span class="n">selfs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">total</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">vals</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span> <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="n">app_shown</span><span class="p">]</span>
+
+    <span class="n">app_final</span> <span class="o">=</span> <span class="p">[</span><span class="n">app_total</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">app_end</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span> <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="n">app_shown</span><span class="p">]</span>
+    <span class="n">app_view_ids</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"session"</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"a:</span><span class="si">{</span><span class="n">pos</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="n">app_shown</span><span class="p">]</span>
+    <span class="n">app_parents</span> <span class="o">=</span> <span class="p">[</span><span class="s2">""</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="s2">"session"</span> <span class="k">if</span> <span class="n">app_info</span><span class="p">[</span><span class="n">pos</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">"a:</span><span class="si">{</span><span class="n">app_info</span><span class="p">[</span><span class="n">pos</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="n">app_shown</span><span class="p">]</span>
+    <span class="n">app_times</span> <span class="o">=</span> <span class="n">app_values_at</span><span class="p">(</span><span class="n">times_self</span><span class="p">)</span>
+    <span class="n">app_hot</span> <span class="o">=</span> <span class="n">hot</span><span class="p">(</span><span class="n">app_view_ids</span><span class="p">,</span> <span class="n">app_parents</span><span class="p">,</span> <span class="n">app_final</span><span class="p">,</span> <span class="n">app_times</span><span class="p">)</span>
+    <span class="n">app_view</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Sunburst</span><span class="p">(</span>
+        <span class="n">ids</span><span class="o">=</span><span class="n">app_view_ids</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="n">prefix</span> <span class="ow">or</span> <span class="s2">"app"</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">app_info</span><span class="p">[</span><span class="n">pos</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="n">app_shown</span><span class="p">],</span> <span class="n">parents</span><span class="o">=</span><span class="n">app_parents</span><span class="p">,</span>
+        <span class="n">values</span><span class="o">=</span><span class="n">app_final</span><span class="p">,</span> <span class="n">branchvalues</span><span class="o">=</span><span class="s2">"total"</span><span class="p">,</span> <span class="n">maxdepth</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="p">[</span><span class="mf">0.06</span><span class="p">,</span> <span class="mf">0.66</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="p">[</span><span class="mf">0.13</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span>
+        <span class="n">visible</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">customdata</span><span class="o">=</span><span class="n">details</span><span class="p">([</span><span class="s2">"all methods of "</span> <span class="o">+</span> <span class="p">(</span><span class="n">prefix</span> <span class="ow">or</span> <span class="s2">"the app"</span><span class="p">)]</span> <span class="o">+</span> <span class="p">[</span><span class="n">app_info</span><span class="p">[</span><span class="n">pos</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="n">app_shown</span><span class="p">],</span>
+                           <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">app_own</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span> <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="n">app_shown</span><span class="p">],</span>
+                           <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">index</span><span class="p">)]</span> <span class="o">+</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">app_calls</span><span class="p">[</span><span class="n">pos</span><span class="p">])</span> <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="n">app_shown</span><span class="p">],</span> <span class="n">app_times</span><span class="p">,</span> <span class="n">app_final</span><span class="p">),</span>
+        <span class="n">texttemplate</span><span class="o">=</span><span class="s2">"%</span><span class="si">{label}</span><span class="s2">&lt;br&gt;%</span><span class="si">{percentRoot:.0%}</span><span class="s2">"</span><span class="p">,</span> <span class="n">insidetextorientation</span><span class="o">=</span><span class="s2">"radial"</span><span class="p">,</span>
+        <span class="n">hovertemplate</span><span class="o">=</span><span class="s2">"&lt;b&gt;%</span><span class="si">{value:.3g}</span><span class="s2"> J&lt;/b&gt; with the code that it calls (%</span><span class="si">{percentRoot:.1%}</span><span class="s2"> of the app)&lt;br&gt;"</span>
+                      <span class="s2">"%</span><span class="si">{customdata[1]:.3g}</span><span class="s2"> J in its own code&lt;br&gt;"</span> <span class="o">+</span> <span class="n">HOVER_END</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">paint</span><span class="p">(</span><span class="n">app_final</span><span class="p">,</span> <span class="n">app_hot</span><span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="c1"># ranked bars: the methods that consume the most energy in their own code, in all call paths</span>
+    <span class="n">by_method</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">node_keys</span><span class="p">):</span>
+        <span class="n">by_method</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">by_method</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span> <span class="o">+</span> <span class="n">selfs_end</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+    <span class="n">top</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">by_method</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])[:</span><span class="n">TOP_METHODS</span><span class="p">]</span>
+    <span class="n">bars</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Bar</span><span class="p">(</span>
+        <span class="n">x</span><span class="o">=</span><span class="p">[</span><span class="n">joules</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">joules</span> <span class="ow">in</span> <span class="n">top</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">top</span><span class="p">))),</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">"h"</span><span class="p">,</span>
+        <span class="n">customdata</span><span class="o">=</span><span class="p">[</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">top</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">BAR_COLOR</span><span class="p">),</span>
+        <span class="n">text</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">joules</span><span class="si">:</span><span class="s2">.3g</span><span class="si">}</span><span class="s2"> J"</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">joules</span> <span class="ow">in</span> <span class="n">top</span><span class="p">],</span> <span class="n">textposition</span><span class="o">=</span><span class="s2">"outside"</span><span class="p">,</span> <span class="n">cliponaxis</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">hovertemplate</span><span class="o">=</span><span class="s2">"&lt;b&gt;%</span><span class="si">{x:.3g}</span><span class="s2"> J&lt;/b&gt; in its own code&lt;br&gt;%</span><span class="si">{customdata}</span><span class="s2">&lt;br&gt;"</span>
+                      <span class="s2">"click to find it in the call graph&lt;extra&gt;&lt;/extra&gt;"</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">steps</span> <span class="o">=</span> <span class="p">[</span><span class="n">t0</span> <span class="o">+</span> <span class="p">(</span><span class="n">t1</span> <span class="o">-</span> <span class="n">t0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">frames</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">frames</span><span class="p">)]</span>
+    <span class="c1"># a step holds only what changes (values and colours), to keep the file small</span>
+    <span class="n">anim</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">steps</span><span class="p">:</span>
+        <span class="n">selfs</span> <span class="o">=</span> <span class="n">self_at</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="n">vals</span><span class="p">,</span> <span class="n">total</span> <span class="o">=</span> <span class="n">inclusive</span><span class="p">(</span><span class="n">selfs</span><span class="p">)</span>
+        <span class="n">vals</span> <span class="o">=</span> <span class="p">[</span><span class="n">total</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">vals</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">shown</span><span class="p">]</span>
+        <span class="n">group_vals</span> <span class="o">=</span> <span class="n">group_values_at</span><span class="p">(</span><span class="n">selfs</span><span class="p">)</span>
+        <span class="n">app_vals</span> <span class="o">=</span> <span class="n">app_values_at</span><span class="p">(</span><span class="n">selfs</span><span class="p">)</span>
+        <span class="n">anim</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">go</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="n">go</span><span class="o">.</span><span class="n">Sunburst</span><span class="p">(</span><span class="n">values</span><span class="o">=</span><span class="n">vals</span><span class="p">,</span> <span class="o">**</span><span class="n">paint</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="n">call_hot</span><span class="p">)),</span>
+                                   <span class="n">go</span><span class="o">.</span><span class="n">Sunburst</span><span class="p">(</span><span class="n">values</span><span class="o">=</span><span class="n">group_vals</span><span class="p">,</span> <span class="o">**</span><span class="n">paint</span><span class="p">(</span><span class="n">group_vals</span><span class="p">,</span> <span class="n">group_hot</span><span class="p">)),</span>
+                                   <span class="n">go</span><span class="o">.</span><span class="n">Sunburst</span><span class="p">(</span><span class="n">values</span><span class="o">=</span><span class="n">app_vals</span><span class="p">,</span> <span class="o">**</span><span class="n">paint</span><span class="p">(</span><span class="n">app_vals</span><span class="p">,</span> <span class="n">app_hot</span><span class="p">))],</span>
+                             <span class="n">traces</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="p">(</span><span class="n">t</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">t0</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">1e9</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">))</span>
+
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="n">sunburst</span><span class="p">,</span> <span class="n">bars</span><span class="p">,</span> <span class="n">packages</span><span class="p">,</span> <span class="n">app_view</span><span class="p">,</span> <span class="n">colorbar</span><span class="p">],</span> <span class="n">frames</span><span class="o">=</span><span class="n">anim</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">title</span> <span class="ow">or</span> <span class="p">(</span><span class="sa">f</span><span class="s2">"Call graph energy of </span><span class="si">{</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'app'</span><span class="p">)</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="s1">'app'</span><span class="si">}</span><span class="s2">"</span>
+                                  <span class="sa">f</span><span class="s2">"&lt;br&gt;&lt;sup&gt;</span><span class="si">{</span><span class="n">attributed</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> J attributed to methods. "</span>
+                                  <span class="sa">f</span><span class="s2">"The session total is </span><span class="si">{</span><span class="n">total_energy</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> J. Click a sector to zoom in&lt;/sup&gt;"</span><span class="p">),</span>
+                   <span class="n">x</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">xanchor</span><span class="o">=</span><span class="s2">"left"</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.98</span><span class="p">,</span> <span class="n">yanchor</span><span class="o">=</span><span class="s2">"top"</span><span class="p">),</span>
+        <span class="n">font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">family</span><span class="o">=</span><span class="s2">"system-ui, -apple-system, 'Segoe UI', sans-serif"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">TEXT</span><span class="p">),</span>
+        <span class="n">paper_bgcolor</span><span class="o">=</span><span class="n">SURFACE</span><span class="p">,</span> <span class="n">plot_bgcolor</span><span class="o">=</span><span class="n">SURFACE</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">margin</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="mi">135</span><span class="p">,</span> <span class="n">l</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">10</span><span class="p">),</span>
+        <span class="n">xaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">domain</span><span class="o">=</span><span class="p">[</span><span class="mf">0.82</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">visible</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+        <span class="n">yaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">domain</span><span class="o">=</span><span class="p">[</span><span class="mf">0.12</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">],</span> <span class="n">autorange</span><span class="o">=</span><span class="s2">"reversed"</span><span class="p">,</span> <span class="n">tickvals</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">top</span><span class="p">))),</span>
+                   <span class="n">ticktext</span><span class="o">=</span><span class="p">[</span><span class="n">clip</span><span class="p">(</span><span class="n">short</span><span class="p">(</span><span class="n">name</span><span class="p">))</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">top</span><span class="p">],</span> <span class="n">showgrid</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+        <span class="n">annotations</span><span class="o">=</span><span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">"&lt;b&gt;Methods with the most energy in their own code&lt;/b&gt;"</span><span class="p">,</span> <span class="n">showarrow</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                          <span class="n">xref</span><span class="o">=</span><span class="s2">"paper"</span><span class="p">,</span> <span class="n">yref</span><span class="o">=</span><span class="s2">"paper"</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">xanchor</span><span class="o">=</span><span class="s2">"right"</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.94</span><span class="p">),</span>
+                     <span class="nb">dict</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="sa">f</span><span class="s2">"&lt;span style='color:</span><span class="si">{</span><span class="n">HOT_COLOR</span><span class="si">}</span><span class="s2">'&gt;■&lt;/span&gt; &lt;b&gt;hot spot&lt;/b&gt;&lt;br&gt;"</span>
+                               <span class="sa">f</span><span class="s2">"more than </span><span class="si">{</span><span class="n">hot_total_pct</span><span class="si">:</span><span class="s2">g</span><span class="si">}</span><span class="s2"> % of the total&lt;br&gt;or more than </span><span class="si">{</span><span class="n">hot_ring_pct</span><span class="si">:</span><span class="s2">g</span><span class="si">}</span><span class="s2"> % "</span>
+                               <span class="sa">f</span><span class="s2">"of its ring,&lt;br&gt;and more than </span><span class="si">{</span><span class="n">hot_min_ms</span><span class="si">:</span><span class="s2">g</span><span class="si">}</span><span class="s2"> ms"</span><span class="p">,</span>
+                          <span class="n">showarrow</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">"left"</span><span class="p">,</span> <span class="n">xref</span><span class="o">=</span><span class="s2">"paper"</span><span class="p">,</span> <span class="n">yref</span><span class="o">=</span><span class="s2">"paper"</span><span class="p">,</span>
+                          <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">xanchor</span><span class="o">=</span><span class="s2">"left"</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">yanchor</span><span class="o">=</span><span class="s2">"top"</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">11</span><span class="p">))],</span>
+        <span class="n">updatemenus</span><span class="o">=</span><span class="p">[</span>
+            <span class="nb">dict</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">"buttons"</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">"right"</span><span class="p">,</span> <span class="n">showactive</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">xanchor</span><span class="o">=</span><span class="s2">"left"</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">yanchor</span><span class="o">=</span><span class="s2">"bottom"</span><span class="p">,</span>
+                 <span class="n">buttons</span><span class="o">=</span><span class="p">[</span>
+                     <span class="nb">dict</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">"Play"</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">"animate"</span><span class="p">,</span>
+                          <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">frame</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">duration</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                                           <span class="n">fromcurrent</span><span class="o">=</span><span class="kc">True</span><span class="p">)]),</span>
+                     <span class="nb">dict</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">"Pause"</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">"animate"</span><span class="p">,</span>
+                          <span class="n">args</span><span class="o">=</span><span class="p">[[</span><span class="kc">None</span><span class="p">],</span> <span class="nb">dict</span><span class="p">(</span><span class="n">frame</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">duration</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+                                             <span class="n">mode</span><span class="o">=</span><span class="s2">"immediate"</span><span class="p">)]),</span>
+                 <span class="p">]),</span>
+            <span class="nb">dict</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">"buttons"</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">"right"</span><span class="p">,</span> <span class="n">active</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span> <span class="n">xanchor</span><span class="o">=</span><span class="s2">"left"</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.02</span><span class="p">,</span> <span class="n">yanchor</span><span class="o">=</span><span class="s2">"bottom"</span><span class="p">,</span>
+                 <span class="n">buttons</span><span class="o">=</span><span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">"restyle"</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[{</span><span class="s2">"visible"</span><span class="p">:</span> <span class="n">visible</span><span class="p">},</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
+                          <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">visible</span> <span class="ow">in</span> <span class="p">((</span><span class="s2">"Call graph"</span><span class="p">,</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">]),</span>
+                                                 <span class="p">(</span><span class="s2">"Packages: all code"</span><span class="p">,</span> <span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">]),</span>
+                                                 <span class="p">(</span><span class="s2">"Packages: app only"</span><span class="p">,</span> <span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">]))]),</span>
+            <span class="nb">dict</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">"buttons"</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">"right"</span><span class="p">,</span> <span class="n">showactive</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mf">0.66</span><span class="p">,</span> <span class="n">xanchor</span><span class="o">=</span><span class="s2">"right"</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.02</span><span class="p">,</span> <span class="n">yanchor</span><span class="o">=</span><span class="s2">"bottom"</span><span class="p">,</span>
+                 <span class="n">buttons</span><span class="o">=</span><span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">"restyle"</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[{</span><span class="s2">"maxdepth"</span><span class="p">:</span> <span class="n">levels</span><span class="p">},</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
+                          <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">levels</span> <span class="ow">in</span> <span class="p">((</span><span class="s2">"3 levels"</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s2">"4 levels"</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="s2">"6 levels"</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span>
+                                                <span class="p">(</span><span class="s2">"all levels"</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))]),</span>
+        <span class="p">],</span>
+        <span class="n">sliders</span><span class="o">=</span><span class="p">[</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">active</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">anim</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mf">0.12</span><span class="p">,</span> <span class="nb">len</span><span class="o">=</span><span class="mf">0.54</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">yanchor</span><span class="o">=</span><span class="s2">"bottom"</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">10</span><span class="p">),</span>
+            <span class="n">currentvalue</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">"energy until t = "</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s2">" s"</span><span class="p">),</span>
+            <span class="n">steps</span><span class="o">=</span><span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">"animate"</span><span class="p">,</span>
+                        <span class="n">args</span><span class="o">=</span><span class="p">[[</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">],</span> <span class="nb">dict</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"immediate"</span><span class="p">,</span>
+                                             <span class="n">frame</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">duration</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">True</span><span class="p">))])</span>
+                   <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">anim</span><span class="p">])],</span>
+    <span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">write_html</span><span class="p">(</span><span class="n">out_file</span><span class="p">,</span> <span class="n">div_id</span><span class="o">=</span><span class="s2">"sunburst"</span><span class="p">,</span> <span class="n">default_height</span><span class="o">=</span><span class="s2">"96vh"</span><span class="p">,</span> <span class="n">auto_play</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">post_script</span><span class="o">=</span><span class="n">PAGE_SCRIPT</span><span class="p">)</span>
+    <span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Sunburst: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">index</span><span class="p">)</span><span class="si">}</span><span class="s2"> invocations, </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">node_keys</span><span class="p">)</span><span class="si">}</span><span class="s2"> call paths (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">shown</span><span class="p">)</span><span class="si">}</span><span class="s2"> drawn), "</span>
+        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">attributed</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> J of </span><span class="si">{</span><span class="n">total_energy</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> J attributed "</span>
+        <span class="sa">f</span><span class="s2">"(</span><span class="si">{</span><span class="mi">100</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">attributed</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">total_energy</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%) -&gt; </span><span class="si">{</span><span class="n">out_file</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+        <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">out_file</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">argparse</span>
+    <span class="n">ap</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="vm">__doc__</span><span class="p">,</span>
+                                 <span class="n">formatter_class</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">RawDescriptionHelpFormatter</span><span class="p">)</span>
+    <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"json_file"</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">"emanafa_*.json from a run with --trace-methods am"</span><span class="p">)</span>
+    <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"-o"</span><span class="p">,</span> <span class="s2">"--out"</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">"emanafa_sunburst.html"</span><span class="p">)</span>
+    <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"--max-depth"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">DEFAULT_MAX_DEPTH</span><span class="p">)</span>
+    <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"--frames"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">DEFAULT_FRAMES</span><span class="p">)</span>
+    <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"--focus"</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">help</span><span class="o">=</span><span class="s2">"comma-separated package prefixes to re-root on "</span>
+                         <span class="s2">"(default: the app package; 'all' keeps everything)"</span><span class="p">)</span>
+    <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"--include-blocked"</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">"store_true"</span><span class="p">,</span>
+                    <span class="n">help</span><span class="o">=</span><span class="s2">"charge energy to frames that were only waiting "</span>
+                         <span class="s2">"(idle loopers, parked daemons)"</span><span class="p">)</span>
+    <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"--package"</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">help</span><span class="o">=</span><span class="s2">"package prefix of the 'Packages: app only' view (default: the app package)"</span><span class="p">)</span>
+    <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"--hot-total"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">HOT_TOTAL_PCT</span><span class="p">,</span>
+                    <span class="n">help</span><span class="o">=</span><span class="s2">"a sector with more than this percentage of the energy of the diagram is a hot spot"</span><span class="p">)</span>
+    <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"--hot-ring"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">HOT_RING_PCT</span><span class="p">,</span>
+                    <span class="n">help</span><span class="o">=</span><span class="s2">"a sector with more than this percentage of the energy of its ring is a hot spot"</span><span class="p">)</span>
+    <span class="n">ap</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"--hot-min-ms"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">HOT_MIN_MS</span><span class="p">,</span>
+                    <span class="n">help</span><span class="o">=</span><span class="s2">"a hot spot must also run for more than this time (ms)"</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">ap</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">json_file</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">build_sunburst</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">),</span> <span class="n">args</span><span class="o">.</span><span class="n">out</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">max_depth</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">frames</span><span class="p">,</span>
+                       <span class="n">focus</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">focus</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">","</span><span class="p">)</span> <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">focus</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+                       <span class="n">include_blocked</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">include_blocked</span><span class="p">,</span> <span class="n">package</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">package</span><span class="p">,</span>
+                       <span class="n">hot_total_pct</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">hot_total</span><span class="p">,</span> <span class="n">hot_ring_pct</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">hot_ring</span><span class="p">,</span> <span class="n">hot_min_ms</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">hot_min_ms</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2026, Rui Rua.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

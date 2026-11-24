@@ -11,7 +11,6 @@ echo "" > manafa/results/perfetto/__init__.py
 echo "" > manafa/results/consumptions/__init__.py
 git add manafa/_version.py manafa/utils/Utils.py manafa/results/*/__init__.py
 git commit -m "bump _version"
-python3 setup.py clean
-python3 setup.py sdist
+python3 -m build --sdist
 python3 -m twine upload dist/*
 git push origin main

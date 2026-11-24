@@ -73,18 +73,26 @@ class AppConsumptionStats(object):
         return filepath
 
     def get_elaborate_stats(self):
+        """Calls of each method, for the results file.
+
+        A session has many thousands of calls, so each call has only the data that is not
+        in another place: the method name is the key, 'method_def' is only in the first call
+        of each method, and components with no energy and empty 'metrics' are not included.
+        """
         res = {}
         for m, v in self.app_traces.items():
             new_m = {}
             for _id, invocation in v.items():
                 new_i = {}
                 new_i.update(invocation)
-                new_i.update(invocation['per_component_consumption'])
+                new_i.update({component: joules for component, joules in invocation['per_component_consumption'].items()
+                              if joules or component == 'cpu'})
                 new_i.pop("per_component_consumption")
-                new_i['method'] = m.split("_")[1]
-                new_i['class'] = m.split("_")[0]
-                if 'checked' in invocation and invocation['checked']:
-                    new_i.pop('checked')
+                new_i.pop('checked', None)
+                if not new_i.get('metrics'):
+                    new_i.pop('metrics', None)
+                if new_m:
+                    new_i.pop('method_def', None)
                 new_m[_id] = new_i
             res[m] = new_m
         return res

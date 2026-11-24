@@ -4,7 +4,7 @@ import re
 from enum import Enum
 import xml.etree.ElementTree as ET
 from manafa.parsing.powerProfile.PowerProfile import PowerProfile
-from manafa.utils.Logger import log
+from manafa.utils.Logger import log, LogSeverity
 from manafa.utils.Utils import execute_shell_command
 
 x="""import time
@@ -42,6 +42,9 @@ class CPU_STATE(Enum):
 	ACTIVE = "active"
 
 
+CPU_IDLE_EXIT = 4294967295  # value of 'state' in a cpu_idle event when the core leaves idle
+
+
 class PerfettoCPUEvent(object):
 	"""Stores information regarding each cpu frequency in a given time.
 
@@ -49,30 +52,18 @@ class PerfettoCPUEvent(object):
 	Attributes:
 		time: event_time.
 		vals: frequency for each cpu of device.
+		idle: for each cpu of device, True if the cpu is in an idle state. A cpu without information is not idle.
 	"""
-	def __init__(self, time=0.0, values=[]):
+	def __init__(self, time=0.0, values=[], idle=[]):
 		self.time=time
-		self.vals=[]
-		for x in values:
-			self.vals.append(x)
+		self.vals = list(values)
+		self.idle = list(idle)
 
 	def __str__(self):
-		return "time: %f vals =  %s , " % (self.time, str(self.vals))
+		return "time: %f vals =  %s , idle = %s" % (self.time, str(self.vals), str(self.idle))
 
 	def __repr__(self):
 		return str(self)
-
-	def init_all(self, default_len=8, val=0):
-		"""inits values for each cpu.
-		Args:
-			default_len: number of cores.
-			val: default value.
-		"""
-		for x in range(0, default_len):
-			if len(self.vals) > x:
-				self.vals[x] = val
-			else:
-				self.vals.append(val)
 
 	def update(self, cpu_id,cpu_freq):
 		"""update/insert cpufreq val for each cpu id"""
@@ -82,23 +73,35 @@ class PerfettoCPUEvent(object):
 			for x in range(len(self.vals)-1, cpu_id):
 				self.vals.append(cpu_freq)
 
+	def set_idle(self, cpu_id, is_idle):
+		"""update/insert the idle state of a cpu id"""
+		self.idle.extend([False] * (cpu_id + 1 - len(self.idle)))
+		self.idle[cpu_id] = is_idle
 
 	def calculate_CPUs_current(self, state, profile):
 		"""given a power profile and a cpu state, returns the instantaneous current being consumed by all cpu cores in that state.
-			Args:
-				state: cpu state in CPU_STATE values
-				profile: power profile class
+
+		This is the model of the Android power profile: each running core consumes the current of its cluster at its
+		frequency (cpu.core_power). Each cluster with a running core adds cpu.cluster_power, and cpu.active is added once.
+		When no core is running, the cpus consume cpu.idle.
+
+		Args:
+			state: cpu state in CPU_STATE values
+			profile: power profile class
 		"""
+		if state in ["idle", "suspend"]:
+			return profile.get_CPU_state_current(state) / 1000
 		total = 0
-		if state not in ["idle", "suspend"]:
-			for core_id, freq in enumerate(self.vals):
-				bf, aft = profile.get_CPU_core_speed_pair(core_id, freq)
-				lin_inter_val = interpolate(bf[0], aft[0], bf[1], aft[1], freq)
-				total += lin_inter_val
-			total = total / len(self.vals)
-		else:
-			total = profile.get_CPU_state_current(state)
-		return total / 1000
+		running_clusters = set()
+		for core_id, freq in enumerate(self.vals):
+			if core_id < len(self.idle) and self.idle[core_id]:
+				continue
+			bf, aft = profile.get_CPU_core_speed_pair(core_id, freq)
+			total += interpolate(bf[0], aft[0], bf[1], aft[1], freq)
+			running_clusters.add(profile.get_CPU_core_cluster(core_id))
+		if len(running_clusters) == 0:
+			return profile.get_CPU_state_current("idle") / 1000
+		return (total + profile.get_CPU_shared_current(running_clusters)) / 1000
 
 
 class PerfettoCPUfreqParser(object):
@@ -110,6 +113,7 @@ class PerfettoCPUfreqParser(object):
 	"""
 	def __init__(self, power_profile=None, start_time=0.0, timezone="EST"):
 		self.events = []
+		self.first_freqs = {}  # cpu id -> first frequency seen in the trace
 		self.start_time = start_time
 		self.power_profile = self.load_power_profile(power_profile) if power_profile is not None else {}
 
@@ -146,6 +150,7 @@ class PerfettoCPUfreqParser(object):
 		Args:
 			lines: list of lines from file.
 		"""
+		parsed = []
 		for line in lines:
 			if line.startswith("#"):
 				continue
@@ -153,13 +158,35 @@ class PerfettoCPUfreqParser(object):
 			if z is not None:
 				time = float(z.groups()[5])
 				time += self.start_time
-				ev_pair = self.parse_event(z.groups()[6])
-				if ev_pair is not None:
-					cpu_id = ev_pair[0]
-					cpu_freq = ev_pair[1]
-					self.add_event(time, cpu_id, cpu_freq)
+				freq_pair = self.parse_event(z.groups()[6])
+				idle_pair = self.parse_idle_event(z.groups()[6])
+				if freq_pair is not None:
+					# the first frequency seen for a cpu is the best estimate of its frequency before that event
+					self.first_freqs.setdefault(freq_pair[0], freq_pair[1])
+				parsed.append((time, freq_pair, idle_pair))
 			else:
 				raise Exception("Error parsing file")
+		for time, freq_pair, idle_pair in parsed:
+			if freq_pair is not None:
+				self.add_event(time, freq_pair[0], freq_pair[1])
+			elif idle_pair is not None:
+				self.add_idle_event(time, idle_pair[0], idle_pair[1])
+		if not any(idle_pair is not None for _, _, idle_pair in parsed):
+			log("The trace has no cpu_idle events. All cores are counted as running, "
+				"so the reported CPU energy is an upper bound", log_sev=LogSeverity.WARNING)
+
+	def __new_event(self, time):
+		"""appends and returns a new event at time, with the cpu values of the last event."""
+		if len(self.events) == 0:
+			known_cores = sum(self.power_profile.get_CPU_cluster_cores()) if self.power_profile else 0
+			n_cores = max([known_cores] + [cpu_id + 1 for cpu_id in self.first_freqs])
+			# a frequency of 0 gives the current of the lowest speed in the power profile
+			z = PerfettoCPUEvent(time, [self.first_freqs.get(cpu_id, 0) for cpu_id in range(n_cores)])
+		else:
+			last = self.events[-1]
+			z = PerfettoCPUEvent(time, last.vals, last.idle)
+		self.events.append(z)
+		return z
 
 	def add_event(self, time: float, cpu_id: int, cpu_freq: int):
 		"""add or update cpu freq event based on values passed as argument.
@@ -168,15 +195,16 @@ class PerfettoCPUfreqParser(object):
 			cpu_id: id of cpu.
 			cpu_freq: frequency value.
 		"""
-		if len(self.events) == 0:
-			z = PerfettoCPUEvent(time)
-			z.init_all(default_len=8, val=cpu_freq)
-			self.events.append(z)
-		else:
-			last = self.events[-1]
-			z = PerfettoCPUEvent(time, last.vals)
-			z.update(cpu_id, cpu_freq)
-			self.events.append(z)
+		self.__new_event(time).update(cpu_id, cpu_freq)
+
+	def add_idle_event(self, time: float, cpu_id: int, is_idle: bool):
+		"""add an event where a cpu enters or leaves an idle state.
+		Args:
+			time: timestamp of event.
+			cpu_id: id of cpu.
+			is_idle: True if the cpu enters an idle state.
+		"""
+		self.__new_event(time).set_idle(cpu_id, is_idle)
 
 	def parse_event(self, ev_str):
 		""" parse frequency and cpu id from string.
@@ -193,6 +221,19 @@ class PerfettoCPUfreqParser(object):
 			return cpu_id, cpu_freq
 		return None
 
+	def parse_idle_event(self, ev_str):
+		""" parse cpu id and idle state from string.
+		Args:
+			ev_str: string expecting to have the patttern.
+		Returns:
+			cpu_id(int): id of the cpu.
+			is_idle(bool): True if the cpu enters an idle state, False if it leaves it.
+		"""
+		mat = re.match(r'cpu_idle: state=(\d+) cpu_id=(\d+)', ev_str)
+		if mat:
+			return int(mat.groups()[1]), int(mat.groups()[0]) != CPU_IDLE_EXIT
+		return None
+
 	def get_closest_pair(self, time):
 		"""return the closest indexes of samples to time.
 		Args:
@@ -201,12 +242,17 @@ class PerfettoCPUfreqParser(object):
 			lasti(int): before index.
 			i(int): after index.
 		"""
-		lasti = 0
-		for i, x in enumerate(self.events):
-			if x.time > time:
-				return lasti, i
-			lasti = i
-		return lasti, lasti
+		# binary search for the first event after time. cpu_idle events make the list long
+		lo, hi = 0, len(self.events)
+		while lo < hi:
+			mid = (lo + hi) // 2
+			if self.events[mid].time > time:
+				hi = mid
+			else:
+				lo = mid + 1
+		if lo == len(self.events):
+			return max(lo - 1, 0), max(lo - 1, 0)
+		return max(lo - 1, 0), lo
 
 
 def parse_dumpsys_output(dumpsys_text: str) -> dict:

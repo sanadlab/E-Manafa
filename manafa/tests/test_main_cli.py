@@ -5,14 +5,18 @@ profile-mode inference, and create_manafa's class dispatch — without
 requiring a connected device.
 """
 import argparse
+import json
+import os
 import sys
+import tempfile
 from unittest import TestCase
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 from manafa import main as manafa_main
 from manafa.am_emanafa import AMEManafa
 from manafa.emanafa import EManafa
 from manafa.hunter_emanafa import HunterEManafa
+from manafa.tests import synthetic
 
 
 def _build_parser():
@@ -185,3 +189,49 @@ class CreateManafaDispatchTests(TestCase):
                 trace_methods='none', hunterfile='/tmp/some.log'))
         self.assertIsInstance(m, HunterEManafa)
         hu_init.assert_called_once()
+
+
+class ParseAgainTests(TestCase):
+    """Parse mode (-pft / -bts): recorded files are parsed with no device."""
+
+    def test_rails_trace_is_detected_by_extension_and_mode(self):
+        self.assertTrue(manafa_main.is_rails_trace(
+            argparse.Namespace(perfettofile='trace-1-2.perfetto-trace', profile_mode='energy')))
+        self.assertFalse(manafa_main.is_rails_trace(
+            argparse.Namespace(perfettofile='trace-1-2.perfetto-trace', profile_mode='legacy')))
+        self.assertFalse(manafa_main.is_rails_trace(
+            argparse.Namespace(perfettofile='trace-1-2.systrace', profile_mode='energy')))
+        self.assertFalse(manafa_main.is_rails_trace(
+            argparse.Namespace(perfettofile=None, profile_mode='energy')))
+
+    def test_legacy_files_give_a_report_and_results_are_not_deleted(self):
+        manafa = MagicMock()
+        manafa.save_final_report.return_value = 'out.json'
+        args = argparse.Namespace(directory=None, hunterfile=None, batstatsfile='b.log',
+                                  perfettofile='t.systrace', output_file='out.json',
+                                  profile_mode='legacy')
+        manafa_main.parse_results(args, manafa)
+        manafa.parse_results.assert_called_once_with('b.log', 't.systrace')
+        manafa.save_final_report.assert_called_once()
+        self.assertEqual(manafa.save_final_report.call_args.kwargs['output_filepath'], 'out.json')
+        manafa.clean.assert_not_called()
+
+    def test_rails_trace_is_parsed_again_from_the_command_line(self):
+        try:
+            import perfetto.protos.perfetto.trace.perfetto_trace_pb2  # noqa: F401
+        except ImportError as e:
+            self.skipTest("perfetto python package is not available: %s" % e)
+        with tempfile.TemporaryDirectory() as tmp:
+            trace = os.path.join(tmp, 'trace-1-2.perfetto-trace')
+            os.rename(synthetic.write_trace(tmp), trace)
+            out = os.path.join(tmp, 'out.json')
+            argv = ['emanafa', '-pft', trace, '-o', out,
+                    '-p', synthetic.write_profile(tmp), '-t', 'UTC']
+            with patch.object(sys, 'argv', argv), \
+                 patch.object(manafa_main, 'has_connected_devices', return_value=False):
+                manafa_main.main()
+            with open(out) as f:
+                results = json.load(f)
+        self.assertEqual(results['mode'], 'energy')
+        self.assertAlmostEqual(results['energy']['total'],
+                               synthetic.CPU_JOULES + synthetic.SCREEN_JOULES, places=3)
