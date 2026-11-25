@@ -35,10 +35,18 @@ Workflow
 5. **parse.** It calculates the energy, the memory statistics and the energy of each method.
 6. **results.** It prints a summary and writes the result files.
 
-Two sources of energy data
---------------------------
+Three sources of energy data
+----------------------------
 
-E-MANAFA selects the source automatically.
+E-MANAFA selects the source automatically, in this order:
+
+1. **Power rails**, if the device has them.
+2. **Energy consumers**, if the device has no rails but has consumers for its CPU clusters.
+3. **Legacy model** (power profile), for all other devices.
+
+Each result names the source that it used: ``energy.source`` is ``power rails`` or ``energy
+consumers``, and the report of the legacy model has ``energy_source: power profile``.
+Results from different sources are not directly comparable between devices.
 
 Power rails (default)
 ~~~~~~~~~~~~~~~~~~~~~
@@ -54,6 +62,39 @@ between samples, so an interval does not have to start at a sample.
 - The energy is **measured by hardware**. No model is necessary.
 - The polling period (``--battery-poll-ms``, default 250 ms) changes only the time
   resolution, not the total.
+
+Energy consumers
+~~~~~~~~~~~~~~~~
+
+The PowerStats HAL of Android 12 and later can report *energy consumers*: the energy of a
+component, such as a CPU cluster, the display or the GPU. A vendor can compute a consumer
+from the power rails or from its own model. Perfetto reads them from the HAL (option
+``collect_energy_estimation_breakdown`` of ``android.power``), also while the device charges.
+
+E-MANAFA uses the consumers in the place of the rails if the device has no rails but has
+consumers of the type ``CPU_CLUSTER``. All that E-MANAFA does with rails then works with
+consumers: the session total, the energy of each process, and the energy of each method.
+
+- The session total has only the components that have a consumer. It is not the energy of
+  all the device. E-MANAFA gives a warning with the list of the components.
+- The values are the values of the vendor. On a device with no rails, there is no reference
+  to compare them with.
+- E-MANAFA assumes that the consumer with ordinal 0 is the CPU cluster with the lowest
+  capacity.
+
+On a Pixel 9 Pro XL, the consumers of the CPU clusters and of the GPU have the same energy as
+the matching rails, so they add no data on that device.
+
+Comparison between the sources
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In the ``energy`` mode the trace has the data of all the sources that the device has. E-MANAFA
+computes the CPU energy of the session with each of them and writes the values to
+``energy.cpu_joules_by_source``. If two sources disagree by more than a factor of 2, E-MANAFA
+gives a warning. The results always use the source of ``energy.source``.
+
+Example from a Pixel 9 Pro XL with a busy loop: power rails 35.26 J, energy consumers
+35.19 J, power profile 8.69 J. The power profile of this device is wrong by a factor of 4.
 
 Legacy model
 ~~~~~~~~~~~~

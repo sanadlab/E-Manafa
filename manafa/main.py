@@ -99,6 +99,7 @@ def display_new_profiler_results(emanafa, profile_mode, battery_drain_info=None)
             total_energy = emanafa.power_rails_energy['total']
             print(f"\n ENERGY CONSUMPTION:")
             print(f"  Total: {total_energy:.2f} Joules ({total_energy/3600:.4f} Wh)")
+            print(f"  Source: {emanafa.power_rails_energy.get('source', 'power rails')}")
 
             #show top 5 rails
             rails = emanafa.power_rails_energy.get('by_rail', {})
@@ -110,13 +111,13 @@ def display_new_profiler_results(emanafa, profile_mode, battery_drain_info=None)
 
             processes = emanafa.power_rails_energy.get('by_process')
             if processes:
-                print(f"\n  Top Processes (energy of the CPU rails):")
+                print(f"\n  Top Processes (CPU energy):")
                 for process in processes[:5]:
                     print(f"    {process['process']}: {process['energy_joules']:.2f} J "
                           f"({process['cpu_seconds']:.1f} s on a CPU)")
             app = emanafa.power_rails_energy.get('app_process')
             if app:
-                print(f"\n  App {app['process']}: {app['energy_joules']:.2f} J of the CPU rails")
+                print(f"\n  App {app['process']}: {app['energy_joules']:.2f} J of CPU energy")
         else:
             print("\n No energy data available")
 
@@ -260,6 +261,8 @@ def parse_rails_trace(args, manafa):
     manafa.power_rails = rails
     manafa.power_rails_energy = rails.summary() if rails is not None else None
     manafa.attribute_cpu_energy(args.perfettofile, args.app_package)
+    if rails is not None:
+        manafa.cross_check_energy_sources(args.perfettofile)
     manafa.memory_stats = calculate_memory_stats(args.perfettofile)
     results = {'mode': args.profile_mode, 'app': args.app_package, 'timestamp': time.time()}
     if manafa.power_rails_energy:
@@ -283,6 +286,7 @@ def parse_rails_trace(args, manafa):
 def print_profiled_stats(el_time, total_consumption, per_comp_consumption, event_timeline, battery_drain_info=None):
     print("--------------------------------------")
     print(f"Total energy consumed: {total_consumption} Joules")
+    print("Source: power profile (legacy model)")
     print(f"Elapsed time: {el_time} secs")
     print("--------------------------------------")
     print("Per-component consumption")

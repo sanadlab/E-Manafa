@@ -22,6 +22,8 @@ data_sources: {
             battery_counters: BATTERY_COUNTER_CURRENT
             battery_counters: BATTERY_COUNTER_CURRENT_AVG
             collect_power_rails: true
+            # energy consumers of the PowerStats HAL (Android 12 and later). used when the device has no rails
+            collect_energy_estimation_breakdown: true
         }
     }
 }

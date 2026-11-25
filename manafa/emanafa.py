@@ -18,6 +18,7 @@ DEFAULT_PROFILE = os.path.join(MANAFA_RESOURCES_DIR, "profiles", "power_profile.
 DEFAULT_TIMEZONE = "GMT"
 # voltage to use when BatteryStats is unavailable (device plugged in). typical for Li-ion batteries
 DEFAULT_VOLTAGE = 3.7
+SOURCE_DISAGREEMENT_FACTOR = 2.0  # see EManafa.cross_check_energy_sources
 
 
 def get_last_boot_time(bts_file=None):
@@ -237,6 +238,77 @@ class EManafa(Service):
         if not self.uses_power_rails(pf_file):
             self.perf_events.start_time = self.boot_time
             self.perf_events.parse_file(pf_file)
+        else:
+            self.cross_check_energy_sources(pf_file)
+
+    def cross_check_energy_sources(self, pf_file):
+        """Compares the CPU energy of the session between the sources that the trace has: power
+        rails, energy consumers, and the power profile model. Gives a warning if two of them
+        disagree by more than SOURCE_DISAGREEMENT_FACTOR.
+
+        The result is in power_rails_energy['cpu_joules_by_source']. The source that E-MANAFA
+        used for the results is power_rails_energy['source'].
+        """
+        if self.power_rails is None or not self.power_rails.cpu_rails():
+            return
+        from .parsing.perfettoEnergyCalculator import CONSUMERS, PROFILE
+        start, end = self.power_rails.window()
+        sources = {self.power_rails.source: self.power_rails.energy_between(start, end, self.power_rails.cpu_rails())}
+        if self.power_rails.source != CONSUMERS and self.power_rails.consumers_cpu_energy(start, end) is not None:
+            sources[CONSUMERS] = self.power_rails.consumers_cpu_energy(start, end)
+        try:
+            profile = self.profile_cpu_energy(pf_file, start, end)
+        except Exception as e:
+            log(f"The power profile model cannot be compared with the {self.power_rails.source}: {e}",
+                log_sev=LogSeverity.INFO)
+            profile = None
+        if profile is not None:
+            sources[PROFILE] = profile
+        self.power_rails_energy['cpu_joules_by_source'] = sources
+        positive = {name: joules for name, joules in sources.items() if joules > 0}
+        if len(positive) > 1 and max(positive.values()) / min(positive.values()) > SOURCE_DISAGREEMENT_FACTOR:
+            log("The energy sources of this device disagree on the CPU energy of the session: "
+                + ", ".join(f"{name} {joules:.2f} J" for name, joules in sources.items())
+                + f". The results use the {self.power_rails.source}", log_sev=LogSeverity.WARNING)
+
+    def profile_cpu_energy(self, pf_file, start_time, end_time):
+        """CPU energy (J) that the power profile model estimates between two timestamps, from the
+        CPU frequency and CPU idle events of a Perfetto trace of the energy mode.
+
+        Returns:
+            float, or None if the trace has no CPU frequency events.
+        """
+        from .parsing.perfettoEnergyCalculator import _load_trace_processor
+        from .parsing.perfetto.perfettoParser import CPU_IDLE_EXIT
+        tp = _load_trace_processor(pf_file)
+        if tp is None:
+            return None
+        try:
+            boot_to_epoch = [row.clock_value - row.ts for row in tp.query(
+                "SELECT clock_value, ts FROM clock_snapshot WHERE clock_name = 'REALTIME' ORDER BY snapshot_id LIMIT 1")]
+            query = """
+            SELECT c.ts AS ts, t.name AS name, t.cpu AS cpu, c.value AS value
+            FROM counter c JOIN cpu_counter_track t ON c.track_id = t.id
+            WHERE t.name IN ('cpufreq', 'cpuidle') ORDER BY c.ts
+            """
+            rows = [(row.ts, row.name, row.cpu, int(row.value)) for row in tp.query(query)]
+        finally:
+            tp.close()
+        if not boot_to_epoch or not any(name == 'cpufreq' for _, name, _, _ in rows):
+            return None
+        self.perf_events = PerfettoCPUfreqParser(self.power_profile)
+        for ts, name, cpu, value in rows:
+            if name == 'cpufreq':
+                self.perf_events.first_freqs.setdefault(cpu, value)
+        for ts, name, cpu, value in rows:
+            time = (ts + boot_to_epoch[0]) * 1e-9
+            if name == 'cpufreq':
+                self.perf_events.add_event(time, cpu, value)
+            else:
+                self.perf_events.add_idle_event(time, cpu, value != CPU_IDLE_EXIT)
+        if self.bat_events is None:
+            self.bat_events = BatteryStatsParser(self.power_profile, timezone=self.timezone)
+        return self.calculate_cpu_energy(start_time, end_time)
 
     def uses_power_rails(self, pf_file):
         """True if pf_file is a trace of the energy, memory or both mode.
@@ -593,6 +665,7 @@ class EManafa(Service):
             end = self.bat_events.events[-1].time
         total, per_c, timeline = self.get_consumption_in_between(begin, end)
         res = {
+            'energy_source': 'power profile',
             'total_energy:': total,
             'elapsed_time': end-begin,
             'per_component_consumption': per_c,

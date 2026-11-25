@@ -39,8 +39,20 @@ def count_power_rails(trace_file):
         tp.close()
 
 
+# sources of energy data, in the order that E-MANAFA prefers them
+RAILS = 'power rails'           # energy meters of the device
+CONSUMERS = 'energy consumers'  # energy consumers of the PowerStats HAL: the estimate of the vendor
+PROFILE = 'power profile'       # legacy model: power_profile.xml of the device
+CPU_CONSUMER = 'consumer.cpu_cluster.'
+
+
 class PowerRailsTrace(object):
     """Power rail energy counters of a Perfetto trace, as time series.
+
+    If the trace has no power rails but has energy consumers of the PowerStats HAL for the
+    CPU clusters, the consumers are used in the place of the rails (source = CONSUMERS).
+    A consumer has the name consumer.<type>.<ordinal>.<name>, for example
+    consumer.cpu_cluster.0.CPUCL0.
 
     Power rail counters are cumulative energy values, so the energy of a time
     interval is the counter at the end minus the counter at the start. The
@@ -54,14 +66,19 @@ class PowerRailsTrace(object):
         rails (dict): rail name -> (times, joules), two lists of the same length.
         monotonic_to_epoch_s (float): seconds to add to a CLOCK_MONOTONIC time
             of the device (the clock of ART method traces) to get epoch seconds.
+        source (str): RAILS or CONSUMERS: where the series of `rails` come from.
+        consumers (dict): energy consumers of the trace, in the format of `rails`.
     """
-    def __init__(self, rails, monotonic_to_epoch_s=0.0):
+    def __init__(self, rails, monotonic_to_epoch_s=0.0, source=RAILS, consumers=None):
         self.rails = rails
         self.monotonic_to_epoch_s = monotonic_to_epoch_s
+        self.source = source
+        self.consumers = consumers or {}
 
     @classmethod
     def from_trace(cls, trace_file):
-        """Loads the power rails of trace_file. Returns None if there are none."""
+        """Loads the power rails of trace_file, or its energy consumers if it has no rails.
+        Returns None if the trace has no rails and no consumers of the CPU clusters."""
         try:
             tp = _load_trace_processor(trace_file)
             if tp is None:
@@ -88,14 +105,36 @@ class PowerRailsTrace(object):
                     times.append((row.ts + boot_to_epoch_ns) * 1e-9)
                     #values are in microwatt-seconds (1 µWs = 1e-6 J)
                     joules.append(row.value * 1e-6)
+                consumers = {}
+                query = """
+                SELECT t.name AS name, EXTRACT_ARG(t.source_arg_set_id, 'consumer_type') AS consumer_type,
+                       EXTRACT_ARG(t.source_arg_set_id, 'ordinal') AS ordinal, c.ts AS ts, c.value AS value
+                FROM counter c JOIN counter_track t ON c.track_id = t.id
+                WHERE t.type = 'android_energy_estimation_breakdown'
+                ORDER BY t.id, c.ts
+                """
+                try:
+                    for row in tp.query(query):
+                        name = f"consumer.{str(row.consumer_type or 'other').lower()}.{row.ordinal or 0}.{row.name}"
+                        times, joules = consumers.setdefault(name, ([], []))
+                        times.append((row.ts + boot_to_epoch_ns) * 1e-9)
+                        joules.append(row.value * 1e-6)
+                except Exception as e:
+                    log(f"The energy consumers of the trace cannot be read: {e}", log_sev=LogSeverity.INFO)
             finally:
                 tp.close()
             rails = {name: series for name, series in rails.items() if len(series[0]) >= 2}
-            if not rails:
-                log("No power rails found in trace", log_sev=LogSeverity.WARNING)
-                return None
-            log(f"Found {len(rails)} power rails", log_sev=LogSeverity.INFO)
-            return cls(rails, (boot_to_epoch_ns - offsets.get('MONOTONIC', 0)) * 1e-9)
+            consumers = {name: series for name, series in consumers.items() if len(series[0]) >= 2}
+            monotonic_to_epoch_s = (boot_to_epoch_ns - offsets.get('MONOTONIC', 0)) * 1e-9
+            if rails:
+                log(f"Found {len(rails)} power rails", log_sev=LogSeverity.INFO)
+                return cls(rails, monotonic_to_epoch_s, RAILS, consumers)
+            if any(name.startswith(CPU_CONSUMER) for name in consumers):
+                log(f"No power rails in the trace. Using its {len(consumers)} energy consumers",
+                    log_sev=LogSeverity.WARNING)
+                return cls(consumers, monotonic_to_epoch_s, CONSUMERS, consumers)
+            log("No power rails found in trace", log_sev=LogSeverity.WARNING)
+            return None
         except Exception as e:
             import traceback
             log(f"Error calculating energy: {e}", log_sev=LogSeverity.ERROR)
@@ -136,6 +175,15 @@ class PowerRailsTrace(object):
             total += self._counter_at(times, joules, end_time) - self._counter_at(times, joules, start_time)
         return total
 
+    def consumers_cpu_energy(self, start_time, end_time):
+        """Energy (Joules) of the energy consumers of the CPU clusters between two timestamps.
+        None if the trace has no such consumer."""
+        series = [self.consumers[name] for name in self.consumers if name.startswith(CPU_CONSUMER)]
+        if not series:
+            return None
+        return sum(self._counter_at(times, joules, end_time) - self._counter_at(times, joules, start_time)
+                   for times, joules in series)
+
     def method_rails(self):
         """Rails used to attribute energy to methods: the CPU rails, or all rails
         if the CPU rails can not be identified by name."""
@@ -152,6 +200,7 @@ class PowerRailsTrace(object):
         series = [[round((t - self.monotonic_to_epoch_s) * 1e9), self.energy_between(times[0], t, method_rails)]
                   for t in times]
         result = {
+            'source': self.source,
             'total': sum(by_rail.values()),
             'by_rail': by_rail,
             'start_time': start,
@@ -159,6 +208,9 @@ class PowerRailsTrace(object):
             'method_rails': method_rails,
             'method_energy_series': series,
         }
+        if self.source == CONSUMERS:
+            log("The total is the energy of the components that have an energy consumer, not of all the "
+                "device: " + ", ".join(name.split('.', 3)[-1] for name in sorted(by_rail)), log_sev=LogSeverity.WARNING)
         log(f"Total Energy: {result['total']:.2f} Joules in {end - start:.1f} s", log_sev=LogSeverity.INFO)
         log("Top Power Consumers:", log_sev=LogSeverity.INFO)
         for rail, energy in sorted(by_rail.items(), key=lambda x: x[1], reverse=True)[:5]:

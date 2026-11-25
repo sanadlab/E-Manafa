@@ -64,7 +64,7 @@ def load_results(session=""):
     if 'global' in results:  # legacy model
         legacy = results['global']
         results = {'mode': 'legacy', 'app': session.get('app') or None,
-                   'energy': {'total': legacy['total_energy:'], 'measured_duration_seconds': legacy['elapsed_time'],
+                   'energy': {'source': 'power profile', 'total': legacy['total_energy:'], 'measured_duration_seconds': legacy['elapsed_time'],
                               'by_component': legacy['per_component_consumption']},
                    'method_invocations': {'methods': results.get('invoked_methods', {})}}
     results['session'] = session['run']
@@ -98,7 +98,8 @@ def get_session_summary(session: str = "") -> dict:
         duration = energy.get('measured_duration_seconds') or 0
         summary.update({'energy_joules': energy['total'], 'measured_duration_seconds': duration,
                         'mean_power_watts': energy['total'] / duration if duration else None,
-                        'source': 'power rails' if 'by_rail' in energy else 'legacy model (estimate)'})
+                        'source': energy.get('source', 'power rails' if 'by_rail' in energy else 'power profile'),
+                        'cpu_joules_by_source': energy.get('cpu_joules_by_source')})
         if energy.get('app_process'):
             summary['app_cpu_energy_joules'] = energy['app_process']['energy_joules']
     if results.get('battery_drain'):

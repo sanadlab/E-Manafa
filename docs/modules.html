@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>API reference &mdash; E-MANAFA 1.0.0</title>
+  <title>API reference &mdash; E-MANAFA 1.0.1</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/custom.css?v=c1264a3d" />
@@ -15,7 +15,7 @@
     <link rel="canonical" href="https://sanadlab.github.io/E-MANAFA/modules.html" />
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/documentation_options.js?v=292eb321"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/js/theme.js"></script>
@@ -55,8 +55,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="how_it_works.html">How it works</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="how_it_works.html#workflow">Workflow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="how_it_works.html#two-sources-of-energy-data">Two sources of energy data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="how_it_works.html#three-sources-of-energy-data">Three sources of energy data</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="how_it_works.html#power-rails-default">Power rails (default)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="how_it_works.html#energy-consumers">Energy consumers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="how_it_works.html#comparison-between-the-sources">Comparison between the sources</a></li>
 <li class="toctree-l3"><a class="reference internal" href="how_it_works.html#legacy-model">Legacy model</a></li>
 </ul>
 </li>
@@ -236,6 +238,8 @@
 <li class="toctree-l3"><a class="reference internal" href="#manafa.services.service.Service"><code class="docutils literal notranslate"><span class="pre">Service</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#manafa.services.perfettoService.wait_for_our_perfetto_to_exit"><code class="docutils literal notranslate"><span class="pre">wait_for_our_perfetto_to_exit()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#manafa.services.perfettoService.PerfettoService"><code class="docutils literal notranslate"><span class="pre">PerfettoService</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manafa.services.perfettoServiceEnhanced.device_has_energy_consumers_option"><code class="docutils literal notranslate"><span class="pre">device_has_energy_consumers_option()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manafa.services.perfettoServiceEnhanced.device_energy_source"><code class="docutils literal notranslate"><span class="pre">device_energy_source()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#manafa.services.perfettoServiceEnhanced.device_supports_power_rails"><code class="docutils literal notranslate"><span class="pre">device_supports_power_rails()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#manafa.services.perfettoServiceEnhanced.render_config"><code class="docutils literal notranslate"><span class="pre">render_config()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#manafa.services.perfettoServiceEnhanced.PerfettoServiceEnhanced"><code class="docutils literal notranslate"><span class="pre">PerfettoServiceEnhanced</span></code></a></li>
@@ -420,6 +424,28 @@ pf_out_file(str): path to the resultant perfetto log file.</p>
 <dd><p>parses results from output results files of perfetto and batterystats services.
 :param bts_file: batterystats output file. if none, uses self.bts_out_file
 :param pf_file: perfetto output file. if none, uses self.pft_out_file</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="manafa.emanafa.EManafa.cross_check_energy_sources">
+<span class="sig-name descname"><span class="pre">cross_check_energy_sources</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pf_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/emanafa.html#EManafa.cross_check_energy_sources"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.emanafa.EManafa.cross_check_energy_sources" title="Link to this definition"></a></dt>
+<dd><p>Compares the CPU energy of the session between the sources that the trace has: power
+rails, energy consumers, and the power profile model. Gives a warning if two of them
+disagree by more than SOURCE_DISAGREEMENT_FACTOR.</p>
+<p>The result is in power_rails_energy[‘cpu_joules_by_source’]. The source that E-MANAFA
+used for the results is power_rails_energy[‘source’].</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="manafa.emanafa.EManafa.profile_cpu_energy">
+<span class="sig-name descname"><span class="pre">profile_cpu_energy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pf_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_time</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/emanafa.html#EManafa.profile_cpu_energy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.emanafa.EManafa.profile_cpu_energy" title="Link to this definition"></a></dt>
+<dd><p>CPU energy (J) that the power profile model estimates between two timestamps, from the
+CPU frequency and CPU idle events of a Perfetto trace of the energy mode.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float, or None if the trace has no CPU frequency events.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -730,8 +756,12 @@ Calls init from super class and also from the log service.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="manafa.parsing.perfettoEnergyCalculator.PowerRailsTrace">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">manafa.parsing.perfettoEnergyCalculator.</span></span><span class="sig-name descname"><span class="pre">PowerRailsTrace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rails</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">monotonic_to_epoch_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/parsing/perfettoEnergyCalculator.html#PowerRailsTrace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.parsing.perfettoEnergyCalculator.PowerRailsTrace" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">manafa.parsing.perfettoEnergyCalculator.</span></span><span class="sig-name descname"><span class="pre">PowerRailsTrace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rails</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">monotonic_to_epoch_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'power</span> <span class="pre">rails'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">consumers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/parsing/perfettoEnergyCalculator.html#PowerRailsTrace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.parsing.perfettoEnergyCalculator.PowerRailsTrace" title="Link to this definition"></a></dt>
 <dd><p>Power rail energy counters of a Perfetto trace, as time series.</p>
+<p>If the trace has no power rails but has energy consumers of the PowerStats HAL for the
+CPU clusters, the consumers are used in the place of the rails (source = CONSUMERS).
+A consumer has the name consumer.&lt;type&gt;.&lt;ordinal&gt;.&lt;name&gt;, for example
+consumer.cpu_cluster.0.CPUCL0.</p>
 <p>Power rail counters are cumulative energy values, so the energy of a time
 interval is the counter at the end minus the counter at the start. The
 counters are sampled every battery_poll_ms. Between two samples the value
@@ -761,10 +791,33 @@ of the device (the clock of ART method traces) to get epoch seconds.</p>
 </dl>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="manafa.parsing.perfettoEnergyCalculator.PowerRailsTrace.source">
+<span class="sig-name descname"><span class="pre">source</span></span><a class="headerlink" href="#manafa.parsing.perfettoEnergyCalculator.PowerRailsTrace.source" title="Link to this definition"></a></dt>
+<dd><p>RAILS or CONSUMERS: where the series of <cite>rails</cite> come from.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="manafa.parsing.perfettoEnergyCalculator.PowerRailsTrace.consumers">
+<span class="sig-name descname"><span class="pre">consumers</span></span><a class="headerlink" href="#manafa.parsing.perfettoEnergyCalculator.PowerRailsTrace.consumers" title="Link to this definition"></a></dt>
+<dd><p>energy consumers of the trace, in the format of <cite>rails</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="manafa.parsing.perfettoEnergyCalculator.PowerRailsTrace.from_trace">
 <span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_trace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trace_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/parsing/perfettoEnergyCalculator.html#PowerRailsTrace.from_trace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.parsing.perfettoEnergyCalculator.PowerRailsTrace.from_trace" title="Link to this definition"></a></dt>
-<dd><p>Loads the power rails of trace_file. Returns None if there are none.</p>
+<dd><p>Loads the power rails of trace_file, or its energy consumers if it has no rails.
+Returns None if the trace has no rails and no consumers of the CPU clusters.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -787,6 +840,13 @@ of the device (the clock of ART method traces) to get epoch seconds.</p>
 :param start_time: begin timestamp (epoch seconds).
 :param end_time: end timestamp (epoch seconds).
 :param rails: names of the rails to add. Default: all rails.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="manafa.parsing.perfettoEnergyCalculator.PowerRailsTrace.consumers_cpu_energy">
+<span class="sig-name descname"><span class="pre">consumers_cpu_energy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_time</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/parsing/perfettoEnergyCalculator.html#PowerRailsTrace.consumers_cpu_energy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.parsing.perfettoEnergyCalculator.PowerRailsTrace.consumers_cpu_energy" title="Link to this definition"></a></dt>
+<dd><p>Energy (Joules) of the energy consumers of the CPU clusters between two timestamps.
+None if the trace has no such consumer.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1005,14 +1065,18 @@ USB cable disconnected:  sh /data/local/tmp/emanafa/manafa.sh start energy</p>
 steps as the E-MANAFA services, so the two modes give the same kind of results.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="manafa.ondevice.device_files">
-<span class="sig-prename descclassname"><span class="pre">manafa.ondevice.</span></span><span class="sig-name descname"><span class="pre">device_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">meminfo_period_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">battery_poll_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/ondevice.html#device_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.ondevice.device_files" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">manafa.ondevice.</span></span><span class="sig-name descname"><span class="pre">device_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">meminfo_period_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">battery_poll_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energy_consumers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/ondevice.html#device_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.ondevice.device_files" title="Link to this definition"></a></dt>
 <dd><p>Files that <cite>install</cite> puts on the device.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>file name on the device -&gt; content (bytes).</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>energy_consumers</strong> – False for a device whose Perfetto does not know the option that
+collects the energy consumers (before Android 12).</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>file name on the device -&gt; content (bytes).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2397,15 +2461,37 @@ last_exported: path of last exported file.</p>
 </dd></dl>
 
 <dl class="py function" id="module-manafa.services.perfettoServiceEnhanced">
-<dt class="sig sig-object py" id="manafa.services.perfettoServiceEnhanced.device_supports_power_rails">
-<span class="sig-prename descclassname"><span class="pre">manafa.services.perfettoServiceEnhanced.</span></span><span class="sig-name descname"><span class="pre">device_supports_power_rails</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/services/perfettoServiceEnhanced.html#device_supports_power_rails"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.services.perfettoServiceEnhanced.device_supports_power_rails" title="Link to this definition"></a></dt>
-<dd><p>Check if device supports power rails data collection.</p>
+<dt class="sig sig-object py" id="manafa.services.perfettoServiceEnhanced.device_has_energy_consumers_option">
+<span class="sig-prename descclassname"><span class="pre">manafa.services.perfettoServiceEnhanced.</span></span><span class="sig-name descname"><span class="pre">device_has_energy_consumers_option</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/services/perfettoServiceEnhanced.html#device_has_energy_consumers_option"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.services.perfettoServiceEnhanced.device_has_energy_consumers_option" title="Link to this definition"></a></dt>
+<dd><p>True if Perfetto of the connected device knows the option that collects the energy
+consumers. An older Perfetto does not start with a config that has an unknown option.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="manafa.services.perfettoServiceEnhanced.device_energy_source">
+<span class="sig-prename descclassname"><span class="pre">manafa.services.perfettoServiceEnhanced.</span></span><span class="sig-name descname"><span class="pre">device_energy_source</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/services/perfettoServiceEnhanced.html#device_energy_source"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.services.perfettoServiceEnhanced.device_energy_source" title="Link to this definition"></a></dt>
+<dd><p>Finds the best source of measured energy that Perfetto gives on the connected device.</p>
 <p>The android.power data source exists on devices that have no power rails,
-so its presence proves nothing. This records a 1 second trace and checks
-that it contains power rail counters.</p>
+so its presence proves nothing. This records a 1 second trace and looks at its content.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>True if device supports power rails, False otherwise.</p>
+<dd class="field-odd"><p>‘power rails’, or ‘energy consumers’ if the device has no rails but has energy
+consumers for its CPU clusters. None if it has no one of them.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="manafa.services.perfettoServiceEnhanced.device_supports_power_rails">
+<span class="sig-prename descclassname"><span class="pre">manafa.services.perfettoServiceEnhanced.</span></span><span class="sig-name descname"><span class="pre">device_supports_power_rails</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/services/perfettoServiceEnhanced.html#device_supports_power_rails"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.services.perfettoServiceEnhanced.device_supports_power_rails" title="Link to this definition"></a></dt>
+<dd><p>Check if the device gives measured energy through Perfetto: power rails, or energy
+consumers for its CPU clusters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if it does. False: only the legacy model (power profile) is possible.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>bool</p>
@@ -2415,13 +2501,15 @@ that it contains power rail counters.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="manafa.services.perfettoServiceEnhanced.render_config">
-<span class="sig-prename descclassname"><span class="pre">manafa.services.perfettoServiceEnhanced.</span></span><span class="sig-name descname"><span class="pre">render_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meminfo_period_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">battery_poll_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">250</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callstack_package</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/services/perfettoServiceEnhanced.html#render_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.services.perfettoServiceEnhanced.render_config" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">manafa.services.perfettoServiceEnhanced.</span></span><span class="sig-name descname"><span class="pre">render_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meminfo_period_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">battery_poll_ms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">250</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callstack_package</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energy_consumers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/manafa/services/perfettoServiceEnhanced.html#render_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#manafa.services.perfettoServiceEnhanced.render_config" title="Link to this definition"></a></dt>
 <dd><p>Text of a Perfetto config of the resources directory, with the polling periods.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cfg_file</strong> – name of a .pbtxt file in the resources directory.</p></li>
 <li><p><strong>callstack_package</strong> – package of an app. If given, the config also samples its call stacks.</p></li>
+<li><p><strong>energy_consumers</strong> – False to remove the option that collects the energy consumers
+(see device_has_energy_consumers_option).</p></li>
 </ul>
 </dd>
 </dl>

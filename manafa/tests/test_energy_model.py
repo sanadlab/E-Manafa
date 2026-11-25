@@ -246,6 +246,9 @@ class IntervalTests(WithProfile):
         timeline = self.manafa.bat_events.get_events_in_between(0.0, 50.0)
         self.assertEqual(timeline["running"], [(1, 0.0, 10.0, 20.0), (1, 20.0, 40.0, 40.0)])
 
+    def test_legacy_report_names_its_energy_source(self):
+        self.assertEqual(self.manafa.gen_final_report(5.0, 30.0)['global']['energy_source'], 'power profile')
+
     def test_cpu_energy_without_batterystats_uses_the_default_voltage(self):
         self.manafa.bat_events = BatteryStatsParser(self.profile_file)
         self.assertAlmostEqual(self.manafa.calculate_cpu_energy(2.0, 4.0), 3.7 * 0.448 * 2)

@@ -14,6 +14,15 @@ Troubleshooting
    * - The tool uses the legacy model on a device that should have power rails
      - The trace of 1 second at the start had no rail counters.
      - Do a check with ``adb shell perfetto --query | grep android.power``.
+   * - ``The energy sources of this device disagree on the CPU energy``
+     - Two sources of the device give CPU energy values that differ by more than a factor
+       of 2. Usually the power profile of the vendor is not correct.
+     - No action is necessary: the results use the best source. Do not use the legacy model
+       on this device for absolute values.
+   * - ``No power rails in the trace. Using its energy consumers``
+     - The device has no power rails, but its PowerStats HAL reports energy consumers.
+     - The session total has only the components in the next warning line. See
+       :doc:`how_it_works`.
    * - ``Method invocations: 0`` or a method trace with no data
      - The app is not debuggable or profileable.
      - Use a debug build, or add ``<profileable android:shell="true"/>``.

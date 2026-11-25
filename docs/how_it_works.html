@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>How it works &mdash; E-MANAFA 1.0.0</title>
+  <title>How it works &mdash; E-MANAFA 1.0.1</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/custom.css?v=c1264a3d" />
@@ -15,7 +15,7 @@
     <link rel="canonical" href="https://sanadlab.github.io/E-MANAFA/how_it_works.html" />
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/documentation_options.js?v=292eb321"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/js/theme.js"></script>
@@ -56,8 +56,10 @@
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">How it works</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#workflow">Workflow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#two-sources-of-energy-data">Two sources of energy data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#three-sources-of-energy-data">Three sources of energy data</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#power-rails-default">Power rails (default)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#energy-consumers">Energy consumers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#comparison-between-the-sources">Comparison between the sources</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#legacy-model">Legacy model</a></li>
 </ul>
 </li>
@@ -237,6 +239,8 @@
 <li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.services.service.Service"><code class="docutils literal notranslate"><span class="pre">Service</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.services.perfettoService.wait_for_our_perfetto_to_exit"><code class="docutils literal notranslate"><span class="pre">wait_for_our_perfetto_to_exit()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.services.perfettoService.PerfettoService"><code class="docutils literal notranslate"><span class="pre">PerfettoService</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.services.perfettoServiceEnhanced.device_has_energy_consumers_option"><code class="docutils literal notranslate"><span class="pre">device_has_energy_consumers_option()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.services.perfettoServiceEnhanced.device_energy_source"><code class="docutils literal notranslate"><span class="pre">device_energy_source()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.services.perfettoServiceEnhanced.device_supports_power_rails"><code class="docutils literal notranslate"><span class="pre">device_supports_power_rails()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.services.perfettoServiceEnhanced.render_config"><code class="docutils literal notranslate"><span class="pre">render_config()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="modules.html#manafa.services.perfettoServiceEnhanced.PerfettoServiceEnhanced"><code class="docutils literal notranslate"><span class="pre">PerfettoServiceEnhanced</span></code></a></li>
@@ -328,9 +332,17 @@ a key.</p></li>
 <li><p><strong>results.</strong> It prints a summary and writes the result files.</p></li>
 </ol>
 </section>
-<section id="two-sources-of-energy-data">
-<h2>Two sources of energy data<a class="headerlink" href="#two-sources-of-energy-data" title="Link to this heading"></a></h2>
-<p>E-MANAFA selects the source automatically.</p>
+<section id="three-sources-of-energy-data">
+<h2>Three sources of energy data<a class="headerlink" href="#three-sources-of-energy-data" title="Link to this heading"></a></h2>
+<p>E-MANAFA selects the source automatically, in this order:</p>
+<ol class="arabic simple">
+<li><p><strong>Power rails</strong>, if the device has them.</p></li>
+<li><p><strong>Energy consumers</strong>, if the device has no rails but has consumers for its CPU clusters.</p></li>
+<li><p><strong>Legacy model</strong> (power profile), for all other devices.</p></li>
+</ol>
+<p>Each result names the source that it used: <code class="docutils literal notranslate"><span class="pre">energy.source</span></code> is <code class="docutils literal notranslate"><span class="pre">power</span> <span class="pre">rails</span></code> or <code class="docutils literal notranslate"><span class="pre">energy</span>
+<span class="pre">consumers</span></code>, and the report of the legacy model has <code class="docutils literal notranslate"><span class="pre">energy_source:</span> <span class="pre">power</span> <span class="pre">profile</span></code>.
+Results from different sources are not directly comparable between devices.</p>
 <section id="power-rails-default">
 <h3>Power rails (default)<a class="headerlink" href="#power-rails-default" title="Link to this heading"></a></h3>
 <p>Some devices have power sensors on their supply rails (Pixel 6 and later, and other recent
@@ -344,6 +356,35 @@ between samples, so an interval does not have to start at a sample.</p>
 <li><p>The polling period (<code class="docutils literal notranslate"><span class="pre">--battery-poll-ms</span></code>, default 250 ms) changes only the time
 resolution, not the total.</p></li>
 </ul>
+</section>
+<section id="energy-consumers">
+<h3>Energy consumers<a class="headerlink" href="#energy-consumers" title="Link to this heading"></a></h3>
+<p>The PowerStats HAL of Android 12 and later can report <em>energy consumers</em>: the energy of a
+component, such as a CPU cluster, the display or the GPU. A vendor can compute a consumer
+from the power rails or from its own model. Perfetto reads them from the HAL (option
+<code class="docutils literal notranslate"><span class="pre">collect_energy_estimation_breakdown</span></code> of <code class="docutils literal notranslate"><span class="pre">android.power</span></code>), also while the device charges.</p>
+<p>E-MANAFA uses the consumers in the place of the rails if the device has no rails but has
+consumers of the type <code class="docutils literal notranslate"><span class="pre">CPU_CLUSTER</span></code>. All that E-MANAFA does with rails then works with
+consumers: the session total, the energy of each process, and the energy of each method.</p>
+<ul class="simple">
+<li><p>The session total has only the components that have a consumer. It is not the energy of
+all the device. E-MANAFA gives a warning with the list of the components.</p></li>
+<li><p>The values are the values of the vendor. On a device with no rails, there is no reference
+to compare them with.</p></li>
+<li><p>E-MANAFA assumes that the consumer with ordinal 0 is the CPU cluster with the lowest
+capacity.</p></li>
+</ul>
+<p>On a Pixel 9 Pro XL, the consumers of the CPU clusters and of the GPU have the same energy as
+the matching rails, so they add no data on that device.</p>
+</section>
+<section id="comparison-between-the-sources">
+<h3>Comparison between the sources<a class="headerlink" href="#comparison-between-the-sources" title="Link to this heading"></a></h3>
+<p>In the <code class="docutils literal notranslate"><span class="pre">energy</span></code> mode the trace has the data of all the sources that the device has. E-MANAFA
+computes the CPU energy of the session with each of them and writes the values to
+<code class="docutils literal notranslate"><span class="pre">energy.cpu_joules_by_source</span></code>. If two sources disagree by more than a factor of 2, E-MANAFA
+gives a warning. The results always use the source of <code class="docutils literal notranslate"><span class="pre">energy.source</span></code>.</p>
+<p>Example from a Pixel 9 Pro XL with a busy loop: power rails 35.26 J, energy consumers
+35.19 J, power profile 8.69 J. The power profile of this device is wrong by a factor of 4.</p>
 </section>
 <section id="legacy-model">
 <h3>Legacy model<a class="headerlink" href="#legacy-model" title="Link to this heading"></a></h3>

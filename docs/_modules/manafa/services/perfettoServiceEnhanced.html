@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>manafa.services.perfettoServiceEnhanced &mdash; E-MANAFA 0.4.15</title>
+  <title>manafa.services.perfettoServiceEnhanced &mdash; E-MANAFA 1.0.1</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=c1264a3d" />
@@ -14,7 +14,7 @@
     <link rel="canonical" href="https://sanadlab.github.io/E-MANAFA/_modules/manafa/services/perfettoServiceEnhanced.html" />
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=bb2d8cfc"></script>
+      <script src="../../../_static/documentation_options.js?v=292eb321"></script>
       <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/js/theme.js"></script>
@@ -53,8 +53,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../how_it_works.html">How it works</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../how_it_works.html#workflow">Workflow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../how_it_works.html#two-sources-of-energy-data">Two sources of energy data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../how_it_works.html#three-sources-of-energy-data">Three sources of energy data</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../how_it_works.html#power-rails-default">Power rails (default)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../how_it_works.html#energy-consumers">Energy consumers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../how_it_works.html#comparison-between-the-sources">Comparison between the sources</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../how_it_works.html#legacy-model">Legacy model</a></li>
 </ul>
 </li>
@@ -234,6 +236,8 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.services.service.Service"><code class="docutils literal notranslate"><span class="pre">Service</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.services.perfettoService.wait_for_our_perfetto_to_exit"><code class="docutils literal notranslate"><span class="pre">wait_for_our_perfetto_to_exit()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.services.perfettoService.PerfettoService"><code class="docutils literal notranslate"><span class="pre">PerfettoService</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.services.perfettoServiceEnhanced.device_has_energy_consumers_option"><code class="docutils literal notranslate"><span class="pre">device_has_energy_consumers_option()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.services.perfettoServiceEnhanced.device_energy_source"><code class="docutils literal notranslate"><span class="pre">device_energy_source()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.services.perfettoServiceEnhanced.device_supports_power_rails"><code class="docutils literal notranslate"><span class="pre">device_supports_power_rails()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.services.perfettoServiceEnhanced.render_config"><code class="docutils literal notranslate"><span class="pre">render_config()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.services.perfettoServiceEnhanced.PerfettoServiceEnhanced"><code class="docutils literal notranslate"><span class="pre">PerfettoServiceEnhanced</span></code></a></li>
@@ -309,45 +313,72 @@
 <span class="n">DEFAULT_BATTERY_POLL_MS</span> <span class="o">=</span> <span class="mi">250</span>
 <span class="n">PROBE_TRACE</span> <span class="o">=</span> <span class="n">DEFAULT_OUT_DIR</span> <span class="o">+</span> <span class="s2">"/rails_probe"</span>
 <span class="n">PROBE_CONFIG</span> <span class="o">=</span> <span class="s1">'buffers { size_kb: 1024 } data_sources { config { name: "android.power" '</span> \
-               <span class="s1">'android_power_config { battery_poll_ms: 250 collect_power_rails: true } } } duration_ms: 1000'</span>
+               <span class="s1">'android_power_config { battery_poll_ms: 250 collect_power_rails: true </span><span class="si">%s</span><span class="s1">} } } duration_ms: 1000'</span>
+<span class="n">CONSUMERS_OPTION</span> <span class="o">=</span> <span class="s1">'collect_energy_estimation_breakdown: true'</span>
+<span class="n">CONSUMERS_SDK</span> <span class="o">=</span> <span class="mi">31</span>  <span class="c1"># Android 12: the first version with the energy consumers of the PowerStats HAL</span>
+
+
+<div class="viewcode-block" id="device_has_energy_consumers_option">
+<a class="viewcode-back" href="../../../modules.html#manafa.services.perfettoServiceEnhanced.device_has_energy_consumers_option">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">device_has_energy_consumers_option</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">"""True if Perfetto of the connected device knows the option that collects the energy</span>
+<span class="sd">    consumers. An older Perfetto does not start with a config that has an unknown option."""</span>
+    <span class="n">res</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">execute_shell_command</span><span class="p">(</span><span class="s2">"adb shell getprop ro.build.version.sdk"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">res</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">out</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">int</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">&gt;=</span> <span class="n">CONSUMERS_SDK</span></div>
+
+
+
+<div class="viewcode-block" id="device_energy_source">
+<a class="viewcode-back" href="../../../modules.html#manafa.services.perfettoServiceEnhanced.device_energy_source">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">device_energy_source</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">"""Finds the best source of measured energy that Perfetto gives on the connected device.</span>
+
+<span class="sd">    The android.power data source exists on devices that have no power rails,</span>
+<span class="sd">    so its presence proves nothing. This records a 1 second trace and looks at its content.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: 'power rails', or 'energy consumers' if the device has no rails but has energy</span>
+<span class="sd">        consumers for its CPU clusters. None if it has no one of them.</span>
+<span class="sd">    """</span>
+    <span class="n">fd</span><span class="p">,</span> <span class="n">local</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkstemp</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s1">'emanafa_probe_'</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s1">'.perfetto-trace'</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">)</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">PROBE_CONFIG</span> <span class="o">%</span> <span class="p">(</span><span class="n">CONSUMERS_OPTION</span> <span class="o">+</span> <span class="s1">' '</span> <span class="k">if</span> <span class="n">device_has_energy_consumers_option</span><span class="p">()</span> <span class="k">else</span> <span class="s1">''</span><span class="p">)</span>
+        <span class="n">execute_shell_command</span><span class="p">(</span><span class="sa">f</span><span class="s2">"adb shell rm -f </span><span class="si">{</span><span class="n">PROBE_TRACE</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">execute_shell_command</span><span class="p">(</span><span class="sa">f</span><span class="s2">"echo '</span><span class="si">{</span><span class="n">config</span><span class="si">}</span><span class="s2">' | adb shell perfetto --txt -c - -o </span><span class="si">{</span><span class="n">PROBE_TRACE</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">res</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">execute_shell_command</span><span class="p">(</span><span class="sa">f</span><span class="s2">"adb pull </span><span class="si">{</span><span class="n">PROBE_TRACE</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">local</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">execute_shell_command</span><span class="p">(</span><span class="sa">f</span><span class="s2">"adb shell rm -f </span><span class="si">{</span><span class="n">PROBE_TRACE</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">res</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">..parsing.perfettoEnergyCalculator</span><span class="w"> </span><span class="kn">import</span> <span class="n">PowerRailsTrace</span>
+            <span class="n">trace</span> <span class="o">=</span> <span class="n">PowerRailsTrace</span><span class="o">.</span><span class="n">from_trace</span><span class="p">(</span><span class="n">local</span><span class="p">)</span>
+            <span class="n">source</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">source</span> <span class="k">if</span> <span class="n">trace</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Power rails probe failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">local</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">source</span></div>
+
 
 
 <div class="viewcode-block" id="device_supports_power_rails">
 <a class="viewcode-back" href="../../../modules.html#manafa.services.perfettoServiceEnhanced.device_supports_power_rails">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">device_supports_power_rails</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">"""Check if device supports power rails data collection.</span>
-
-<span class="sd">    The android.power data source exists on devices that have no power rails,</span>
-<span class="sd">    so its presence proves nothing. This records a 1 second trace and checks</span>
-<span class="sd">    that it contains power rail counters.</span>
+<span class="w">    </span><span class="sd">"""Check if the device gives measured energy through Perfetto: power rails, or energy</span>
+<span class="sd">    consumers for its CPU clusters.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        bool: True if device supports power rails, False otherwise.</span>
+<span class="sd">        bool: True if it does. False: only the legacy model (power profile) is possible.</span>
 <span class="sd">    """</span>
-    <span class="n">fd</span><span class="p">,</span> <span class="n">local</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkstemp</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s1">'emanafa_probe_'</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s1">'.perfetto-trace'</span><span class="p">)</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">)</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">execute_shell_command</span><span class="p">(</span><span class="sa">f</span><span class="s2">"adb shell rm -f </span><span class="si">{</span><span class="n">PROBE_TRACE</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-        <span class="n">execute_shell_command</span><span class="p">(</span><span class="sa">f</span><span class="s2">"echo '</span><span class="si">{</span><span class="n">PROBE_CONFIG</span><span class="si">}</span><span class="s2">' | adb shell perfetto --txt -c - -o </span><span class="si">{</span><span class="n">PROBE_TRACE</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-        <span class="n">res</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">execute_shell_command</span><span class="p">(</span><span class="sa">f</span><span class="s2">"adb pull </span><span class="si">{</span><span class="n">PROBE_TRACE</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">local</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-        <span class="n">execute_shell_command</span><span class="p">(</span><span class="sa">f</span><span class="s2">"adb shell rm -f </span><span class="si">{</span><span class="n">PROBE_TRACE</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-        <span class="n">n_rails</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">if</span> <span class="n">res</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="kn">from</span><span class="w"> </span><span class="nn">..parsing.perfettoEnergyCalculator</span><span class="w"> </span><span class="kn">import</span> <span class="n">count_power_rails</span>
-            <span class="n">n_rails</span> <span class="o">=</span> <span class="n">count_power_rails</span><span class="p">(</span><span class="n">local</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Power rails probe failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
-        <span class="n">n_rails</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">finally</span><span class="p">:</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">local</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">n_rails</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Device reports </span><span class="si">{</span><span class="n">n_rails</span><span class="si">}</span><span class="s2"> power rails"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="n">device_energy_source</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">source</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Device reports </span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">True</span>
 
-    <span class="n">log</span><span class="p">(</span><span class="s2">"Device reports no power rails, falling back to legacy profiler"</span><span class="p">,</span>
+    <span class="n">log</span><span class="p">(</span><span class="s2">"Device reports no power rails and no energy consumers, falling back to legacy profiler"</span><span class="p">,</span>
         <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
     <span class="k">return</span> <span class="kc">False</span></div>
+
 
 
 <span class="n">CALLSTACK_SAMPLING</span> <span class="o">=</span> <span class="s2">"""</span>
@@ -375,17 +406,22 @@
 <div class="viewcode-block" id="render_config">
 <a class="viewcode-back" href="../../../modules.html#manafa.services.perfettoServiceEnhanced.render_config">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">render_config</span><span class="p">(</span><span class="n">cfg_file</span><span class="p">,</span> <span class="n">meminfo_period_ms</span><span class="o">=</span><span class="n">DEFAULT_MEMINFO_PERIOD_MS</span><span class="p">,</span> <span class="n">battery_poll_ms</span><span class="o">=</span><span class="n">DEFAULT_BATTERY_POLL_MS</span><span class="p">,</span>
-                  <span class="n">callstack_package</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+                  <span class="n">callstack_package</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">energy_consumers</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Text of a Perfetto config of the resources directory, with the polling periods.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        cfg_file: name of a .pbtxt file in the resources directory.</span>
 <span class="sd">        callstack_package: package of an app. If given, the config also samples its call stacks.</span>
+<span class="sd">        energy_consumers: False to remove the option that collects the energy consumers</span>
+<span class="sd">            (see device_has_energy_consumers_option).</span>
 <span class="sd">    """</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">RESOURCES_DIR</span><span class="p">,</span> <span class="n">cfg_file</span><span class="p">),</span> <span class="s1">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">cfg</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
     <span class="n">cfg</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">'meminfo_period_ms:\s*\d+'</span><span class="p">,</span> <span class="sa">f</span><span class="s1">'meminfo_period_ms: </span><span class="si">{</span><span class="n">meminfo_period_ms</span><span class="si">}</span><span class="s1">'</span><span class="p">,</span> <span class="n">cfg</span><span class="p">)</span>
     <span class="n">cfg</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">'battery_poll_ms:\s*\d+'</span><span class="p">,</span> <span class="sa">f</span><span class="s1">'battery_poll_ms: </span><span class="si">{</span><span class="n">battery_poll_ms</span><span class="si">}</span><span class="s1">'</span><span class="p">,</span> <span class="n">cfg</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">energy_consumers</span><span class="p">:</span>
+        <span class="n">cfg</span> <span class="o">=</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">line</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">cfg</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">CONSUMERS_OPTION</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">and</span> <span class="s2">"energy consumers of the PowerStats HAL"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">line</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">callstack_package</span><span class="p">:</span>
         <span class="n">cfg</span> <span class="o">+=</span> <span class="n">CALLSTACK_SAMPLING</span> <span class="o">%</span> <span class="p">(</span><span class="n">DEFAULT_CALLSTACK_HZ</span><span class="p">,</span> <span class="n">callstack_package</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">cfg</span></div>
@@ -471,7 +507,7 @@
 <span class="sd">        directly. The temp file is cleaned up in stop().</span>
 <span class="sd">        """</span>
         <span class="n">cfg</span> <span class="o">=</span> <span class="n">render_config</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">source_path</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">meminfo_period_ms</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">battery_poll_ms</span><span class="p">,</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">callstack_package</span><span class="p">)</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">callstack_package</span><span class="p">,</span> <span class="n">device_has_energy_consumers_option</span><span class="p">())</span>
         <span class="n">fd</span><span class="p">,</span> <span class="n">rendered</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkstemp</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s1">'emanafa_pf_'</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s1">'.pbtxt'</span><span class="p">)</span>
         <span class="k">with</span> <span class="n">os</span><span class="o">.</span><span class="n">fdopen</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="s1">'w'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>

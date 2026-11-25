@@ -17,43 +17,64 @@ DEFAULT_MEMINFO_PERIOD_MS = 50
 DEFAULT_BATTERY_POLL_MS = 250
 PROBE_TRACE = DEFAULT_OUT_DIR + "/rails_probe"
 PROBE_CONFIG = 'buffers { size_kb: 1024 } data_sources { config { name: "android.power" ' \
-               'android_power_config { battery_poll_ms: 250 collect_power_rails: true } } } duration_ms: 1000'
+               'android_power_config { battery_poll_ms: 250 collect_power_rails: true %s} } } duration_ms: 1000'
+CONSUMERS_OPTION = 'collect_energy_estimation_breakdown: true'
+CONSUMERS_SDK = 31  # Android 12: the first version with the energy consumers of the PowerStats HAL
 
 
-def device_supports_power_rails():
-    """Check if device supports power rails data collection.
+def device_has_energy_consumers_option():
+    """True if Perfetto of the connected device knows the option that collects the energy
+    consumers. An older Perfetto does not start with a config that has an unknown option."""
+    res, out, _ = execute_shell_command("adb shell getprop ro.build.version.sdk")
+    return res == 0 and out.strip().isdigit() and int(out.strip()) >= CONSUMERS_SDK
+
+
+def device_energy_source():
+    """Finds the best source of measured energy that Perfetto gives on the connected device.
 
     The android.power data source exists on devices that have no power rails,
-    so its presence proves nothing. This records a 1 second trace and checks
-    that it contains power rail counters.
+    so its presence proves nothing. This records a 1 second trace and looks at its content.
 
     Returns:
-        bool: True if device supports power rails, False otherwise.
+        str: 'power rails', or 'energy consumers' if the device has no rails but has energy
+        consumers for its CPU clusters. None if it has no one of them.
     """
     fd, local = tempfile.mkstemp(prefix='emanafa_probe_', suffix='.perfetto-trace')
     os.close(fd)
+    source = None
     try:
+        config = PROBE_CONFIG % (CONSUMERS_OPTION + ' ' if device_has_energy_consumers_option() else '')
         execute_shell_command(f"adb shell rm -f {PROBE_TRACE}")
-        execute_shell_command(f"echo '{PROBE_CONFIG}' | adb shell perfetto --txt -c - -o {PROBE_TRACE}")
+        execute_shell_command(f"echo '{config}' | adb shell perfetto --txt -c - -o {PROBE_TRACE}")
         res, _, _ = execute_shell_command(f"adb pull {PROBE_TRACE} {local}")
         execute_shell_command(f"adb shell rm -f {PROBE_TRACE}")
-        n_rails = 0
         if res == 0:
-            from ..parsing.perfettoEnergyCalculator import count_power_rails
-            n_rails = count_power_rails(local)
+            from ..parsing.perfettoEnergyCalculator import PowerRailsTrace
+            trace = PowerRailsTrace.from_trace(local)
+            source = trace.source if trace is not None else None
     except Exception as e:
         log(f"Power rails probe failed: {e}", log_sev=LogSeverity.WARNING)
-        n_rails = 0
     finally:
         os.remove(local)
+    return source
 
-    if n_rails > 0:
-        log(f"Device reports {n_rails} power rails", log_sev=LogSeverity.INFO)
+
+def device_supports_power_rails():
+    """Check if the device gives measured energy through Perfetto: power rails, or energy
+    consumers for its CPU clusters.
+
+    Returns:
+        bool: True if it does. False: only the legacy model (power profile) is possible.
+    """
+    source = device_energy_source()
+    if source is not None:
+        log(f"Device reports {source}", log_sev=LogSeverity.INFO)
         return True
 
-    log("Device reports no power rails, falling back to legacy profiler",
+    log("Device reports no power rails and no energy consumers, falling back to legacy profiler",
         log_sev=LogSeverity.WARNING)
     return False
+
 
 CALLSTACK_SAMPLING = """
 # call-stack samples of one app (linux.perf)
@@ -78,17 +99,22 @@ DEFAULT_CALLSTACK_HZ = 100
 
 
 def render_config(cfg_file, meminfo_period_ms=DEFAULT_MEMINFO_PERIOD_MS, battery_poll_ms=DEFAULT_BATTERY_POLL_MS,
-                  callstack_package=None):
+                  callstack_package=None, energy_consumers=True):
     """Text of a Perfetto config of the resources directory, with the polling periods.
 
     Args:
         cfg_file: name of a .pbtxt file in the resources directory.
         callstack_package: package of an app. If given, the config also samples its call stacks.
+        energy_consumers: False to remove the option that collects the energy consumers
+            (see device_has_energy_consumers_option).
     """
     with open(os.path.join(RESOURCES_DIR, cfg_file), 'r') as f:
         cfg = f.read()
     cfg = re.sub(r'meminfo_period_ms:\s*\d+', f'meminfo_period_ms: {meminfo_period_ms}', cfg)
     cfg = re.sub(r'battery_poll_ms:\s*\d+', f'battery_poll_ms: {battery_poll_ms}', cfg)
+    if not energy_consumers:
+        cfg = "\n".join(line for line in cfg.split("\n")
+                        if CONSUMERS_OPTION not in line and "energy consumers of the PowerStats HAL" not in line)
     if callstack_package:
         cfg += CALLSTACK_SAMPLING % (DEFAULT_CALLSTACK_HZ, callstack_package)
     return cfg
@@ -171,7 +197,7 @@ class PerfettoServiceEnhanced(PerfettoService):
         directly. The temp file is cleaned up in stop().
         """
         cfg = render_config(os.path.basename(source_path), self.meminfo_period_ms, self.battery_poll_ms,
-                            self.callstack_package)
+                            self.callstack_package, device_has_energy_consumers_option())
         fd, rendered = tempfile.mkstemp(prefix='emanafa_pf_', suffix='.pbtxt')
         with os.fdopen(fd, 'w') as f:
             f.write(cfg)

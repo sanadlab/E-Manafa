@@ -59,6 +59,12 @@ Fields
      - Meaning
    * - ``energy.total``
      - Energy of all the rails, in joules.
+   * - ``energy.source``
+     - Source of the energy data: ``power rails`` or ``energy consumers``. The report of the
+       legacy model has ``global.energy_source: power profile``. See :doc:`how_it_works`.
+   * - ``energy.cpu_joules_by_source``
+     - CPU energy of the session from each source that the device has. Only in the ``energy``
+       mode.
    * - ``energy.by_rail``
      - Energy of each rail, in joules.
    * - ``energy.measured_duration_seconds``

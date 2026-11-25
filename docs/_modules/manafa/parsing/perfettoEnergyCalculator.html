@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>manafa.parsing.perfettoEnergyCalculator &mdash; E-MANAFA 0.4.15</title>
+  <title>manafa.parsing.perfettoEnergyCalculator &mdash; E-MANAFA 1.0.1</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=c1264a3d" />
@@ -14,7 +14,7 @@
     <link rel="canonical" href="https://sanadlab.github.io/E-MANAFA/_modules/manafa/parsing/perfettoEnergyCalculator.html" />
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=bb2d8cfc"></script>
+      <script src="../../../_static/documentation_options.js?v=292eb321"></script>
       <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/js/theme.js"></script>
@@ -53,8 +53,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../how_it_works.html">How it works</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../how_it_works.html#workflow">Workflow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../how_it_works.html#two-sources-of-energy-data">Two sources of energy data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../how_it_works.html#three-sources-of-energy-data">Three sources of energy data</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../how_it_works.html#power-rails-default">Power rails (default)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../how_it_works.html#energy-consumers">Energy consumers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../how_it_works.html#comparison-between-the-sources">Comparison between the sources</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../how_it_works.html#legacy-model">Legacy model</a></li>
 </ul>
 </li>
@@ -234,6 +236,8 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.services.service.Service"><code class="docutils literal notranslate"><span class="pre">Service</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.services.perfettoService.wait_for_our_perfetto_to_exit"><code class="docutils literal notranslate"><span class="pre">wait_for_our_perfetto_to_exit()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.services.perfettoService.PerfettoService"><code class="docutils literal notranslate"><span class="pre">PerfettoService</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.services.perfettoServiceEnhanced.device_has_energy_consumers_option"><code class="docutils literal notranslate"><span class="pre">device_has_energy_consumers_option()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.services.perfettoServiceEnhanced.device_energy_source"><code class="docutils literal notranslate"><span class="pre">device_energy_source()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.services.perfettoServiceEnhanced.device_supports_power_rails"><code class="docutils literal notranslate"><span class="pre">device_supports_power_rails()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.services.perfettoServiceEnhanced.render_config"><code class="docutils literal notranslate"><span class="pre">render_config()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../modules.html#manafa.services.perfettoServiceEnhanced.PerfettoServiceEnhanced"><code class="docutils literal notranslate"><span class="pre">PerfettoServiceEnhanced</span></code></a></li>
@@ -334,10 +338,22 @@
 
 
 
+<span class="c1"># sources of energy data, in the order that E-MANAFA prefers them</span>
+<span class="n">RAILS</span> <span class="o">=</span> <span class="s1">'power rails'</span>           <span class="c1"># energy meters of the device</span>
+<span class="n">CONSUMERS</span> <span class="o">=</span> <span class="s1">'energy consumers'</span>  <span class="c1"># energy consumers of the PowerStats HAL: the estimate of the vendor</span>
+<span class="n">PROFILE</span> <span class="o">=</span> <span class="s1">'power profile'</span>       <span class="c1"># legacy model: power_profile.xml of the device</span>
+<span class="n">CPU_CONSUMER</span> <span class="o">=</span> <span class="s1">'consumer.cpu_cluster.'</span>
+
+
 <div class="viewcode-block" id="PowerRailsTrace">
 <a class="viewcode-back" href="../../../modules.html#manafa.parsing.perfettoEnergyCalculator.PowerRailsTrace">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">PowerRailsTrace</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Power rail energy counters of a Perfetto trace, as time series.</span>
+
+<span class="sd">    If the trace has no power rails but has energy consumers of the PowerStats HAL for the</span>
+<span class="sd">    CPU clusters, the consumers are used in the place of the rails (source = CONSUMERS).</span>
+<span class="sd">    A consumer has the name consumer.&lt;type&gt;.&lt;ordinal&gt;.&lt;name&gt;, for example</span>
+<span class="sd">    consumer.cpu_cluster.0.CPUCL0.</span>
 
 <span class="sd">    Power rail counters are cumulative energy values, so the energy of a time</span>
 <span class="sd">    interval is the counter at the end minus the counter at the start. The</span>
@@ -351,16 +367,21 @@
 <span class="sd">        rails (dict): rail name -&gt; (times, joules), two lists of the same length.</span>
 <span class="sd">        monotonic_to_epoch_s (float): seconds to add to a CLOCK_MONOTONIC time</span>
 <span class="sd">            of the device (the clock of ART method traces) to get epoch seconds.</span>
+<span class="sd">        source (str): RAILS or CONSUMERS: where the series of `rails` come from.</span>
+<span class="sd">        consumers (dict): energy consumers of the trace, in the format of `rails`.</span>
 <span class="sd">    """</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rails</span><span class="p">,</span> <span class="n">monotonic_to_epoch_s</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rails</span><span class="p">,</span> <span class="n">monotonic_to_epoch_s</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">RAILS</span><span class="p">,</span> <span class="n">consumers</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rails</span> <span class="o">=</span> <span class="n">rails</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">monotonic_to_epoch_s</span> <span class="o">=</span> <span class="n">monotonic_to_epoch_s</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">source</span> <span class="o">=</span> <span class="n">source</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">consumers</span> <span class="o">=</span> <span class="n">consumers</span> <span class="ow">or</span> <span class="p">{}</span>
 
 <div class="viewcode-block" id="PowerRailsTrace.from_trace">
 <a class="viewcode-back" href="../../../modules.html#manafa.parsing.perfettoEnergyCalculator.PowerRailsTrace.from_trace">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_trace</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">trace_file</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""Loads the power rails of trace_file. Returns None if there are none."""</span>
+<span class="w">        </span><span class="sd">"""Loads the power rails of trace_file, or its energy consumers if it has no rails.</span>
+<span class="sd">        Returns None if the trace has no rails and no consumers of the CPU clusters."""</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">tp</span> <span class="o">=</span> <span class="n">_load_trace_processor</span><span class="p">(</span><span class="n">trace_file</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">tp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -387,14 +408,36 @@
                     <span class="n">times</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">row</span><span class="o">.</span><span class="n">ts</span> <span class="o">+</span> <span class="n">boot_to_epoch_ns</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">)</span>
                     <span class="c1">#values are in microwatt-seconds (1 µWs = 1e-6 J)</span>
                     <span class="n">joules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">value</span> <span class="o">*</span> <span class="mf">1e-6</span><span class="p">)</span>
+                <span class="n">consumers</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="s2">"""</span>
+<span class="s2">                SELECT t.name AS name, EXTRACT_ARG(t.source_arg_set_id, 'consumer_type') AS consumer_type,</span>
+<span class="s2">                       EXTRACT_ARG(t.source_arg_set_id, 'ordinal') AS ordinal, c.ts AS ts, c.value AS value</span>
+<span class="s2">                FROM counter c JOIN counter_track t ON c.track_id = t.id</span>
+<span class="s2">                WHERE t.type = 'android_energy_estimation_breakdown'</span>
+<span class="s2">                ORDER BY t.id, c.ts</span>
+<span class="s2">                """</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">tp</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">query</span><span class="p">):</span>
+                        <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"consumer.</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">consumer_type</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="s1">'other'</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">row</span><span class="o">.</span><span class="n">ordinal</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="mi">0</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">row</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span>
+                        <span class="n">times</span><span class="p">,</span> <span class="n">joules</span> <span class="o">=</span> <span class="n">consumers</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="p">([],</span> <span class="p">[]))</span>
+                        <span class="n">times</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">row</span><span class="o">.</span><span class="n">ts</span> <span class="o">+</span> <span class="n">boot_to_epoch_ns</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">)</span>
+                        <span class="n">joules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">value</span> <span class="o">*</span> <span class="mf">1e-6</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"The energy consumers of the trace cannot be read: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
             <span class="k">finally</span><span class="p">:</span>
                 <span class="n">tp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
             <span class="n">rails</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">series</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">series</span> <span class="ow">in</span> <span class="n">rails</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">series</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">}</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">rails</span><span class="p">:</span>
-                <span class="n">log</span><span class="p">(</span><span class="s2">"No power rails found in trace"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
-                <span class="k">return</span> <span class="kc">None</span>
-            <span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Found </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">rails</span><span class="p">)</span><span class="si">}</span><span class="s2"> power rails"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
-            <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">rails</span><span class="p">,</span> <span class="p">(</span><span class="n">boot_to_epoch_ns</span> <span class="o">-</span> <span class="n">offsets</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'MONOTONIC'</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">)</span>
+            <span class="n">consumers</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">series</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">series</span> <span class="ow">in</span> <span class="n">consumers</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">series</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">}</span>
+            <span class="n">monotonic_to_epoch_s</span> <span class="o">=</span> <span class="p">(</span><span class="n">boot_to_epoch_ns</span> <span class="o">-</span> <span class="n">offsets</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'MONOTONIC'</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> <span class="o">*</span> <span class="mf">1e-9</span>
+            <span class="k">if</span> <span class="n">rails</span><span class="p">:</span>
+                <span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Found </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">rails</span><span class="p">)</span><span class="si">}</span><span class="s2"> power rails"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">rails</span><span class="p">,</span> <span class="n">monotonic_to_epoch_s</span><span class="p">,</span> <span class="n">RAILS</span><span class="p">,</span> <span class="n">consumers</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">CPU_CONSUMER</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">consumers</span><span class="p">):</span>
+                <span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"No power rails in the trace. Using its </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">consumers</span><span class="p">)</span><span class="si">}</span><span class="s2"> energy consumers"</span><span class="p">,</span>
+                    <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">consumers</span><span class="p">,</span> <span class="n">monotonic_to_epoch_s</span><span class="p">,</span> <span class="n">CONSUMERS</span><span class="p">,</span> <span class="n">consumers</span><span class="p">)</span>
+            <span class="n">log</span><span class="p">(</span><span class="s2">"No power rails found in trace"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="kn">import</span><span class="w"> </span><span class="nn">traceback</span>
             <span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Error calculating energy: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
@@ -445,6 +488,18 @@
         <span class="k">return</span> <span class="n">total</span></div>
 
 
+<div class="viewcode-block" id="PowerRailsTrace.consumers_cpu_energy">
+<a class="viewcode-back" href="../../../modules.html#manafa.parsing.perfettoEnergyCalculator.PowerRailsTrace.consumers_cpu_energy">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">consumers_cpu_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Energy (Joules) of the energy consumers of the CPU clusters between two timestamps.</span>
+<span class="sd">        None if the trace has no such consumer."""</span>
+        <span class="n">series</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">consumers</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">consumers</span> <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">CPU_CONSUMER</span><span class="p">)]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">series</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_counter_at</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">joules</span><span class="p">,</span> <span class="n">end_time</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_counter_at</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">joules</span><span class="p">,</span> <span class="n">start_time</span><span class="p">)</span>
+                   <span class="k">for</span> <span class="n">times</span><span class="p">,</span> <span class="n">joules</span> <span class="ow">in</span> <span class="n">series</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="PowerRailsTrace.method_rails">
 <a class="viewcode-back" href="../../../modules.html#manafa.parsing.perfettoEnergyCalculator.PowerRailsTrace.method_rails">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">method_rails</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -466,6 +521,7 @@
         <span class="n">series</span> <span class="o">=</span> <span class="p">[[</span><span class="nb">round</span><span class="p">((</span><span class="n">t</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">monotonic_to_epoch_s</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e9</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">energy_between</span><span class="p">(</span><span class="n">times</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">t</span><span class="p">,</span> <span class="n">method_rails</span><span class="p">)]</span>
                   <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">times</span><span class="p">]</span>
         <span class="n">result</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">'source'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="p">,</span>
             <span class="s1">'total'</span><span class="p">:</span> <span class="nb">sum</span><span class="p">(</span><span class="n">by_rail</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span>
             <span class="s1">'by_rail'</span><span class="p">:</span> <span class="n">by_rail</span><span class="p">,</span>
             <span class="s1">'start_time'</span><span class="p">:</span> <span class="n">start</span><span class="p">,</span>
@@ -473,6 +529,9 @@
             <span class="s1">'method_rails'</span><span class="p">:</span> <span class="n">method_rails</span><span class="p">,</span>
             <span class="s1">'method_energy_series'</span><span class="p">:</span> <span class="n">series</span><span class="p">,</span>
         <span class="p">}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span> <span class="o">==</span> <span class="n">CONSUMERS</span><span class="p">:</span>
+            <span class="n">log</span><span class="p">(</span><span class="s2">"The total is the energy of the components that have an energy consumer, not of all the "</span>
+                <span class="s2">"device: "</span> <span class="o">+</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'.'</span><span class="p">,</span> <span class="mi">3</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">by_rail</span><span class="p">)),</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
         <span class="n">log</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total Energy: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">'total'</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> Joules in </span><span class="si">{</span><span class="n">end</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> s"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
         <span class="n">log</span><span class="p">(</span><span class="s2">"Top Power Consumers:"</span><span class="p">,</span> <span class="n">log_sev</span><span class="o">=</span><span class="n">LogSeverity</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">rail</span><span class="p">,</span> <span class="n">energy</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">by_rail</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)[:</span><span class="mi">5</span><span class="p">]:</span>

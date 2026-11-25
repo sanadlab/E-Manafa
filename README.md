@@ -44,10 +44,13 @@ E-MANAFA has two sources of energy data. It selects one automatically.
 
 | Source | How | Accuracy |
 |---|---|---|
-| **Power rails** (default) | The device has power sensors on its supply rails (Pixel 6 and later, and other recent devices). Perfetto records their energy counters. | Measured by hardware. |
-| **Legacy model** | `batterystats` gives the state of each component. Perfetto gives the CPU frequencies. `power_profile.xml` gives the current of each state. E-MANAFA multiplies them. | An estimate. It is only as good as the power profile of the manufacturer. See [Accuracy](#accuracy-and-limits). |
+| **Power rails** (first choice) | The device has power sensors on its supply rails (Pixel 6 and later, and other recent devices). Perfetto records their energy counters. | Measured by hardware. |
+| **Energy consumers** (second choice) | The PowerStats HAL of the device reports the energy of some components (Android 12 and later), for example each CPU cluster. Perfetto records these counters. E-MANAFA uses them if the device has no rails but has consumers for its CPU clusters. | The values of the vendor. The total has only the components that have a consumer. |
+| **Legacy model** (last choice) | `batterystats` gives the state of each component. Perfetto gives the CPU frequencies. `power_profile.xml` gives the current of each state. E-MANAFA multiplies them. | An estimate. It is only as good as the power profile of the manufacturer. See [Accuracy](#accuracy-and-limits). |
 
-If the device has no power rails, E-MANAFA uses the legacy model. The power profile comes from the device (`dumpsys batterystats --power-profile`), or from the file that you give with `-p`.
+E-MANAFA selects the first source in this order that the device has. Each result names the source that it used (`energy.source`: `power rails`, `energy consumers` or `power profile`). In the `energy` mode, E-MANAFA also compares the CPU energy of the session between all the sources that the device has (`energy.cpu_joules_by_source`), and gives a warning if two of them disagree by more than a factor of 2.
+
+The power profile of the legacy model comes from the device (`dumpsys batterystats --power-profile`), or from the file that you give with `-p`.
 
 Full documentation: <https://sanadlab.github.io/E-MANAFA/>
 

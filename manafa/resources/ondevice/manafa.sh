@@ -54,8 +54,8 @@ start() {
     fi
     # same fallback as the computer: no power rails -> legacy model
     if [ "$(cat "$DIR/power_rails" 2>/dev/null)" = "0" ]; then
-        [ "$mode" = "energy" ] && mode=legacy && echo "No power rails on this device: mode legacy"
-        [ "$mode" = "both" ] && mode=memory && echo "No power rails on this device: mode memory"
+        [ "$mode" = "energy" ] && mode=legacy && echo "No power rails and no energy consumers on this device: mode legacy"
+        [ "$mode" = "both" ] && mode=memory && echo "No power rails and no energy consumers on this device: mode memory"
     fi
     case "$mode" in
         energy|memory|both|legacy) ;;

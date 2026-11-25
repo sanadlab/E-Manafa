@@ -32,8 +32,12 @@ LEGACY_CONFIG = 'perfetto.config.bin'
 DEFAULT_RESULTS_DIR = "emanafa_ondevice"
 
 
-def device_files(meminfo_period_ms=None, battery_poll_ms=None):
+def device_files(meminfo_period_ms=None, battery_poll_ms=None, energy_consumers=True):
     """Files that `install` puts on the device.
+
+    Args:
+        energy_consumers: False for a device whose Perfetto does not know the option that
+            collects the energy consumers (before Android 12).
 
     Returns:
         dict: file name on the device -> content (bytes).
@@ -48,9 +52,10 @@ def device_files(meminfo_period_ms=None, battery_poll_ms=None):
     with open(os.path.join(resources, LEGACY_CONFIG), 'rb') as f:
         files['config_legacy.bin'] = f.read()
     for mode, cfg_file in CONFIGS.items():
-        files[f'config_{mode}.pbtxt'] = render_config(cfg_file, *periods).encode()
+        files[f'config_{mode}.pbtxt'] = render_config(cfg_file, *periods, energy_consumers=energy_consumers).encode()
     # the recorder replaces __APP__ with the package of the app
-    files['config_energy_perf.pbtxt'] = render_config(CONFIGS['energy'], *periods, callstack_package='__APP__').encode()
+    files['config_energy_perf.pbtxt'] = render_config(CONFIGS['energy'], *periods, callstack_package='__APP__',
+                                                      energy_consumers=energy_consumers).encode()
     return files
 
 
@@ -63,8 +68,9 @@ def adb(command):
 
 def install(meminfo_period_ms=None, battery_poll_ms=None):
     """Puts the recorder and the Perfetto configs on the connected device."""
-    from manafa.services.perfettoServiceEnhanced import device_supports_power_rails
-    files = device_files(meminfo_period_ms, battery_poll_ms)
+    from manafa.services.perfettoServiceEnhanced import device_supports_power_rails, \
+        device_has_energy_consumers_option
+    files = device_files(meminfo_period_ms, battery_poll_ms, device_has_energy_consumers_option())
     files['power_rails'] = b"1" if device_supports_power_rails() else b"0"
     tmp = tempfile.mkdtemp(prefix='emanafa_ondevice_')
     try:

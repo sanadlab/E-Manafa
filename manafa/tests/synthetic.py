@@ -85,11 +85,16 @@ def write_am_csv(directory, calls):
     return path
 
 
-def write_trace(directory):
+def write_trace(directory, rails=True, consumers=(), consumer_scale=1.0):
     """Perfetto trace of the scenario: power rails that consume exactly what the power
     profile model predicts, the cpu frequency and cpu idle events, and a clock snapshot.
 
     Needs the perfetto python package.
+    Args:
+        rails: False for a device that has no power rails.
+        consumers: energy consumers of the PowerStats HAL to add: 'cpu' (type CPU_CLUSTER,
+            the energy of the CPU rail) and 'display' (type DISPLAY, the energy of the display rail).
+        consumer_scale: factor of the consumer energy. Not 1 for consumers that disagree with the rails.
     """
     from perfetto.protos.perfetto.trace.perfetto_trace_pb2 import Trace
 
@@ -104,10 +109,19 @@ def write_trace(directory):
         clock.clock_id = clock_id  # 6 = BOOTTIME, 3 = MONOTONIC, 1 = REALTIME
         clock.timestamp = value
 
-    rails = ["S4M_VDD_CPUCL0", "VSYS_PWR_DISPLAY"]
+    consumer_ids = {'cpu': (0, "CPU_CLUSTER", "CPUCL0"), 'display': (1, "DISPLAY", "Display")}
+    if consumers:
+        packet = trace.packet.add()
+        packet.timestamp = ns(0)
+        for consumer in consumers:
+            descriptor = packet.android_energy_estimation_breakdown.energy_consumer_descriptor.energy_consumers.add()
+            descriptor.energy_consumer_id, descriptor.type, descriptor.name = consumer_ids[consumer]
+            descriptor.ordinal = 0
+
+    rail_names = ["S4M_VDD_CPUCL0", "VSYS_PWR_DISPLAY"] if rails else []
     packet = trace.packet.add()
     packet.timestamp = ns(0)
-    for index, name in enumerate(rails):
+    for index, name in enumerate(rail_names):
         descriptor = packet.power_rails.rail_descriptor.add()
         descriptor.index = index
         descriptor.rail_name = name
@@ -117,9 +131,15 @@ def write_trace(directory):
         t = step / 4
         cpu_mw = VOLTAGE * (CPU_MA_FIRST_HALF * min(t, 2) + CPU_MA_SECOND_HALF * max(t - 2, 0))
         display_mw = VOLTAGE * SCREEN_MA * t
+        for consumer in consumers:
+            packet = trace.packet.add()
+            packet.timestamp = ns(t)
+            packet.android_energy_estimation_breakdown.energy_consumer_id = consumer_ids[consumer][0]
+            packet.android_energy_estimation_breakdown.energy_uws = int(
+                (cpu_mw if consumer == 'cpu' else display_mw) * 1000 * consumer_scale) + 777
         packet = trace.packet.add()
         packet.timestamp = ns(t)
-        for index, milliwatt_seconds in enumerate((cpu_mw, display_mw)):
+        for index, milliwatt_seconds in enumerate((cpu_mw, display_mw) if rails else ()):
             data = packet.power_rails.energy_data.add()
             data.index = index
             data.timestamp_ms = ns(t) // 1000000

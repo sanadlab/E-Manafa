@@ -30,6 +30,14 @@ def cluster_rails(cpu_rails, cpu_clusters):
     for cpu, (cluster, capacity) in cpu_clusters.items():
         clusters.setdefault((capacity or 0, cluster), set()).add(cpu)
     ordered = [clusters[key] for key in sorted(clusters)]
+    # energy consumers have the ordinal of their cluster in the name: consumer.cpu_cluster.<ordinal>.<name>.
+    # assumption: ordinal 0 is the cluster with the lowest capacity
+    ordinals = sorted({rail.split('.')[2] for rail in cpu_rails if rail.startswith('consumer.cpu_cluster.')}, key=int)
+    if ordinals and all(rail.startswith('consumer.cpu_cluster.') for rail in cpu_rails):
+        if len(ordinals) != len(ordered):
+            return [all_cpus]
+        return [(cpus, [rail for rail in cpu_rails if rail.split('.')[2] == ordinal])
+                for ordinal, cpus in zip(ordinals, ordered)]
     if len(ordered) < 2 or len(ordered) > 3:
         return [all_cpus]
     # little = lowest capacity, big = highest capacity

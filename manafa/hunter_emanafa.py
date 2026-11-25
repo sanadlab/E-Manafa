@@ -132,6 +132,7 @@ class HunterEManafa(EManafa):
         end = self.perf_events.events[-1].time if end_time is None else end_time
         total, per_c, timeline = self.get_consumption_in_between(begin, end)
         res = {
+            'energy_source': 'power profile',
             'total_energy:': total,
             'elapsed_time': end - begin,
             'per_component_consumption': per_c,
